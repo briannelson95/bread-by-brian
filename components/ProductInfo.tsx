@@ -1,6 +1,7 @@
 import React from 'react'
 import Options from './Options'
 import Image from 'next/image';
+import MainButton from './MainButton';
 
 export default function ProductInfo({ image, title, price, description, maxAmount }: { image?: string; title: string; price: number; description: string; maxAmount: number; }) {
     return (
@@ -33,6 +34,7 @@ export default function ProductInfo({ image, title, price, description, maxAmoun
                     <p>{description}</p>
                 </div>
             </div>
+            <MainButton title='Add to Cart' />
         </div>
     )
 }
