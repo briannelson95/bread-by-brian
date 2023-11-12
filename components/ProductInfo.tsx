@@ -6,13 +6,15 @@ export default function ProductInfo({ image, title, price, description, maxAmoun
     return (
         <div className='w-full p-2 space-y-2'>
             {image ? (
-                <Image
-                    src={image}
-                    alt={'Alt text for image'}
-                    height={1000}
-                    width={1000}
-                    className='rounded-full aspect-square w-full h-auto bg-cover'
-                />
+                <div className='rounded-full aspect-square w-full h-auto overflow-hidden bg-center'>
+                    <Image
+                        src={image}
+                        alt={'Alt text for image'}
+                        height={1000}
+                        width={1000}
+                        className='bg-cover'
+                    />
+                </div>
             ) : (
                 <div className='bg-zinc-500 rounded-full aspect-square w-full h-auto' />
             )}
@@ -21,7 +23,7 @@ export default function ProductInfo({ image, title, price, description, maxAmoun
                 <div className='grid grid-cols-2 gap-2'>
                     <h1 className='text-3xl font-bold capitalize'>{title}</h1>
                     <div className='flex justify-end items-center'>
-                        <p className='text-3xl'>${price}</p>
+                        <p className='text-3xl'>${price.toFixed(2)}</p>
                     </div>
                 </div>
                 <div>
