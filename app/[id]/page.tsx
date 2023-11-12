@@ -12,7 +12,6 @@ export default function ItemPage() {
                 description='Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quas, quam! Vero expedita, soluta, quod sunt voluptates id officiis, ullam debitis possimus.'
                 maxAmount={2}
             />
-            <MainButton />
         </div>
     )
 }
