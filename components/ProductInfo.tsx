@@ -5,7 +5,7 @@ import MainButton from './MainButton';
 
 export default function ProductInfo({ image, title, price, description, maxAmount }: { image?: string; title: string; price: number; description: string; maxAmount: number; }) {
     return (
-        <div className='w-full p-2 space-y-2'>
+        <div className='w-full p-2 space-y-2 md:grid md:grid-cols-2 md:gap-6'>
             {image ? (
                 <div className='rounded-full aspect-square w-full h-auto overflow-hidden bg-center'>
                     <Image
@@ -33,8 +33,8 @@ export default function ProductInfo({ image, title, price, description, maxAmoun
                     </h2>
                     <p>{description}</p>
                 </div>
+                <MainButton title='Add to Cart' />
             </div>
-            <MainButton title='Add to Cart' />
         </div>
     )
 }
