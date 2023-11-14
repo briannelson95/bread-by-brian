@@ -11,8 +11,21 @@ export default defineType({
             type: 'string',
         }),
         defineField({
+            name: 'slug',
+            title: 'Slug',
+            type: 'slug',
+            options: {
+                source: 'title'
+            }
+        }),
+        defineField({
             name: 'price',
             title: 'Price',
+            type: 'number'
+        }),
+        defineField({
+            name: 'maxAmount',
+            title: 'Max Amount per Customer',
             type: 'number'
         }),
         defineField({

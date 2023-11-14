@@ -15,14 +15,13 @@ export default function MyCart() {
                     <CartCard maxAmount={2} totalItems={1} />
                 </div>
                 <div className='md:col-span-2 space-y-2'>
-                    <div className='rounded-lg shadow-md px-2 py-4 pt-2'>
-                        <CustomerInfo />
-                    </div>
-                    <div className='flex justify-between'>
+                    <div className='flex justify-between p-2'>
                         <p className='font-bold'>Total:</p>
                         <p>${total.toFixed(2)}</p>
                     </div>
-                    <MainButton title='Checkout' />
+                    <div className='rounded-lg shadow-md px-2 pt-2'>
+                        <CustomerInfo />
+                    </div>
                 </div>
             </div>
         </div>
