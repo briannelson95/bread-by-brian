@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from 'react'
+import MainButton from './MainButton';
 
 export default function CustomerInfo() {
     const [name, setName] = useState('');
@@ -27,6 +28,7 @@ export default function CustomerInfo() {
                     />
                 </label>
             </fieldset>
+            <MainButton title='Place Order' noShadow />
         </form>
     )
 }
