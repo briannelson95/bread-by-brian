@@ -11,8 +11,9 @@ export default function ProductInfo({ image, title, price, description, maxAmoun
                     <Image
                         src={image}
                         alt={'Alt text for image'}
-                        height={1000}
-                        width={1000}
+                        height={3000}
+                        width={3000}
+                        priority
                         className='bg-cover'
                     />
                 </div>

@@ -1,4 +1,6 @@
 import ProductInfo from '@/components/ProductInfo'
+import { supabase } from '@/supabase/lib/supabaseClient'
+import { Metadata, ResolvingMetadata } from 'next'
 import React from 'react'
 
 type Props = {
@@ -7,22 +9,42 @@ type Props = {
     }
 }
 
-export default async function ItemPage({params: {slug}}: Props) {
-    // const product: any = await client.fetch(singleProduct, { slug })
-    // console.log(product)
+export async function generateStaticParams() {
+    const { data: products }: any = await supabase.from('products').select('slug');
 
-    // if (!product) {
-    //     notFound()
-    // }
+    return products?.map(({ slug }:any) => ({
+        slug,
+    }))
+};
+
+export async function generateMetadata(
+    { params: { id } }: { params: { id: string } },
+    parent: ResolvingMetadata
+  ): Promise<Metadata> {
+    const { data: product}: any = await supabase.from('products').select('id, title, desc, image').eq('slug', id);
+    const productData = product[0];
+
+    return {
+        title: `${productData.title} - Bread by Brian`,
+        openGraph: {
+            images: productData.image
+        }
+    }
+
+}
+
+export default async function ItemPage({ params: { id } }: { params: { id: string } }) {
+    const { data: product }: any = await supabase.from('products').select().eq('slug', id);
+    const productData = product[0];
     
     return (
         <div className='w-full p-2 relative mb-16'>
             <ProductInfo
-                image={'/bread-image.jpg'}
-                title={'Sourdough bread'}
-                price={7}
-                description={'Product dectiption'}
-                maxAmount={2}
+                image={productData.image}
+                title={productData.title}
+                price={productData.price}
+                description={productData.desc}
+                maxAmount={productData.limit && productData.limit}
             />
         </div>
     )
