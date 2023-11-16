@@ -13,7 +13,6 @@ export default function QuickAdd() {
 
     const [isUploading, setIsUploading] = useState(false);
 
-
     const handleCheck = (e: any) => {
         setIsLimit(!isLimit)
     }
@@ -58,8 +57,8 @@ export default function QuickAdd() {
     }
 
     return (
-        <section className='w-full border border-gray-500 rounded-md p-2 shadow-md'>
-            <h2>Quick Add</h2>
+        <section className='w-full rounded-md p-2 shadow-md'>
+            <h2 className='text-lg font-medium'>Add Item</h2>
             <form className='flex flex-col gap-2 relative'>
                 <div className="relative">
                     <input 
@@ -124,7 +123,7 @@ export default function QuickAdd() {
                         {isLimit && (
                             <div className="relative col-span-3">
                                 <input 
-                                    type="text" 
+                                    type="number" 
                                     id="limit" 
                                     className="rounded px-2.5 pb-2.5 pt-5 w-full text-sm border appearance-none dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
                                     placeholder=" " 
