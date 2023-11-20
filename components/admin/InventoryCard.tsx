@@ -3,15 +3,15 @@ import Image from 'next/image';
 import React, { useState } from 'react'
 
 export default function InventoryCard({ image, title, quantity }: { image: string; title: string; quantity: number}) {
-    const [newQuantiry, setNewQuantity] = useState(quantity)
+    const [newQuantity, setNewQuantity] = useState(quantity)
     return (
-        <div className='rounded-xl shadow-lg p-2 grid grid-cols-3'>
+        <div className='rounded-xl shadow-lg p-2 grid grid-cols-3 gap-2'>
             <Image
                 src={image}
                 height={1000}
                 width={1000}
                 alt={`Image of ${title}`}
-                className='rounded-lg h-20 w-20'
+                className='rounded-lg w-20'
             />
             <div className='col-span-2'>
                 <h2 className='text-lg font-medium'>{title}</h2>
@@ -23,7 +23,7 @@ export default function InventoryCard({ image, title, quantity }: { image: strin
                         id='quantity'
                         onChange={(e: any) => setNewQuantity(e.target.value)}
                         required
-                        value={quantity}
+                        value={newQuantity}
                     />
                     <label
                         htmlFor='quantity'
@@ -33,6 +33,9 @@ export default function InventoryCard({ image, title, quantity }: { image: strin
                     </label>
                 </div>
             </div>
+            <button className='col-span-3 bg-blue-500 text-white rounded-lg py-1'>
+                Save
+            </button>
         </div>
     )
 }

@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
+import BackButton from './BackButton'
 
 export default function Navbar() {
     const router = useRouter()
@@ -12,11 +13,7 @@ export default function Navbar() {
             <ul className='flex items-center justify-between md:p-2'>
                 <li className='md:hidden'>
                     {pathname !== '/' ? (
-                        <button onClick={() => router.back()}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                            </svg>
-                        </button>
+                        <BackButton />
                     ) : <div className='w-6' />}
                     
                 </li>
