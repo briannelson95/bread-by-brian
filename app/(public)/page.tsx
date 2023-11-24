@@ -10,22 +10,17 @@ export default async function Home() {
       <section className='grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6'>
         {products?.map((item) => (
           <GridItem
-            key={item.id}
-            title={item.title}
-            link={item.slug}
-            image={item.image}
+            key={item.id} 
+            menuItem={{
+              image: item.image,
+              link: item.slug,
+              title: item.title,
+              id: item.id,
+              price: item.price,
+              limit: item.limit,
+            }}            
           />
         ))}
-        {/* <GridItem 
-          title='Sourdough bread'
-          link='/sourdough-bread'
-          image='/bread-image.jpg'
-        />
-        <GridItem 
-          title='Croissants'
-          link='/croissants'
-          image='/croissant.jpg'
-        /> */}
       </section>
     </div>    
   )

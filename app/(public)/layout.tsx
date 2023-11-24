@@ -15,13 +15,13 @@ export default function PublicLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} max-w-4xl p-2 mx-auto`}>
+    <>
+      <div className={`${inter.className} max-w-4xl p-2 mx-auto`}>
         <Navbar />
         <main className='w-full'>
           {children}
         </main>
-      </body>
-    </html>
+      </div>
+    </>
   )
 }
