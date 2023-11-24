@@ -39,12 +39,16 @@ export default async function ItemPage({ params: { id } }: { params: { id: strin
     
     return (
         <div className='w-full p-2 relative mb-16'>
-            <ProductInfo
-                image={productData.image}
-                title={productData.title}
-                price={productData.price}
-                description={productData.desc}
-                maxAmount={productData.limit && productData.limit}
+            <ProductInfo 
+                menuItem={{
+                    image: productData.image,
+                    link: productData.slug,
+                    title: productData.title,
+                    id: productData.id,
+                    price: productData.price,
+                    limit: productData.limit,
+                    description: productData.desc,
+                }}                
             />
         </div>
     )
