@@ -6,19 +6,19 @@ export default function CartCard({ totalItems, limit, title, image, price, id, i
     const [liked, setLiked] = useState(false);
     const [amount, setAmount] = useState(totalItems);
 
-    const {removeCartProduct}: any = useContext(CartContext);
+    const {removeCartProduct, quantity, setQuantity, cartProducts}: any = useContext(CartContext);
 
-    // const handleAdd = () => {
-    //     if (amount < limit) {
-    //         setAmount(amount + 1)
-    //     }
-    // }
+    const handleAdd = () => {
+        if (quantity < limit) {
+            setQuantity(quantity + 1)
+        }
+    }
 
-    // const handleSubract = () => {
-    //     if (amount > 0) {
-    //         setAmount(amount - 1)
-    //     }
-    // }
+    const handleSubract = () => {
+        if (quantity > 0) {
+            setQuantity(quantity - 1)
+        }
+    }
 
 
 
@@ -46,14 +46,14 @@ export default function CartCard({ totalItems, limit, title, image, price, id, i
                     <div className='flex items-end'>
                         <p>${price.toFixed(2)}</p>
                     </div>
-                    {/* <div className='relative'>
+                    <div className='relative'>
                         <div className='bg-yellow-500 text-white rounded-full flex justify-between gap-2 px-2 items-center'>
                             <button onClick={handleSubract}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
                                 </svg>
                             </button>
-                            <p className='text-lg font-bold'>{amount}</p>
+                            <p className='text-lg font-bold'>{quantity}</p>
                             <button 
                                 onClick={handleAdd}
                                 disabled={amount == limit}
@@ -63,7 +63,7 @@ export default function CartCard({ totalItems, limit, title, image, price, id, i
                                 </svg>
                             </button>
                         </div>
-                    </div> */}
+                    </div>
                 </div>
                 
             </div>

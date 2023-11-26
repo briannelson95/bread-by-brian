@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useState } from 'react'
+import { CartContext } from '@/context/AppContext';
+import React, { useState, useContext } from 'react'
 
-export default function Options({ maxAmount }: { maxAmount: number }) {
+export default function Options({ maxAmount, inventory }: { maxAmount: number; inventory: number; }) {
     const [liked, setLiked] = useState(false);
     const [amount, setAmount] = useState(1);
 
@@ -12,7 +13,12 @@ export default function Options({ maxAmount }: { maxAmount: number }) {
 
     const handleAdd = () => {
         if (amount < maxAmount) {
-            setAmount(amount + 1)
+            if (amount >= inventory) {
+                setAmount(inventory)
+            } else {
+                setAmount(amount + 1)
+            }
+            
         }
     }
 
@@ -21,7 +27,6 @@ export default function Options({ maxAmount }: { maxAmount: number }) {
             setAmount(amount - 1)
         }
     }
-
 
     return (
         <div className='w-full flex justify-between'>
@@ -42,11 +47,16 @@ export default function Options({ maxAmount }: { maxAmount: number }) {
                         </svg>
                     </button>
                 </div>
-                {amount == maxAmount && (
+                {amount == inventory ? (
+                    <div className='absolute top-2 left-24 w-32'>
+                        <p className='text-sm'><span className='text-red-600'>*</span>Max per customer</p>
+                    </div>
+                ) : amount == maxAmount && (
                     <div className='absolute top-2 left-24 w-32'>
                         <p className='text-sm'><span className='text-red-600'>*</span>Max per customer</p>
                     </div>
                 )}
+                
                 
             </div>
             <div>

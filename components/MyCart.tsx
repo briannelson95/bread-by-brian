@@ -8,6 +8,7 @@ import Link from 'next/link'
 
 export default function MyCart() {
     const {cartProducts, clearCart}: any = useContext(CartContext)
+    console.log(cartProducts)
 
     let total = 0;
 
