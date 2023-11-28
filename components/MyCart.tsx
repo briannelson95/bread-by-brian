@@ -8,12 +8,17 @@ import Link from 'next/link'
 
 export default function MyCart() {
     const {cartProducts, clearCart}: any = useContext(CartContext)
-
+    console.log(cartProducts)
     let total = 0;
 
     cartProducts?.map((p: any) => {
         return total += p.price
     })
+
+    const totalPrice = cartProducts.reduce((acc: any, product: any) => {
+        const productTotal = product.price * product.quantity;
+        return acc + productTotal;
+    }, 0);
     
     return (
         <div className='w-full space-y-2'>
@@ -34,7 +39,7 @@ export default function MyCart() {
                             <div className='w-full'>
                                 <div className='float-right flex gap-4'>
                                     <p className='font-bold'>Total:</p>
-                                    <p>${total.toFixed(2)}</p>
+                                    <p>${totalPrice.toFixed(2)}</p>
                                 </div>
                             </div>
                         </div>

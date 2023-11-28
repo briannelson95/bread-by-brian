@@ -48,6 +48,7 @@ export default async function ItemPage({ params: { id } }: { params: { id: strin
                     price: productData.price,
                     limit: productData.limit,
                     description: productData.desc,
+                    inventory: productData.inventory,
                 }}                
             />
         </div>

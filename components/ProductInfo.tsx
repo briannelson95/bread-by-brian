@@ -1,21 +1,29 @@
 "use client"
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Options from './Options'
 import Image from 'next/image';
 import MainButton from './MainButton';
 import { CartContext } from '@/context/AppContext';
 import toast from 'react-hot-toast';
 
-export default function ProductInfo({menuItem}: {menuItem: {image: string; link: string; title: string; id: number; price: number; limit: number; description: string;}}) {
+export default function ProductInfo({menuItem}: {menuItem: {image: string; link: string; title: string; id: number; price: number; limit: number; description: string; inventory: number;}}) {
     const {
-        image, link, title, id, price, limit, description,
+        image, link, title, id, price, limit, description, inventory
     } = menuItem;
     
-    const {addToCart}: any = useContext(CartContext)
+    const { addToCart }: any = useContext(CartContext)
+
+    const [quantity, setQuantity] = useState(1);
+    // console.log('quantity from ProductInfo:', quantity)
+
+    const handleQuantityChange = (newQuantity: number) => {
+        // console.log('quantity:', quantity)
+        setQuantity(newQuantity)
+    }
 
     const handleAddToCart = () => {
-        // console.log(menuItem)
-        addToCart(menuItem);
+        // console.log("Adding to cart with quantity:", quantity);
+        addToCart(menuItem, quantity);
 
         toast('Added to cart', {
             icon: '🍞👍',
@@ -39,7 +47,16 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
                 <div className='bg-zinc-500 rounded-full aspect-square w-full h-auto' />
             )}
             <div className='space-y-2'>
-                <Options maxAmount={limit} />
+                {inventory > 0 && (
+                    <Options 
+                        onQuantityChange={handleQuantityChange}
+                        maxAmount={limit}
+                        inventory={inventory}
+                    >
+                        <p className='text-xl font-bold'>{quantity}</p>
+                    </Options>
+                )} 
+                
                 <div className='grid grid-cols-2 gap-2'>
                     <h1 className='text-3xl font-bold capitalize'>{title}</h1>
                     <div className='flex justify-end items-center'>
@@ -53,8 +70,9 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
                     <p>{description}</p>
                 </div>
                 <MainButton 
-                    title='Add to Cart' 
+                    title={`${inventory > 0 ? 'Add to Cart' : 'Sold Out'}`}
                     onClick={handleAddToCart}
+                    disabled={inventory <= 0}
                 />
             </div>
         </div>

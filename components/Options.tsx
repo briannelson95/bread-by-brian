@@ -1,52 +1,55 @@
 "use client"
 
-import React, { useState } from 'react'
+import { CartContext } from '@/context/AppContext';
+import React, { useState, useContext } from 'react'
 
-export default function Options({ maxAmount }: { maxAmount: number }) {
+export default function Options({ maxAmount, inventory, onQuantityChange, children }: { maxAmount: number; inventory: number; onQuantityChange: any; children: React.ReactNode; }) {
     const [liked, setLiked] = useState(false);
-    const [amount, setAmount] = useState(1);
+    // const [localQuantity, setLocalQuantity] = useState(1);
 
     const handleLike = () => {
         setLiked(!liked)
     }
 
-    const handleAdd = () => {
-        if (amount < maxAmount) {
-            setAmount(amount + 1)
-        }
-    }
-
-    const handleSubract = () => {
-        if (amount > 0) {
-            setAmount(amount - 1)
-        }
-    }
-
+    const handleIncrement = () => {
+        // Handle the logic to increment the quantity
+        onQuantityChange((prevQuantity: number) => prevQuantity + 1);
+    };
+    
+    const handleDecrement = () => {
+        // Handle the logic to decrement the quantity
+        onQuantityChange((prevQuantity: number) => Math.max(prevQuantity - 1, 1)); // Ensure quantity is not less than 1
+    };
 
     return (
         <div className='w-full flex justify-between'>
             <div className='relative'>
                 <div className='bg-yellow-500 text-white rounded-full flex justify-between gap-2 px-2 py-1 items-center'>
-                    <button onClick={handleSubract}>
+                    <button onClick={handleDecrement}>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
                         </svg>
                     </button>
-                    <p className='text-xl font-bold'>{amount}</p>
+                    {children}
                     <button 
-                        onClick={handleAdd}
-                        disabled={amount == maxAmount}
+                        onClick={handleIncrement}
+                        // disabled={localQuantity == maxAmount}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
                     </button>
                 </div>
-                {amount == maxAmount && (
+                {/* {localQuantity == inventory ? (
+                    <div className='absolute top-2 left-24 w-32'>
+                        <p className='text-sm'><span className='text-red-600'>*</span>Max per customer</p>
+                    </div>
+                ) : localQuantity == maxAmount && (
                     <div className='absolute top-2 left-24 w-32'>
                         <p className='text-sm'><span className='text-red-600'>*</span>Max per customer</p>
                     </div>
                 )}
+                 */}
                 
             </div>
             <div>
