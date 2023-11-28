@@ -1,5 +1,5 @@
 "use client"
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Options from './Options'
 import Image from 'next/image';
 import MainButton from './MainButton';
@@ -11,12 +11,18 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
         image, link, title, id, price, limit, description, inventory
     } = menuItem;
     
-    const {addToCart, quantity}: any = useContext(CartContext)
+    const { addToCart }: any = useContext(CartContext)
 
-    console.log(quantity)
+    const [quantity, setQuantity] = useState(1);
+    // console.log('quantity from ProductInfo:', quantity)
+
+    const handleQuantityChange = (newQuantity: number) => {
+        // console.log('quantity:', quantity)
+        setQuantity(newQuantity)
+    }
 
     const handleAddToCart = () => {
-        // console.log(menuItem)
+        // console.log("Adding to cart with quantity:", quantity);
         addToCart(menuItem, quantity);
 
         toast('Added to cart', {
@@ -43,9 +49,12 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
             <div className='space-y-2'>
                 {inventory > 0 && (
                     <Options 
+                        onQuantityChange={handleQuantityChange}
                         maxAmount={limit}
                         inventory={inventory}
-                    />
+                    >
+                        <p className='text-xl font-bold'>{quantity}</p>
+                    </Options>
                 )} 
                 
                 <div className='grid grid-cols-2 gap-2'>

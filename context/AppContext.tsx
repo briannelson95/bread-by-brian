@@ -8,7 +8,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
     const [cartProducts, setCartProducts]: any = useState([]);
     const ls = typeof window !== 'undefined' ? window.localStorage : null;
 
-    const [quantity, setQuantity]: any = useState(1)
+    // const [quantity, setQuantity]: any = useState(1)
 
     useEffect(() => {
         if (ls && ls.getItem('cart')) {
@@ -17,6 +17,11 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
         }
     }, [])
 
+    // useEffect(() => {
+    //     console.log(cartProducts); // Log the updated cartProducts whenever it changes
+    // }, [cartProducts]);
+
+
     function saveCartProductsToLocalStorage(cartProducts: any) {
         if (ls) {
             ls.setItem('cart', JSON.stringify(cartProducts))
@@ -24,15 +29,8 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
     }
 
     //@ts-ignore
-    function addToCart(product, quantity = 1) {
-        // console.log(product)
-        // setCartProducts((prevProducts: any) => {
-        //     const cartProduct = {...product}
-        //     const newProducts = [...prevProducts, cartProduct];
-        //     saveCartProductsToLocalStorage(newProducts);
-        //     return {newProducts, quantity};
-        // })
-
+    function addToCart(product, quantity) {
+        // console.log("Adding to cart with quantity:", quantity,);
         setCartProducts((prevProducts: any) => {
             const existingProductIndex = prevProducts.findIndex(
                 (p: any) => p.id === product.id
@@ -41,7 +39,9 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
             if (existingProductIndex !== -1) {
                 // If the product is already in the cart, update the quantity
                 const updatedProducts = [...prevProducts];
+                console.log('Quantity:', updatedProducts[existingProductIndex].quantity) // this gets run 2 times which is why I think more than 1 is being added
                 updatedProducts[existingProductIndex].quantity += quantity;
+                // console.log(updatedProducts)
                 saveCartProductsToLocalStorage(updatedProducts);
                 return updatedProducts;
             } else {
@@ -52,29 +52,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                 return newProducts;
             }
         });
-    }
-
-    const handleAdd = (amount: number, limit: number, inventory: number,) => {
-        if (amount < limit) {
-            if (amount >= inventory) {
-                console.log(inventory)
-                return inventory
-                // setAmount(inventory)
-            } else {
-                console.log(amount + 1)
-                return amount + 1
-                // setAmount(amount + 1)
-            }
-            
-        }
-    }
-
-    const handleSubract = (amount: number) => {
-        if (amount > 0) {
-            console.log(amount - 1)
-            return amount - 1
-            // setAmount(amount - 1)
-        }
+        // console.log(cartProducts)
     }
 
     function clearCart() {
@@ -97,8 +75,8 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
         <>
             <CartContext.Provider 
                 value={{
-                    cartProducts, setCartProducts, quantity, setQuantity,
-                    addToCart, clearCart, removeCartProduct, handleAdd, handleSubract
+                    cartProducts, setCartProducts,
+                    addToCart, clearCart, removeCartProduct, 
                 }}
             >
                 {children}
