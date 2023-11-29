@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Bread by Brian',
   description: 'Freshly baked to order bread.',
   openGraph: {
-    images: '/bread-logo.png'
+    images: 'https://www.breadbybrian.com/bread-logo.png'
   }
 }
 
