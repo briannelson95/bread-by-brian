@@ -1,10 +1,14 @@
 "use client"
 import { supabase } from '@/supabase/lib/supabaseClient';
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 export default function InventoryCard({ image, title, quantity, id }: { image: string; title: string; quantity: number; id: number; }) {
-    const [newQuantity, setNewQuantity] = useState(quantity);
+    const [newQuantity, setNewQuantity]: any = useState();
+
+    useEffect(() => {
+        setNewQuantity(quantity)
+    }, [])
 
     const updateInventory = () => {
         supabase.from('products')
