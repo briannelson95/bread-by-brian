@@ -2,10 +2,14 @@ import Session from '@/components/auth/Session';
 import './globals.css';
 import AppProvider from '@/context/AppContext';
 import { Toaster } from 'react-hot-toast';
+import { Metadata } from 'next';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Bread by Brian',
-  description: 'Fresh baked bread.',
+  description: 'Freshly baked to order bread.',
+  openGraph: {
+    images: '/bread-logo.png'
+  }
 }
 
 export const revalidate = 0;

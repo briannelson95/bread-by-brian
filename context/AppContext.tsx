@@ -27,22 +27,38 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
             const existingProductIndex = prevProducts.findIndex(
                 (p: any) => p.id === product.id
             );
-    
+      
+            let newQuantity = quantity;
             if (existingProductIndex !== -1) {
-                // If the product is already in the cart, update the quantity
+                newQuantity = prevProducts[existingProductIndex].quantity + quantity;
+            }
+      
+            if (newQuantity <= product.limit && newQuantity <= product.inventory) {
                 const updatedProducts = [...prevProducts];
-                updatedProducts[existingProductIndex].quantity += quantity;
+        
+                if (existingProductIndex !== -1) {
+                    updatedProducts[existingProductIndex] = {
+                        ...prevProducts[existingProductIndex],
+                        quantity: newQuantity,
+                    };
+                } else {
+                    updatedProducts.push({ ...product, quantity: newQuantity });
+                }
+      
                 saveCartProductsToLocalStorage(updatedProducts);
+                toast('Added to cart', {
+                    icon: '🍞👍',
+                });
                 return updatedProducts;
             } else {
-                // If the product is not in the cart, add it with the given quantity
-                const cartProduct = { ...product, quantity };
-                const newProducts = [...prevProducts, cartProduct];
-                saveCartProductsToLocalStorage(newProducts);
-                return newProducts;
+                toast.error('Exceeds limit per customer or inventory.')
+                return prevProducts;
             }
         });
-    };
+      }
+      
+      
+      
 
     const updateQuantity = (productId: any, newQuantity: number, limitPerCustomer: number, inventory: number) => {
         
