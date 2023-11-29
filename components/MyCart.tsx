@@ -11,6 +11,12 @@ export default function MyCart() {
     const {cartProducts, clearCart}: any = useContext(CartContext)
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState()
+    const [street, setStreet] = useState('')
+    const [postal, setPostal] = useState()
+    const [city, setCity] = useState('')
+    const [state, setState] = useState('')
+    const [country, setCountry]= useState('')
     const [isChecked, setIsChecked] = useState(false);
 
     let deliveryFee = 2.5;
@@ -73,6 +79,13 @@ export default function MyCart() {
                     total_price: totalPrice,
                     customer_name: name,
                     customer_email: email,
+                    customer_phone: phone,
+                    customer_street: street,
+                    customer_postal: postal,
+                    customer_city: city,
+                    customer_state: state,
+                    cusomter_country: country,
+                    delivery: isChecked
                 }
             )
             .select('id')
@@ -118,7 +131,7 @@ export default function MyCart() {
                                 <CartCard key={index} {...product} index={index} />
                             ))}
                             <div className='w-full'>
-                                <div className='float-right flex flex-col gap-4'>
+                                <div className='md:float-right flex md:flex-col md:gap-4 flex-col items-end'>
                                     <div className='flex gap-2'>
                                         <p className='text-gray-400'>Subtotal:</p>
                                         <p>${subTotal.toFixed(2)}</p>
@@ -173,13 +186,13 @@ export default function MyCart() {
                                     <input
                                         disabled={!isChecked}
                                         type="tel" placeholder="Phone"
-                                        // value={streetAddress || ''} onChange={ev => setAddressProp('streetAddress', ev.target.value)}
+                                        onChange={(e: any) => setPhone(e.target.value)}
                                     />
                                     <label>Street address</label>
                                     <input
                                         disabled={!isChecked}
                                         type="text" placeholder="Street address"
-                                        // value={streetAddress || ''} onChange={ev => setAddressProp('streetAddress', ev.target.value)}
+                                        onChange={(e: any) => setStreet(e.target.value)}
                                     />
                                     <div className="grid grid-cols-2 gap-2">
                                         <div>
@@ -187,27 +200,33 @@ export default function MyCart() {
                                         <input
                                             disabled={!isChecked}
                                             type="text" placeholder="Postal code"
-                                            // value={postalCode || ''} onChange={ev => setAddressProp('postalCode', ev.target.value)}
+                                            onChange={(e: any) => setPostal(e.target.value)}
                                         />
                                         </div>
                                         <div>
-                                        <label>City</label>
-                                        <input
-                                            disabled={!isChecked}
-                                            type="text" placeholder="City"
-                                            // value={city || ''} onChange={ev => setAddressProp('city', ev.target.value)}
-                                        />
+                                            <label>City</label>
+                                            <input
+                                                disabled={!isChecked}
+                                                type="text" placeholder="City"
+                                                onChange={(e: any) => setCity(e.target.value)}
+                                            />
                                         </div>
                                     </div>
-                                    <label>Country</label>
-                                    <input
-                                        disabled={!isChecked}
-                                        type="text" placeholder="Country"
-                                        // value={country || ''} onChange={ev => setAddressProp('country', ev.target.value)}
-                                    />
+                                        <label>State</label>
+                                        <input
+                                            disabled={!isChecked}
+                                            type="text" placeholder="State"
+                                            onChange={(e: any) => setState(e.target.value)}
+                                        />
+                                        <label>Country</label>
+                                        <input
+                                            disabled={!isChecked}
+                                            type="text" placeholder="Country"
+                                            onChange={(e: any) => setCountry(e.target.value)}
+                                        />
                                 </fieldset>
                             )}
-                            <MainButton title={`Place Order $${totalPrice.toFixed(2)}`} noShadow onClick={handleSubmitOrder} />
+                            <MainButton title={`Place Order $${totalPrice && totalPrice.toFixed(2)}`} noShadow onClick={handleSubmitOrder} disabled={cartProducts.length == 0} />
                         </form>
                     </div>
                 </div>
