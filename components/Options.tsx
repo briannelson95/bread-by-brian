@@ -3,7 +3,7 @@
 import { CartContext } from '@/context/AppContext';
 import React, { useState, useContext } from 'react'
 
-export default function Options({ maxAmount, inventory, onQuantityChange, children }: { maxAmount: number; inventory: number; onQuantityChange: any; children: React.ReactNode; }) {
+export default function Options({ maxAmount, inventory, onQuantityChange, children, quantity }: { maxAmount: number; inventory: number; onQuantityChange: any; children: React.ReactNode; quantity: number; }) {
     const [liked, setLiked] = useState(false);
     // const [localQuantity, setLocalQuantity] = useState(1);
 
@@ -33,23 +33,23 @@ export default function Options({ maxAmount, inventory, onQuantityChange, childr
                     {children}
                     <button 
                         onClick={handleIncrement}
-                        // disabled={localQuantity == maxAmount}
+                        disabled={quantity == maxAmount || quantity == inventory}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
                     </button>
                 </div>
-                {/* {localQuantity == inventory ? (
+                {quantity == inventory ? (
                     <div className='absolute top-2 left-24 w-32'>
-                        <p className='text-sm'><span className='text-red-600'>*</span>Max per customer</p>
+                        <p className='text-sm'><span className='text-red-600'>*</span>Max left</p>
                     </div>
-                ) : localQuantity == maxAmount && (
+                ) : quantity == maxAmount && (
                     <div className='absolute top-2 left-24 w-32'>
                         <p className='text-sm'><span className='text-red-600'>*</span>Max per customer</p>
                     </div>
                 )}
-                 */}
+                
                 
             </div>
             <div>

@@ -3,7 +3,6 @@ import { CartContext } from '@/context/AppContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext } from 'react'
-import toast from 'react-hot-toast';
 
 export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id: number; price: number; limit: number; inventory: number;}}) {
     const {
@@ -15,10 +14,6 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
 
     const handleAddToCart = () => {
         addToCart(menuItem, 1);
-
-        toast('Added to cart', {
-            icon: '🍞👍',
-        })
     }
 
     return (

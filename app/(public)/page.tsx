@@ -5,7 +5,10 @@ import Image from 'next/image'
 export const revalidate = 0;
 
 export default async function Home() {
-  const { data: products } = await supabase.from('products').select()
+  const { data: products } = await supabase
+    .from('products')
+    .select()
+    .order('created_at', { ascending: true })
 
   return (
     <div className='w-full p-2 mb-16 mx-auto'>

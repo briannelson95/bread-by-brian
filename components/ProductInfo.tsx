@@ -4,7 +4,6 @@ import Options from './Options'
 import Image from 'next/image';
 import MainButton from './MainButton';
 import { CartContext } from '@/context/AppContext';
-import toast from 'react-hot-toast';
 
 export default function ProductInfo({menuItem}: {menuItem: {image: string; link: string; title: string; id: number; price: number; limit: number; description: string; inventory: number;}}) {
     const {
@@ -24,10 +23,6 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
     const handleAddToCart = () => {
         // console.log("Adding to cart with quantity:", quantity);
         addToCart(menuItem, quantity);
-
-        toast('Added to cart', {
-            icon: '🍞👍',
-        })
     }
 
     return (
@@ -52,6 +47,7 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
                         onQuantityChange={handleQuantityChange}
                         maxAmount={limit}
                         inventory={inventory}
+                        quantity={quantity}
                     >
                         <p className='text-xl font-bold'>{quantity}</p>
                     </Options>
