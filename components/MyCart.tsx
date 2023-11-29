@@ -16,7 +16,7 @@ export default function MyCart() {
     const [postal, setPostal] = useState()
     const [city, setCity] = useState('')
     const [state, setState] = useState('')
-    const [country, setCountry]= useState('')
+    // const [country, setCountry]= useState('')
     const [isChecked, setIsChecked] = useState(false);
 
     let deliveryFee = 2.5;
@@ -221,12 +221,12 @@ export default function MyCart() {
                                             type="text" placeholder="State"
                                             onChange={(e: any) => setState(e.target.value)}
                                         />
-                                        <label>Country</label>
+                                        {/* <label>Country</label>
                                         <input
                                             disabled={!isChecked}
                                             type="text" placeholder="Country"
                                             onChange={(e: any) => setCountry(e.target.value)}
-                                        />
+                                        /> */}
                                 </fieldset>
                             )}
                             <MainButton 
