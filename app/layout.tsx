@@ -7,6 +7,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Bread by Brian',
   description: 'Freshly baked to order bread.',
+  metadataBase: new URL("https://breadbybrian/"),
   openGraph: {
     images: 'https://www.breadbybrian.com/bread-logo.png'
   }
