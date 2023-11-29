@@ -43,6 +43,9 @@ export default async function SingleOrderPage({ params: { id } }: any ) {
                             </a>
                         </p>
                     </div>
+                    <div>
+                        <p>${order[0].total_price}</p>
+                    </div>
                 </div>
                 <div className='space-y-1'>
                     <h2 className='text-xl font-medium'>Items</h2>
