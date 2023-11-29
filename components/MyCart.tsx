@@ -12,7 +12,6 @@ export default function MyCart() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [isChecked, setIsChecked] = useState(false);
-    const [orderId, setOrderId]: any = useState()
 
     let deliveryFee = 2.5;
     let totalPrice: number
@@ -41,6 +40,32 @@ export default function MyCart() {
 
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
+
+        for (const product of cartProducts) {
+            const { data: currentQuantityData, error: quantityError } = await supabase
+                .from('products')
+                .select('inventory')
+                .eq('id', product.id);
+
+            if (quantityError) {
+                throw new Error(`Error retrieving current quantity: ${quantityError.message}`);
+            }
+
+            const currentQuantity = currentQuantityData[0].inventory;
+
+            const { error: updateInventoryError } = await supabase
+                .from('products')
+                .update({
+                inventory: currentQuantity - product.quantity,
+                })
+                .eq('id', product.id);
+
+            if (updateInventoryError) {
+                throw new Error(`Error updating inventory: ${updateInventoryError.message}`);
+            }
+
+        }
+
         const { data: orderData, error: orderError }: any = await supabase
             .from('orders')
             .insert(
@@ -51,8 +76,6 @@ export default function MyCart() {
                 }
             )
             .select('id')
-
-        console.log(orderData)
         
 
         if (orderError) {
@@ -132,6 +155,7 @@ export default function MyCart() {
                                     placeholder='John Smith'
                                     id='name'
                                     onChange={(e: any) => setName(e.target.value)}
+                                    required
                                 />
                                 <label>Email:</label>
                                 <input
@@ -139,6 +163,7 @@ export default function MyCart() {
                                     placeholder='example@example.com'
                                     id='email'
                                     onChange={(e: any) =>  setEmail(e.target.value)}
+                                    required
                                 />
                             </fieldset>
                             {isChecked && (

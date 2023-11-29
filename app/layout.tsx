@@ -8,6 +8,8 @@ export const metadata = {
   description: 'Fresh baked bread.',
 }
 
+export const revalidate = 0;
+
 export default function RootLayout({
   children,
 }: {
