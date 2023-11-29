@@ -6,7 +6,6 @@ import React, { useContext, useEffect, useState } from 'react'
 
 export default function CartPage() {
     const {cartProducts}: any = useContext(CartContext);
-    console.log(cartProducts)
 
     const [availableProductInv, setAvailableProductInv]: any = useState();
 

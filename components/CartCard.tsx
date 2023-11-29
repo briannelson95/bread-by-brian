@@ -8,6 +8,7 @@ export default function CartCard({ totalItems, limit, title, image, price, id, i
 
     const {removeCartProduct, cartProducts}: any = useContext(CartContext);
 
+
     return (
         <div className='w-full flex gap-4 pb-4 border-b-2'>
             <div className='rounded-full aspect-square w-32 overflow-hidden bg-center'>
