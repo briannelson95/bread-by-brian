@@ -1,9 +1,22 @@
 "use client"
+import { supabase } from '@/supabase/lib/supabaseClient';
 import Image from 'next/image';
 import React, { useState } from 'react'
 
-export default function InventoryCard({ image, title, quantity }: { image: string; title: string; quantity: number}) {
-    const [newQuantity, setNewQuantity] = useState(quantity)
+export default function InventoryCard({ image, title, quantity, id }: { image: string; title: string; quantity: number; id: number; }) {
+    const [newQuantity, setNewQuantity] = useState(quantity);
+
+    const updateInventory = () => {
+        supabase.from('products')
+            .update({
+                inventory: newQuantity
+            })
+            .eq('id', id)
+            .then(result => {
+                console.log(result)
+            })
+    }
+
     return (
         <div className='rounded-xl shadow-lg p-2 grid grid-cols-3 gap-2'>
             <Image
@@ -23,7 +36,7 @@ export default function InventoryCard({ image, title, quantity }: { image: strin
                         id='quantity'
                         onChange={(e: any) => setNewQuantity(e.target.value)}
                         required
-                        value={newQuantity}
+                        value={newQuantity > 0 ? newQuantity : 0}
                     />
                     <label
                         htmlFor='quantity'
@@ -33,7 +46,9 @@ export default function InventoryCard({ image, title, quantity }: { image: strin
                     </label>
                 </div>
             </div>
-            <button className='col-span-3 bg-blue-500 text-white rounded-lg py-1'>
+            <button 
+                onClick={updateInventory}
+                className='col-span-3 bg-blue-500 text-white rounded-lg py-1'>
                 Save
             </button>
         </div>

@@ -39,21 +39,25 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
                         <div className='bg-zinc-500 rounded-full aspect-square w-full h-auto' />
                     )}
                 </Link>
-                <button 
-                    className={`absolute bottom-0 right-0 ${inventory > 0 ? 'bg-yellow-500' : 'bg-gray-500'} text-white font-bold rounded-full z-10 w-8 h-8 flex justify-center items-center`}
-                    onClick={handleAddToCart}
-                    disabled={inventory > 0 ? false : true}
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                </button>
+                {inventory > 0 && (
+                    <button 
+                        className='absolute bottom-0 right-0 bg-yellow-500 text-white font-bold rounded-full z-10 w-8 h-8 flex justify-center items-center'
+                        onClick={handleAddToCart}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                    </button>
+                )}
             </div>
             <div>
                 <Link href={link}>
                     <h2 className='text-xl font-bold capitalize w-full text-center'>{title}</h2>
                 </Link>
             </div>
+            {inventory == 0 ? (
+                <p className='text-gray-400 text-center'>Sold out</p>
+            ) : inventory <= 3 && <p className='text-red-500 text-center'>Only {inventory} left this week</p>}
         </div>
     )
 }

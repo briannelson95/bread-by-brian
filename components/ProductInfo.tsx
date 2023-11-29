@@ -64,6 +64,7 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
                     </div>
                 </div>
                 <div>
+                    {inventory <= 3 && <p className='text-red-500'>Only {inventory} left this week</p>}
                     <h2 className='text-xl font-bold'>
                         Details:
                     </h2>
