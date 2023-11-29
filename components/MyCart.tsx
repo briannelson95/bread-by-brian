@@ -46,7 +46,7 @@ export default function MyCart() {
 
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
-
+        console.log('Placing order')
         for (const product of cartProducts) {
             const { data: currentQuantityData, error: quantityError } = await supabase
                 .from('products')
@@ -62,7 +62,7 @@ export default function MyCart() {
             const { error: updateInventoryError } = await supabase
                 .from('products')
                 .update({
-                inventory: currentQuantity - product.quantity,
+                    inventory: currentQuantity - product.quantity,
                 })
                 .eq('id', product.id);
 
@@ -84,11 +84,14 @@ export default function MyCart() {
                     customer_postal: postal,
                     customer_city: city,
                     customer_state: state,
-                    cusomter_country: country,
+                    // cusomter_country: country,
                     delivery: isChecked
                 }
             )
             .select('id')
+            .then(result => {
+                console.log(result)
+            })
         
 
         if (orderError) {
@@ -226,7 +229,12 @@ export default function MyCart() {
                                         />
                                 </fieldset>
                             )}
-                            <MainButton title={`Place Order $${totalPrice && totalPrice.toFixed(2)}`} noShadow onClick={handleSubmitOrder} disabled={cartProducts.length == 0} />
+                            <MainButton 
+                                title={`Place Order $${totalPrice && totalPrice.toFixed(2)}`} 
+                                noShadow 
+                                onClick={handleSubmitOrder} 
+                                // disabled={cartProducts.length == 0} 
+                            />
                         </form>
                     </div>
                 </div>

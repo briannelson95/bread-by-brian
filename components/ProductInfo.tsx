@@ -69,6 +69,7 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
                 <MainButton 
                     title={`${inventory > 0 ? 'Add to Cart' : 'Sold Out'}`}
                     onClick={handleAddToCart}
+                    disabled={inventory <= 0}
                 />
             </div>
         </div>
