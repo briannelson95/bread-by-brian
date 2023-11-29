@@ -4,11 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState } from 'react'
 
 export default function InventoryCard({ image, title, quantity, id }: { image: string; title: string; quantity: number; id: number; }) {
-    const [newQuantity, setNewQuantity]: any = useState();
-
-    useEffect(() => {
-        setNewQuantity(quantity)
-    }, [])
+    const [newQuantity, setNewQuantity]: any = useState(quantity);
 
     const updateInventory = () => {
         supabase.from('products')
@@ -40,7 +36,7 @@ export default function InventoryCard({ image, title, quantity, id }: { image: s
                         id='quantity'
                         onChange={(e: any) => setNewQuantity(e.target.value)}
                         required
-                        value={newQuantity > 0 ? newQuantity : 0}
+                        value={newQuantity}
                     />
                     <label
                         htmlFor='quantity'
