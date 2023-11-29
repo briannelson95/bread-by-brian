@@ -2,6 +2,8 @@ import GridItem from '@/components/GridItem'
 import { supabase } from '@/supabase/lib/supabaseClient'
 import Image from 'next/image'
 
+export const revalidate = 0;
+
 export default async function Home() {
   const { data: products } = await supabase.from('products').select()
 
@@ -18,6 +20,7 @@ export default async function Home() {
               id: item.id,
               price: item.price,
               limit: item.limit,
+              inventory: item.inventory,
             }}            
           />
         ))}

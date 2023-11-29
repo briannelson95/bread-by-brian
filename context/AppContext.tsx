@@ -31,7 +31,6 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
             if (existingProductIndex !== -1) {
                 // If the product is already in the cart, update the quantity
                 const updatedProducts = [...prevProducts];
-                console.log('Quantity:', updatedProducts[existingProductIndex].quantity)
                 updatedProducts[existingProductIndex].quantity += quantity;
                 saveCartProductsToLocalStorage(updatedProducts);
                 return updatedProducts;
@@ -43,7 +42,20 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                 return newProducts;
             }
         });
-    }
+    };
+
+    const updateQuantity = (productId: any, newQuantity: number, limitPerCustomer: number, inventory: number) => {
+        
+        const validLimit = !isNaN(limitPerCustomer) ? limitPerCustomer : Infinity;
+        const validInventory = !isNaN(inventory) ? inventory : Infinity;
+        const updatedQuantity = Math.min(newQuantity, validLimit, validInventory);
+        
+        setCartProducts((prevProducts: any) =>
+            prevProducts.map((product: any) =>
+                product.id === productId ? { ...product, quantity: updatedQuantity } : product
+            )
+        );
+    };
 
     function clearCart() {
         setCartProducts([])
@@ -66,7 +78,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
             <CartContext.Provider 
                 value={{
                     cartProducts, setCartProducts,
-                    addToCart, clearCart, removeCartProduct, 
+                    addToCart, clearCart, removeCartProduct, updateQuantity,
                 }}
             >
                 {children}

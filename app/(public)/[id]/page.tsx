@@ -9,6 +9,8 @@ type Props = {
     }
 }
 
+export const revalidate = 0;
+
 export async function generateStaticParams() {
     const { data: products }: any = await supabase.from('products').select('slug');
 

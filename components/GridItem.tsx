@@ -5,16 +5,15 @@ import Link from 'next/link';
 import React, { useContext } from 'react'
 import toast from 'react-hot-toast';
 
-export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id: number; price: number; limit: number;}}) {
+export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id: number; price: number; limit: number; inventory: number;}}) {
     const {
-        image, link, title, id, price, limit,
+        image, link, title, id, price, limit, inventory
     } = menuItem;
     
     //@ts-ignore
     const { addToCart } = useContext(CartContext);
 
     const handleAddToCart = () => {
-        // console.log(menuItem)
         addToCart(menuItem, 1);
 
         toast('Added to cart', {
