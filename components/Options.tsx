@@ -12,13 +12,8 @@ export default function Options({ maxAmount, inventory, onQuantityChange, childr
     }
 
     const handleIncrement = () => {
-        const newQuantity = onQuantityChange((prevQuantity: number) => prevQuantity + 1);
-        if (newQuantity <= maxAmount && newQuantity <= inventory) {
-            // Allow the increment only if it doesn't exceed maxAmount or inventory
-        } else {
-            // Undo the increment if the cart limit is reached
-            onQuantityChange((prevQuantity: number) => prevQuantity - 1);
-        }
+        // Handle the logic to increment the quantity
+        onQuantityChange((prevQuantity: number) => prevQuantity + 1);
     };
     
     const handleDecrement = () => {
