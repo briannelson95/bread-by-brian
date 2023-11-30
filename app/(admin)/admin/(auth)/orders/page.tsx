@@ -2,6 +2,8 @@ import CurrentOrders from '@/components/admin/CurrentOrders';
 import { supabase } from '@/supabase/lib/supabaseClient'
 import React from 'react'
 
+export const revalidate = 0;
+
 export default async function OrdersPage() {
 
     var curr = new Date; // get current date

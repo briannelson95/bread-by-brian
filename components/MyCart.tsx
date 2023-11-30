@@ -46,7 +46,46 @@ export default function MyCart() {
 
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
-        console.log('Placing order')
+
+        const { data: orderData, error: orderError }: any = await supabase
+            .from('orders')
+            .insert(
+                {
+                    total_price: totalPrice,
+                    customer_name: name,
+                    customer_email: email,
+                    customer_phone: phone,
+                    customer_street: street,
+                    customer_postal: postal,
+                    customer_city: city,
+                    customer_state: state,
+                    // cusomter_country: country,
+                    delivery: isChecked
+                }
+            )
+            .select('id')
+        
+        if (orderError) {
+            throw new Error(`Error creating order: ${orderError.message}`);
+        }
+
+        const orderId = orderData[0].id;
+
+        const orderDetails = cartProducts.map((product: any) =>({
+            order_id: orderId,
+            product_id: product.id,
+            quantity: product.quantity
+        }));
+
+        supabase.from('order_details')
+            .insert(orderDetails)
+            .then(result => {
+                if (!result.error) {
+                    clearCart()
+                    toast.success('Order Placed')
+                }
+            })
+
         for (const product of cartProducts) {
             const { data: currentQuantityData, error: quantityError } = await supabase
                 .from('products')
@@ -71,49 +110,6 @@ export default function MyCart() {
             }
 
         }
-
-        const { data: orderData, error: orderError }: any = await supabase
-            .from('orders')
-            .insert(
-                {
-                    total_price: totalPrice,
-                    customer_name: name,
-                    customer_email: email,
-                    customer_phone: phone,
-                    customer_street: street,
-                    customer_postal: postal,
-                    customer_city: city,
-                    customer_state: state,
-                    // cusomter_country: country,
-                    delivery: isChecked
-                }
-            )
-            .select('id')
-            .then(result => {
-                console.log(result)
-            })
-        
-
-        if (orderError) {
-            throw new Error(`Error creating order: ${orderError.message}`);
-        }
-
-        const orderId = orderData[0].id;
-
-        const orderDetails = cartProducts.map((product: any) =>({
-            order_id: orderId,
-            product_id: product.id,
-            quantity: product.quantity
-        }));
-
-        supabase.from('order_details')
-            .insert(orderDetails)
-            .then(result => {
-                if (!result.error) {
-                    clearCart()
-                    toast.success('Order Placed')
-                }
-            })
 
     }
     
@@ -221,12 +217,7 @@ export default function MyCart() {
                                             type="text" placeholder="State"
                                             onChange={(e: any) => setState(e.target.value)}
                                         />
-                                        {/* <label>Country</label>
-                                        <input
-                                            disabled={!isChecked}
-                                            type="text" placeholder="Country"
-                                            onChange={(e: any) => setCountry(e.target.value)}
-                                        /> */}
+                                        {/* s */}
                                 </fieldset>
                             )}
                             <MainButton 
