@@ -59,7 +59,7 @@ export default function MyCart() {
                     customer_postal: postal,
                     customer_city: city,
                     customer_state: state,
-                    // cusomter_country: country,
+                    order_type: 'web',
                     delivery: isChecked
                 }
             )

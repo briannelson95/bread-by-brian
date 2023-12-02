@@ -5,6 +5,7 @@ import { useSession } from '@supabase/auth-helpers-react'
 import { supabase } from "@/supabase/lib/supabaseClient";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
+import PlaceOrder from "@/components/admin/PlaceOrder";
 
 export default function AdminPage() {
   const session = useSession();
@@ -28,6 +29,7 @@ export default function AdminPage() {
     <div className="p-4 w-full space-y-2">
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <QuickAdd />
+      <PlaceOrder />
     </div>
   )
 }
