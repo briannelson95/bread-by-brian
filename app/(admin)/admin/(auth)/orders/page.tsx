@@ -15,7 +15,7 @@ export default async function OrdersPage() {
 
     const { data: currentOrders }: any = await supabase.from('orders')
         .select()
-        .order('order_date', { ascending: false })
+        .order('order_date', { ascending: true })
         // .gte('order_date', firstday.toISOString()) // Greater than or equal to the first day
         // .lte('order_date', lastday.toISOString()); 
         

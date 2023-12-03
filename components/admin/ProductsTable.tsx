@@ -44,7 +44,7 @@ export default function ProductsTable({ products }: { products: any}) {
                                 {item.limit}
                             </td>
                             <td className="px-6 py-4">
-                                {item.quantity}
+                                {item.inventory}
                             </td>
                             <td className="px-6 py-4">
                                 {index + 1}

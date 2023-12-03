@@ -6,6 +6,7 @@ import { supabase } from "@/supabase/lib/supabaseClient";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import PlaceOrder from "@/components/admin/PlaceOrder";
+import Fulfillment from "@/components/admin/Fulfillment";
 
 export default function AdminPage() {
   const session = useSession();
@@ -19,7 +20,7 @@ export default function AdminPage() {
       } else if (!profile.admin) {
           redirect('/admin/login');
       }
-  }
+    }
   })
 
   if (!session) {
@@ -28,6 +29,7 @@ export default function AdminPage() {
   return (
     <div className="p-4 w-full space-y-2">
       <h1 className="text-2xl font-bold">Dashboard</h1>
+      {/* <Fulfillment /> */}
       <QuickAdd />
       <PlaceOrder />
     </div>

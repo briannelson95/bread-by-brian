@@ -1,34 +1,38 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import DropDown from '../DropDown'
 import { supabase } from '@/supabase/lib/supabaseClient';
 
 export default function PlaceOrder() {
     const [products, setProducts]: any = useState([]);
     const [choice, setChoice]: any = useState(null);
-    const [amountAvailable, setAmountAvailable]: any = useState(null)
+    const [amountAvailable, setAmountAvailable]: any = useState(null);
+    const [customerName, setCustomerName] = useState('');
 
     useEffect(() => {
         supabase.from('products')
             .select()
+            .order('title', {ascending: true})
             .then(result => {
-                console.log(result.data)
+                // console.log(result.data)
                 if (!result.error) {
                     setProducts(result.data)
+                    // console.log(amountAvailable)
                 }
             })
     }, [])
 
-    const onSelect = (value: any) => {
+    const onSelect = async (value: any) => {
         setChoice(value);
         // console.log(value)
         supabase.from('products')
             .select('inventory')
             .eq('id', choice)
             .then(result => {
+                // console.log(amountAvailable)
                 if (!result.error) {
-                    setAmountAvailable(result.data[0])
+                    setAmountAvailable(result.data[0].inventory)
+                    // console.log(result.data[0].inventory)
                 }
             })
     };
@@ -52,6 +56,7 @@ export default function PlaceOrder() {
                     <div className='flex gap-2'>
                         <label htmlFor='product'>Product:</label>
                         <select value={choice} onChange={(e) => onSelect(e.target.value)}>
+                            <option>Select Product</option>
                             {products.map((product: any) => (
                                 <option key={product.id} value={product.id}>
                                     {product.title}
@@ -62,9 +67,11 @@ export default function PlaceOrder() {
                     <div className='flex gap-2'>
                         <label htmlFor='quantity'>Quantity:</label>
                         <select>
-                            {/* {Array.from({ length: amountAvailable }, (_, index) => (
-                                <div key={index}>Item {index + 1}</div>
-                            ))} */}
+                            {Array.from({ length: amountAvailable }, (_, index) => (
+                                <option key={index} value={index + 1}>
+                                    {index + 1}
+                                </option>
+                            ))}
                         </select>
                     </div>
                 </fieldset>
