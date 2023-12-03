@@ -2,6 +2,8 @@ import InventoryCard from '@/components/admin/InventoryCard'
 import { supabase } from '@/supabase/lib/supabaseClient'
 import React from 'react'
 
+export const revalidate = 0;
+
 export default async function InventoryPage() {
     const { data: products } = await supabase.from('products')
         .select()

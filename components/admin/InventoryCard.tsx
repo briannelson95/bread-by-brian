@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react'
 
 export default function InventoryCard({ image, title, quantity, id }: { image: string; title: string; quantity: number; id: number; }) {
     const [newQuantity, setNewQuantity]: any = useState(quantity);
-
+    
     const updateInventory = () => {
         supabase.from('products')
             .update({
