@@ -6,6 +6,7 @@ import { CartContext } from '@/context/AppContext'
 import Link from 'next/link'
 import { supabase } from '@/supabase/lib/supabaseClient'
 import toast from 'react-hot-toast'
+import ThankYou from './ThankYou'
 
 export default function MyCart() {
     const {cartProducts, clearCart}: any = useContext(CartContext)
@@ -18,6 +19,7 @@ export default function MyCart() {
     const [state, setState] = useState('')
     // const [country, setCountry]= useState('')
     const [isChecked, setIsChecked] = useState(false);
+    const [thisOrder, setThisOrder] = useState(null)
 
     let deliveryFee = 2.5;
     let totalPrice: number
@@ -70,6 +72,7 @@ export default function MyCart() {
         }
 
         const orderId = orderData[0].id;
+        setThisOrder(orderId);
 
         const orderDetails = cartProducts.map((product: any) =>({
             order_id: orderId,
@@ -115,121 +118,130 @@ export default function MyCart() {
     
     return (
         <div className='w-full space-y-2'>
-            <h1 className='text-2xl'>My Cart</h1>
-            <div className='md:grid md:grid-cols-2 md:gap-6'>
-                <div className='w-full space-y-2 md:col-span-1'>
-                    {cartProducts?.length === 0 ? (
-                        <div className='w-full flex flex-col items-center p-2'>
-                            <p>No products in your cart</p>
-                            <Link href={'/'} className='underline text-yellow-500'>Browse products</Link>
-                        </div>
-                    ) : (
-                        <div className='w-full space-y-2'>
-                            <button className='float-right text-sm text-gray-400' onClick={() => clearCart()}>Clear Cart</button>
-                            {cartProducts.map((product: any, index: number) => (
-                                <CartCard key={index} {...product} index={index} />
-                            ))}
-                            <div className='w-full'>
-                                <div className='md:float-right flex md:flex-col md:gap-4 flex-col items-end'>
-                                    <div className='flex gap-2'>
-                                        <p className='text-gray-400'>Subtotal:</p>
-                                        <p>${subTotal.toFixed(2)}</p>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                        <div className='flex gap-1 items-center'>
-                                            <input 
-                                                type='checkbox' 
-                                                id='delivery'
-                                                checked={isChecked}
-                                                onChange={handleCheckboxChange} 
-                                            />
-                                            <label htmlFor='delivery'>Delivery</label>
+            {thisOrder == null ? (
+                <>
+                    <h1 className='text-2xl'>My Cart</h1>
+                    <div className='md:grid md:grid-cols-2 md:gap-6'>
+                        <div className='w-full space-y-2 md:col-span-1'>
+                            {cartProducts?.length === 0 ? (
+                                <div className='w-full flex flex-col items-center p-2'>
+                                    <p>No products in your cart</p>
+                                    <Link href={'/'} className='underline text-yellow-500'>Browse products</Link>
+                                </div>
+                            ) : (
+                                <div className='w-full space-y-2'>
+                                    <button className='float-right text-sm text-gray-400' onClick={() => clearCart()}>Clear Cart</button>
+                                    {cartProducts.map((product: any, index: number) => (
+                                        <CartCard key={index} {...product} index={index} />
+                                    ))}
+                                    <div className='w-full'>
+                                        <div className='md:float-right flex md:flex-col md:gap-4 flex-col items-end'>
+                                            <div className='flex gap-2'>
+                                                <p className='text-gray-400'>Subtotal:</p>
+                                                <p>${subTotal.toFixed(2)}</p>
+                                            </div>
+                                            <div className='flex gap-2'>
+                                                <div className='flex gap-1 items-center'>
+                                                    <input 
+                                                        type='checkbox' 
+                                                        id='delivery'
+                                                        checked={isChecked}
+                                                        onChange={handleCheckboxChange} 
+                                                    />
+                                                    <label htmlFor='delivery'>Delivery</label>
+                                                </div>
+                                                <p className={`${isChecked ? 'block' : 'hidden'}`}>$2.50</p>
+                                            </div>
+                                            <div className='flex gap-2'>
+                                                <p className='font-bold'>Total:</p>
+                                                <p>${totalPrice.toFixed(2)}</p>
+                                            </div>
                                         </div>
-                                        <p className={`${isChecked ? 'block' : 'hidden'}`}>$2.50</p>
-                                    </div>
-                                    <div className='flex gap-2'>
-                                        <p className='font-bold'>Total:</p>
-                                        <p>${totalPrice.toFixed(2)}</p>
                                     </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
-                    )}
-                </div>
-                <div className='md:col-span-1 space-y-2'>
-                    <div className='rounded-lg shadow-md p-4'>
-                        <form>
-                            <h2 className='text-lg font-medium'>My Info</h2>
-                            <fieldset>
-                                <label>Name:</label>
-                                <input
-                                    type='text'
-                                    placeholder='John Smith'
-                                    id='name'
-                                    onChange={(e: any) => setName(e.target.value)}
-                                    required
-                                />
-                                <label>Email:</label>
-                                <input
-                                    type='email'
-                                    placeholder='example@example.com'
-                                    id='email'
-                                    onChange={(e: any) =>  setEmail(e.target.value)}
-                                    required
-                                />
-                            </fieldset>
-                            {isChecked && (
-                                <fieldset>
-                                    <h3 className='font-medium'>Address</h3>
-                                    <label>Phone:</label>
-                                    <input
-                                        disabled={!isChecked}
-                                        type="tel" placeholder="Phone"
-                                        onChange={(e: any) => setPhone(e.target.value)}
-                                    />
-                                    <label>Street address</label>
-                                    <input
-                                        disabled={!isChecked}
-                                        type="text" placeholder="Street address"
-                                        onChange={(e: any) => setStreet(e.target.value)}
-                                    />
-                                    <div className="grid grid-cols-2 gap-2">
-                                        <div>
-                                        <label>Postal code</label>
+                        <div className='md:col-span-1 space-y-2'>
+                            <div className='rounded-lg shadow-md p-4'>
+                                <form>
+                                    <h2 className='text-lg font-medium'>My Info</h2>
+                                    <fieldset>
+                                        <label>Name:</label>
                                         <input
-                                            disabled={!isChecked}
-                                            type="text" placeholder="Postal code"
-                                            onChange={(e: any) => setPostal(e.target.value)}
+                                            type='text'
+                                            placeholder='John Smith'
+                                            id='name'
+                                            onChange={(e: any) => setName(e.target.value)}
+                                            required
                                         />
-                                        </div>
-                                        <div>
-                                            <label>City</label>
+                                        <label>Email:</label>
+                                        <input
+                                            type='email'
+                                            placeholder='example@example.com'
+                                            id='email'
+                                            onChange={(e: any) =>  setEmail(e.target.value)}
+                                            required
+                                        />
+                                    </fieldset>
+                                    {isChecked && (
+                                        <fieldset>
+                                            <h3 className='font-medium'>Address</h3>
+                                            <label>Phone:</label>
                                             <input
                                                 disabled={!isChecked}
-                                                type="text" placeholder="City"
-                                                onChange={(e: any) => setCity(e.target.value)}
+                                                type="tel" placeholder="Phone"
+                                                onChange={(e: any) => setPhone(e.target.value)}
                                             />
-                                        </div>
-                                    </div>
-                                        <label>State</label>
-                                        <input
-                                            disabled={!isChecked}
-                                            type="text" placeholder="State"
-                                            onChange={(e: any) => setState(e.target.value)}
-                                        />
-                                        {/* s */}
-                                </fieldset>
-                            )}
-                            <MainButton 
-                                title={`Place Order $${totalPrice && totalPrice.toFixed(2)}`} 
-                                noShadow 
-                                onClick={handleSubmitOrder} 
-                                // disabled={cartProducts.length == 0} 
-                            />
-                        </form>
+                                            <label>Street address</label>
+                                            <input
+                                                disabled={!isChecked}
+                                                type="text" placeholder="Street address"
+                                                onChange={(e: any) => setStreet(e.target.value)}
+                                            />
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <div>
+                                                <label>Postal code</label>
+                                                <input
+                                                    disabled={!isChecked}
+                                                    type="text" placeholder="Postal code"
+                                                    onChange={(e: any) => setPostal(e.target.value)}
+                                                />
+                                                </div>
+                                                <div>
+                                                    <label>City</label>
+                                                    <input
+                                                        disabled={!isChecked}
+                                                        type="text" placeholder="City"
+                                                        onChange={(e: any) => setCity(e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
+                                                <label>State</label>
+                                                <input
+                                                    disabled={!isChecked}
+                                                    type="text" placeholder="State"
+                                                    onChange={(e: any) => setState(e.target.value)}
+                                                />
+                                                {/* s */}
+                                        </fieldset>
+                                    )}
+                                    <MainButton 
+                                        title={`Place Order ${totalPrice !== 0 ? `$${totalPrice && totalPrice.toFixed(2)}` : ''}`} 
+                                        noShadow 
+                                        onClick={handleSubmitOrder} 
+                                        disabled={totalPrice == 0} 
+                                        type={'submit'}
+                                    />
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </>
+            ) : thisOrder !== null && (
+                <>
+                    <ThankYou orderId={thisOrder} />
+                </>
+            )}
         </div>
     )
 }
