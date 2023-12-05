@@ -27,6 +27,13 @@ export default async function Home() {
             }}            
           />
         ))}
+        <GridItem
+          menuItem={{
+            image: '/muffins.webp',
+            link: '/special-orders',
+            title: 'Special Orders',
+          }}
+        />
       </section>
     </div>    
   )
