@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext } from 'react'
 
-export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id: number; price: number; limit: number; inventory: number;}}) {
+export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id?: number; price?: number; limit?: number; inventory?: number;}}) {
     const {
         image, link, title, id, price, limit, inventory
     } = menuItem;
@@ -34,7 +34,7 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
                         <div className='bg-zinc-500 rounded-full aspect-square w-full h-auto' />
                     )}
                 </Link>
-                {inventory > 0 && (
+                {inventory && inventory > 0 && (
                     <button 
                         className='absolute bottom-0 right-0 bg-yellow-500 text-white font-bold rounded-full z-10 w-8 h-8 flex justify-center items-center'
                         onClick={handleAddToCart}
@@ -52,7 +52,7 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
             </div>
             {inventory == 0 ? (
                 <p className='text-gray-400 text-center'>Sold out</p>
-            ) : inventory <= 3 && <p className='text-red-500 text-center'>Only {inventory} left this week</p>}
+            ) : inventory && inventory <= 3 && <p className='text-red-500 text-center'>Only {inventory} left this week</p>}
         </div>
     )
 }
