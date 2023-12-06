@@ -28,7 +28,7 @@ export default async function OrdersPage() {
     return (
         <div className="p-4 w-full space-y-2">
             <h1 className="text-2xl font-bold">Orders</h1>
-            {specialOrders && (
+            {specialOrders.data && (
                 <div className='w-full rounded-xl bg-red-400 p-4 text-white font-medium'>
                     <Link href={'/admin/orders/special-orders'}>New Special Order</Link>
                 </div>

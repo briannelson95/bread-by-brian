@@ -73,7 +73,7 @@ export default function SpecialOrderPage() {
                     <h2 className='text-xl font-bold'>
                         Details:
                     </h2>
-                    <p>Special orders can be fulfilled upon request. If you&#39re interested in placing a special order please complete the form below.</p>
+                    <p>Special orders can be fulfilled upon request. If youre interested in placing a special order please complete the form below.</p>
                 </div>
                 <div>
                     {!submitted ? (
