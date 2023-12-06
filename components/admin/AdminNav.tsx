@@ -87,6 +87,12 @@ export default function AdminNav() {
                             </svg>
                             Orders
                         </Link>
+                        <Link
+                            href={'/admin/orders/special-orders'}
+                            className={`${pathname.includes('/admin/orders') ? 'block' : 'hidden'} text-sm text-right mr-2 mt-2`}
+                        >
+                            Special Orders
+                        </Link>
                     </li>
                 </ul>
             </nav>
