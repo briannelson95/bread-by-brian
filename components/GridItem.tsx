@@ -1,24 +1,75 @@
 "use client"
 import { CartContext } from '@/context/AppContext';
+import { supabase } from '@/supabase/lib/supabaseClient';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import MainButton from './MainButton';
 
 export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id?: number; price?: number; limit?: number; inventory?: number;}}) {
     const {
         image, link, title, id, price, limit, inventory
     } = menuItem;
+    const [openPopup, setOpenPopup] = useState(false);
+    const [productOptions, setProductOptions]: any = useState(null);
+    const [selectedOption, setSelectedOption]: any = useState(null)
+
+    useEffect(() => {
+        supabase.from('product_options')
+            .select('product_id, name, option_price')
+            .eq('product_id', id)
+            .then(result => {
+                if (!result.error) {
+                    if (result.data.length <= 0) {
+                        return
+                    } else if (result.data.length > 0) {
+                        setProductOptions(result.data);
+                        setSelectedOption(result.data[1].name)
+                    }
+                }
+            })
+    }, [id])
     
     //@ts-ignore
     const { addToCart } = useContext(CartContext);
 
     const handleAddToCart = () => {
-        addToCart(menuItem, 1);
+        if (productOptions !== null) {
+            setOpenPopup(true)
+        }
+        // addToCart(menuItem, 1, selectedOption);
+    }
+
+    const handleChangeSelection = (e: any) => {
+        setSelectedOption(e.target.value)
     }
 
     return (
         <div className='w-full space-y-2'>
             <div className='relative'>
+                {productOptions !== null && (
+                    <div className={`${openPopup ? 'block' : 'hidden'} absolute bottom-0 w-full z-20`}>
+                        <div className='bg-gray-200 p-4 rounded-xl shadow-md space-y-1'>
+                            <p className='text-sm'>Please select an option</p>
+                            <select value={selectedOption} onChange={handleChangeSelection}>
+                                <option value="" disabled>Select an option</option>
+                                    {productOptions.map((option: any, index: number) => (
+                                        <option key={index} value={option.name}>
+                                            {option.name}
+                                        </option>
+                                    ))}
+                            </select>
+                            <MainButton 
+                                title={'Add to Cart'} 
+                                onClick={() => {
+                                    addToCart(menuItem, 1, selectedOption);
+                                    setOpenPopup(false);
+                                }} 
+                            />
+                        </div>
+                    </div>
+                )}
+                
                 <Link href={link}>
                     {image ? (
                         <div className='rounded-full aspect-square w-full h-auto overflow-hidden bg-center'>

@@ -77,7 +77,8 @@ export default function MyCart() {
         const orderDetails = cartProducts.map((product: any) =>({
             order_id: orderId,
             product_id: product.id,
-            quantity: product.quantity
+            quantity: product.quantity,
+            options: product?.options,
         }));
 
         supabase.from('order_details')

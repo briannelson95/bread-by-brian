@@ -4,17 +4,33 @@ import React, { useState } from 'react';
 
 export default function QuickAdd() {
     const [isLimit, setIsLimit]: any = useState(false);
+    const [isOptions, setIsOptions]: any = useState(false);
 
     const [title, setTitle] = useState('');
     const [desc, setDesc] = useState('');
     const [price, setPrice]: any = useState(null);
     const [limit, setLimit]: any = useState(null);
     const [image, setImage]: any = useState(null);
+    const [options, setOptions]: any[] = useState([''])
 
     const [isUploading, setIsUploading] = useState(false);
 
     const handleCheck = (e: any) => {
         setIsLimit(!isLimit)
+    }
+
+    const handleOptions = () => {
+        setIsOptions(!isOptions)
+    }
+
+    const handleAddOption = () => {
+        setOptions([ ...options, ''])
+    }
+
+    const handleOptionChange = (index: number, value: string) => {
+        const updatedOption = [...options];
+        updatedOption[index] = value;
+        setIsOptions(updatedOption)
     }
 
     const addPhoto = async (e: any) => {
@@ -135,9 +151,44 @@ export default function QuickAdd() {
                                 >
                                     Amount
                                 </label>
-                        </div>
+                            </div>
                         )}
                     </div>
+                </fieldset>
+
+                <fieldset>
+                    <div className='flex gap-2 items-center'>
+                        <input
+                            type='checkbox'
+                            id='options'
+                            onChange={handleOptions}
+                            checked={isOptions}
+                        />
+                        <label htmlFor='options'>
+                            Add Options
+                        </label>
+                    </div>
+                    {isOptions && (
+                        <div>
+                            {options.map((option: string, index: number) => (
+                                <div key={index} className='relative'>
+                                    <input
+                                        type='text'
+                                        value={option}
+                                        onChange={(e) => handleOptionChange(index, e.target.value)}
+                                        placeholder=" "
+                                        className='border rounded-md px-2.5 pb-2.5 pt-5 w-full text-sm appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                                    />
+                                    <label
+                                        className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"     
+                                    >
+                                        Option
+                                    </label>
+                                </div>
+                            ))}
+                            <button onClick={handleAddOption}>Add more</button>
+                        </div>
+                    )}
                 </fieldset>
                 
                 <input

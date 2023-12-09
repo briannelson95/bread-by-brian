@@ -1,14 +1,37 @@
 "use client"
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Options from './Options'
 import Image from 'next/image';
 import MainButton from './MainButton';
 import { CartContext } from '@/context/AppContext';
+import { supabase } from '@/supabase/lib/supabaseClient';
 
 export default function ProductInfo({menuItem}: {menuItem: {image: string; link: string; title: string; id: number; price: number; limit: number; description: string; inventory: number;}}) {
     const {
         image, link, title, id, price, limit, description, inventory
     } = menuItem;
+    const [options, setOptions]: any[] = useState();
+    const [selectedOption, setSelectedOption]: any = useState(null)
+    
+    useEffect(() => {
+        supabase.from('product_options')
+            .select('id, name, option_price')
+            .eq('product_id', id)
+            .then(result => {
+                if (!result.error) {
+                    if (result.data.length <= 0) {
+                        return
+                    } else if (result.data.length > 0) {
+                        setOptions(result.data)
+                        setSelectedOption(result.data[1].name)
+                    }
+                }
+            })
+    }, [id])
+
+    const handleChangeSelection = (e: any) => {
+        setSelectedOption(e.target.value)
+    }
     
     const { addToCart }: any = useContext(CartContext)
 
@@ -21,8 +44,7 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
     }
 
     const handleAddToCart = () => {
-        // console.log("Adding to cart with quantity:", quantity);
-        addToCart(menuItem, quantity);
+        addToCart(menuItem, quantity, selectedOption);
     }
 
     return (
@@ -52,7 +74,6 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
                         <p className='text-xl font-bold'>{quantity}</p>
                     </Options>
                 )} 
-                
                 <div className='grid grid-cols-2 gap-2'>
                     <h1 className='text-3xl font-bold capitalize'>{title}</h1>
                     <div className='flex justify-end items-center'>
@@ -66,6 +87,18 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
                     </h2>
                     <p>{description}</p>
                 </div>
+                {options?.length > 0 && (
+                    <div>
+                        <select value={selectedOption} onChange={handleChangeSelection}>
+                            <option value="" disabled>Select an option</option>
+                                {options.map((option: any, index: number) => (
+                                    <option key={index} value={option.name}>
+                                        {option.name}
+                                    </option>
+                                ))}
+                        </select>
+                    </div>
+                )}
                 <MainButton 
                     title={`${inventory > 0 ? 'Add to Cart' : 'Sold Out'}`}
                     onClick={handleAddToCart}

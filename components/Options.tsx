@@ -52,7 +52,7 @@ export default function Options({ maxAmount, inventory, onQuantityChange, childr
                 
                 
             </div>
-            <div>
+            {/* <div>
                 <button
                     onClick={handleLike} 
                     className='bg-red-500 rounded-full h-full aspect-square flex justify-center items-center'
@@ -69,7 +69,7 @@ export default function Options({ maxAmount, inventory, onQuantityChange, childr
                         )}
                     </span>
                 </button>
-            </div>
+            </div> */}
         </div>
     )
 }

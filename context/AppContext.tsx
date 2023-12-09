@@ -22,7 +22,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
     }
 
     //@ts-ignore
-    function addToCart(product, quantity) {
+    function addToCart(product, quantity, options?: any) {
         setCartProducts((prevProducts: any) => {
             const existingProductIndex = prevProducts.findIndex(
                 (p: any) => p.id === product.id
@@ -33,29 +33,72 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                 newQuantity = prevProducts[existingProductIndex].quantity + quantity;
             }
       
-            if (newQuantity <= product.limit && newQuantity <= product.inventory) {
-                const updatedProducts = [...prevProducts];
+            // if (newQuantity <= product.limit && newQuantity <= product.inventory) {
+            //     const updatedProducts = [...prevProducts];
         
+            //     if (existingProductIndex !== -1) {
+            //         updatedProducts[existingProductIndex] = {
+            //             ...prevProducts[existingProductIndex],
+            //             quantity: newQuantity,
+            //         };
+            //     } else {
+            //         updatedProducts.push({ ...product, quantity: newQuantity });
+            //     }
+      
+            //     saveCartProductsToLocalStorage(updatedProducts);
+            //     toast('Added to cart', {
+            //         icon: '🍞👍',
+            //     });
+            //     return updatedProducts;
+            // } else {
+            //     toast.error('Exceeds limit per customer or inventory.')
+            //     return prevProducts;
+            // }
+            if (
+                newQuantity <= product.limit &&
+                newQuantity <= product.inventory
+            ) {
+                const updatedProducts = [...prevProducts];
+    
                 if (existingProductIndex !== -1) {
                     updatedProducts[existingProductIndex] = {
                         ...prevProducts[existingProductIndex],
                         quantity: newQuantity,
                     };
                 } else {
-                    updatedProducts.push({ ...product, quantity: newQuantity });
+                    // Validate options and include them in the cart
+                    if (typeof options === 'string' && options.length > 0) {
+                        updatedProducts.push({
+                            ...product,
+                            quantity: newQuantity,
+                            options: options,
+                        });
+                    } else {
+                        // Show error message for invalid options
+                        updatedProducts.push({
+                            ...product,
+                            quantity: newQuantity,
+                            options: null,
+                        });
+                    }
                 }
-      
+    
+                // Save updated products to local storage
                 saveCartProductsToLocalStorage(updatedProducts);
+    
+                // Show success message
                 toast('Added to cart', {
                     icon: '🍞👍',
                 });
+    
                 return updatedProducts;
             } else {
-                toast.error('Exceeds limit per customer or inventory.')
+                // Show error message for exceeding limits
+                toast.error('Exceeds limit per customer or inventory.');
                 return prevProducts;
             }
         });
-      }
+    }
       
       
       

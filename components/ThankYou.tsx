@@ -23,7 +23,7 @@ export default function ThankYou({ orderId }: { orderId: number }) {
                         })
                 }
             })
-    }, [])
+    }, [orderId])
 
     return (
         <div>
