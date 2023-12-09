@@ -9,6 +9,8 @@ export default async function Home() {
     .from('products')
     .select()
     .order('created_at', { ascending: true })
+    .order('order', { ascending: true })
+    
 
   return (
     <div className='w-full p-2 mb-16 mx-auto'>
