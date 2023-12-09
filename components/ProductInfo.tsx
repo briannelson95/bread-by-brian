@@ -20,7 +20,6 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
             .then(result => {
                 if (!result.error) {
                     if (result.data.length <= 0) {
-                        console.log('No options')
                         return
                     } else if (result.data.length > 0) {
                         setOptions(result.data)
@@ -28,10 +27,10 @@ export default function ProductInfo({menuItem}: {menuItem: {image: string; link:
                     }
                 }
             })
-    }, [])
+    }, [id])
 
     const handleChangeSelection = (e: any) => {
-        setSelectedOption(e)
+        setSelectedOption(e.target.value)
     }
     
     const { addToCart }: any = useContext(CartContext)
