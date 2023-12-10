@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 export default function ProductsTable({ products }: { products: any}) {
@@ -27,16 +28,20 @@ export default function ProductsTable({ products }: { products: any}) {
                 <tbody>
                     {products && products.map((item: any, index: any) => (
                         <tr key={item.id} className="bg-white border-b">
+                            <Link href={`/admin/products/${item.id}`}>
                             <th scope="row" className="px-6 py-4 flex gap-2 items-center font-medium text-gray-900 whitespace-nowrap">
-                                <Image
-                                    src={item.image}
-                                    height={1000}
-                                    width={1000}
-                                    alt={`Image of ${item.title}`}
-                                    className='h-8 w-8 rounded'
-                                />
-                                {item.title}
+                                
+                                    <Image
+                                        src={item.image}
+                                        height={1000}
+                                        width={1000}
+                                        alt={`Image of ${item.title}`}
+                                        className='h-8 w-8 rounded'
+                                    />
+                                    {item.title}
+                                
                             </th>
+                            </Link>
                             <td className="px-6 py-4">
                                 ${item.price.toFixed(2)}
                             </td>

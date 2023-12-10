@@ -164,7 +164,7 @@ export default function MyCart() {
                         </div>
                         <div className='md:col-span-1 space-y-2'>
                             <div className='rounded-lg shadow-md p-4'>
-                                <form>
+                                <form id='checkout'>
                                     <h2 className='text-lg font-medium'>My Info</h2>
                                     <fieldset>
                                         <label>Name:</label>
