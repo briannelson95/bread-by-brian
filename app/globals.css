@@ -2,24 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-select,
-input[type="email"],
-input[type="password"],
-input[type="tel"],
-input[type="text"],
-textarea {
+#checkout select,
+#checkout input[type="email"],
+#checkout input[type="password"],
+#checkout input[type="tel"],
+#checkout input[type="text"],
+#checkout textarea {
     @apply block w-full mb-2 rounded-xl;
     @apply border p-2 border-gray-300 bg-gray-100;
 }
-input[type="email"]:disabled,
-input[type="password"]:disabled,
-input[type="tel"]:disabled,
-input[type="text"]:disabled {
+#checkout input[type="email"]:disabled,
+#checkout input[type="password"]:disabled,
+#checkout input[type="tel"]:disabled,
+#checkout input[type="text"]:disabled {
     @apply bg-gray-300 border-0 cursor-not-allowed text-gray-500;
 }
-label{
+#checkout label{
     @apply text-gray-500 text-sm leading-tight;
 }
-label + input{
+#checkout label + input{
     margin-top: -2px;
 }
