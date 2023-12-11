@@ -29,7 +29,7 @@ export default function SpecialOrderPage() {
     }
 
     return (
-        <section className='w-full p-2 space-y-2 md:grid md:grid-cols-2 md:gap-6'>
+        <section className='w-full p-2 space-y-2 md:grid md:grid-cols-2 md:gap-6 mb-20 md:mb-0'>
             <div className='relative h-full'>
                 <div className='rounded-full aspect-square w-full h-auto overflow-hidden bg-center'>
                     <Image
@@ -41,7 +41,7 @@ export default function SpecialOrderPage() {
                         className='bg-cover z-0'
                     />
                 </div>
-                <div className='rounded-full aspect-square w-36 h-36 overflow-hidden bg-center absolute top-0 left-6 z-10'>
+                <div className='rounded-full aspect-square w-36 h-36 overflow-hidden bg-center absolute top-0 left-o md:left-6 z-10'>
                     <Image
                         src={'/flambee.webp'}
                         alt={'Alt text for image'}
@@ -51,7 +51,7 @@ export default function SpecialOrderPage() {
                         className='bg-cover bg-bottom'
                     />
                 </div>
-                <div className='rounded-full aspect-square h-36 overflow-hidden bg-center absolute bottom-20 right-0 z-10'>
+                <div className='rounded-full aspect-square h-36 overflow-hidden bg-center absolute bottom-0 md:bottom-20 right-0 z-10'>
                     <Image
                         src={'/bagels.webp'}
                         alt={'Alt text for image'}
@@ -77,7 +77,7 @@ export default function SpecialOrderPage() {
                 </div>
                 <div>
                     {!submitted ? (
-                        <form>
+                        <form id='checkout'>
                             <fieldset>
                                 <label>Name:</label>
                                 <input
