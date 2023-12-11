@@ -22,6 +22,8 @@ export default function ProductPageInfo(props: Product ) {
     const [desc, setDesc] = useState(props.desc);
     const [price, setPrice] = useState(props.price);
     const [limit, setLimit] = useState(props.limit);
+    const [image, setImage]: any = useState(props.image);
+    const [isUploading, setIsUploading] = useState(false);
 
     const updateInfo = () => {
         supabase.from('products')
@@ -30,12 +32,32 @@ export default function ProductPageInfo(props: Product ) {
                 slug,
                 desc,
                 price,
-                limit
+                limit,
+                image,
             })
             .eq('id', props.id)
             .then(result => {
-                console.log(result)
+                // console.log(result)
             })
+    }
+
+    const handleAddPhoto = async (e: any) => {
+        const upload = e.target.files;
+        if (upload.length > 0) {
+            setIsUploading(true);
+            const file = upload[0];
+            const newName = Date.now() + file.name;
+
+            const result = await supabase.storage.from('photos')
+                .upload(newName, file)
+            if (result.data) {
+                const url = process.env.NEXT_PUBLIC_SUPABASE_URL + '/storage/v1/object/public/photos/' + result.data.path;
+                setImage(url)
+            } else {
+                console.log(result)
+            }
+            setIsUploading(false)
+        }
     }
 
     return (
@@ -80,11 +102,12 @@ export default function ProductPageInfo(props: Product ) {
                     </button>
                 </div>
                 <div className='group relative'>
-                    <div className='w-full h-44 rounded-xl overflow-hidden bg-cover bg-center' style={{ backgroundImage: `url(${props.image})`}} />
+                    <div className='w-full h-44 rounded-xl overflow-hidden bg-cover bg-center' style={{ backgroundImage: `url(${image})`}} />
                     <div className="hidden group-hover:block absolute inset-0 bg-black bg-opacity-50 rounded-xl">
-                        <div className='flex justify-center items-center h-full'>
+                        <label className='flex justify-center items-center h-full'>
+                            <input type='file' className='hidden' onChange={handleAddPhoto} />
                             <p className="text-white">Edit Image</p>
-                        </div>
+                        </label>
                     </div>
                 </div>
                 <div className='bg-white w-full rounded-xl p-2'>
