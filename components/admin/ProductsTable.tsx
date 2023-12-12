@@ -52,7 +52,7 @@ export default function ProductsTable({ products }: { products: any}) {
                                 {item.inventory}
                             </td>
                             <td className="px-6 py-4">
-                                {index + 1}
+                                {item.order ? item.order : index + 1}
                             </td>
                         </tr>
                     ))}

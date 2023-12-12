@@ -8,6 +8,8 @@ export default async function ProductsPage() {
 
     const { data: products } = await supabase.from('products')
         .select()
+        .order('created_at', { ascending: true })
+        .order('order', { ascending: true })
 
     return (
         <div className="p-4 w-full space-y-2">

@@ -44,12 +44,14 @@ export default function AdminPage() {
   return (
     <div className="p-4 w-full space-y-2">
       <h1 className="text-2xl font-bold">Dashboard</h1>
-      {/* <Fulfillment /> */}
-      <section className="grid grid-cols-2 sm:grid-cols-5">
-        <Revenue revenueData={revenueData} />
-      </section>
-      <QuickAdd />
-      <PlaceOrder />
+      <div className="space-y-4">
+        {/* <Fulfillment /> */}
+        <section className="grid grid-cols-2 sm:grid-cols-5">
+          <Revenue revenueData={revenueData} />
+        </section>
+        <QuickAdd />
+        <PlaceOrder />
+      </div>
     </div>
   )
 }

@@ -5,9 +5,9 @@ import React from 'react'
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     return (
         <UserContextProvider>
-            <main className='h-screen flex mb-20'>
+            <main className='h-screen flex md:mb-20'>
                 <AdminNav />
-                <div className='ml-52'>
+                <div className='md:ml-52 w-full'>
                     {children}
                 </div>
             </main>

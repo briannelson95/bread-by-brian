@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState } from 'react'
 import { supabase } from '@/supabase/lib/supabaseClient';
+import toast from 'react-hot-toast';
 
 export default function PlaceOrder() {
     const [products, setProducts]: any = useState([]);
     const [choice, setChoice]: any = useState(null);
-    const [quantity, setQuantity] = useState();
+    const [quantity, setQuantity] = useState(null);
     const [customerName, setCustomerName] = useState('');
-    const [cost, setCost]: any = useState()
+    const [cost, setCost]: any = useState();
 
     useEffect(() => {
         supabase.from('products')
@@ -21,7 +22,7 @@ export default function PlaceOrder() {
                     // console.log(amountAvailable)
                 }
             })
-    }, [])
+    }, []);
 
     const handlePriceChange = (item: number, quantity: number) => {
         supabase.from('products')
@@ -33,28 +34,37 @@ export default function PlaceOrder() {
                     const total = result.data[0].price * quantity
                     setCost(total)
                 }
-            })
-    }
+            });
+    };
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
-        supabase.from('orders')
+        const { data: orderData }: any = await supabase.from('orders')
             .insert({
                 customer_name: customerName,
                 total_price: cost,
                 order_type: 'offline'
             })
-            .select('id')
+            .select('id');
+            
+        const orderId = orderData[0].id;
+
+        supabase.from('order_details')
+            .insert({
+                order_id: orderId,
+                product_id: choice,
+                quantity
+            })
             .then(result => {
                 if (!result.error) {
-                    supabase.from('order_details')
-                        .insert({
-                            order_id: result.data[0].id,
-                            product_id: choice,
-                            quantity,
-                        })
+                    setChoice(null);
+                    setQuantity(null)
+                    setCustomerName('')
+                    setCost(null)
+                    toast.success('Placed Order')
                 }
-            })
+            });
+
     }
 
     return (
@@ -140,7 +150,7 @@ export default function PlaceOrder() {
                 </fieldset>
                 <button 
                     onClick={handleSubmit}
-                    className='bg-blue-500 text-white p-4'
+                    className='bg-blue-500 text-white px-6 py-2 rounded-xl'
                 >
                     Submit Order
                 </button>
