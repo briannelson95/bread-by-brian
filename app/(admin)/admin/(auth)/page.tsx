@@ -8,6 +8,7 @@ import { useUser } from "@/context/UserContext";
 import PlaceOrder from "@/components/admin/PlaceOrder";
 import Fulfillment from "@/components/admin/Fulfillment";
 import Revenue from "@/components/admin/Revenue";
+import AlertBanner from "@/components/admin/AlertBanner";
 
 export default function AdminPage() {
   const session = useSession();
@@ -51,6 +52,7 @@ export default function AdminPage() {
         </section>
         <QuickAdd />
         <PlaceOrder />
+        <AlertBanner />
       </div>
     </div>
   )

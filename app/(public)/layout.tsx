@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Navbar from '@/components/Navbar'
+import PublicAlertBanner from '@/components/PublicAlertBanner'
+import { supabase } from '@/supabase/lib/supabaseClient'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -9,19 +11,28 @@ export const metadata: Metadata = {
   description: 'Fresh bread baked to order.',
 }
 
-export default function PublicLayout({
+export default async function PublicLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
+  const { data: alert } = await supabase
+    .from('alert_banner')
+    .select('alert')
+    .eq('id', 1)
+
   return (
-    <>
+    <div className='relative'>
+      {alert && alert[0].alert !== null && (
+        <PublicAlertBanner text={alert[0].alert} visible={alert[0].alert.length > 0} />
+      )}
       <div className={`${inter.className} max-w-4xl p-2 mx-auto`}>
         <Navbar />
         <main className='w-full'>
           {children}
         </main>
       </div>
-    </>
+    </div>
   )
 }
