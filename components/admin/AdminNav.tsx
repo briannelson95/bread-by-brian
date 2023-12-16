@@ -25,7 +25,7 @@ export default function AdminNav() {
                     </svg>
                 </button>
             </div>
-            <nav className={`absolute h-full z-50 md:fixed top-0 pt-4 px-4 bg-gray-300 min-w-[192px] md:block ${openNav ? 'block' : 'hidden'}`}>
+            <nav className={`absolute h-full z-50 md:fixed top-0 pt-4 px-4 min-w-[192px] md:block ${openNav ? 'block' : 'hidden'}`}>
                 <div className='flex gap-2 items-center mb-6'>
                     <Link href={'/'}>
                         <div className={`flex gap-2 items-center`}>
