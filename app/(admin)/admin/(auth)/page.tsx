@@ -6,8 +6,6 @@ import { supabase } from "@/supabase/lib/supabaseClient";
 import { useEffect, useState } from "react";
 import { useUser } from "@/context/UserContext";
 import PlaceOrder from "@/components/admin/PlaceOrder";
-import Fulfillment from "@/components/admin/Fulfillment";
-import Revenue from "@/components/admin/Revenue";
 import AlertBanner from "@/components/admin/AlertBanner";
 import PageCard from "@/components/admin/PageCard";
 import QuickData from "@/components/admin/QuickData";
@@ -15,6 +13,7 @@ import MoneyIcon from "@/components/icons/MoneyIcon";
 import Dollars from "@/components/icons/Dollars";
 import StoreIcon from "@/components/icons/StoreIcon";
 import Graph from "@/components/admin/Graph";
+import Table from "@/components/admin/Table";
 
 export default function AdminPage() {
   const session = useSession();
@@ -24,6 +23,7 @@ export default function AdminPage() {
   const [revenueData, setRevenueData]: any = useState();
   const [productsSold, setProductsSold]: any = useState([]);
   const [orders, setOrders]: any = useState([]);
+  const [currentOrders, setCurrentOrders]: any = useState([]);
   
 
   useEffect(() => {
@@ -90,10 +90,22 @@ export default function AdminPage() {
           setOrders(result?.data)
         }
       })
+
+    supabase.from('orders')
+      .select('completed, customer_name, order_date, total_price')
+      .eq('completed', false)
+      .order('order_date', { ascending: true })
+      .limit(5)
+      .then(result => {
+        if (!result.error) {
+          
+          setCurrentOrders(result.data)
+        }
+      })
     
   }, [])
 
-  // console.log(orders)
+  // console.log(currentOrders)
 
   if (!session) {
     redirect('/admin/login')
@@ -110,28 +122,35 @@ export default function AdminPage() {
       <PageCard title="Dashboard">
         <div className="grid grid-cols-2 grid-flow-row md:grid-cols-4 gap-2 md:gap-4">
           <div className="col-span-1">
-          <QuickData 
-            title="Total Revenue" 
-            data={`$${consolidatedTotal?.toFixed(2)}`} 
-            icon={<MoneyIcon />} 
-          />
+            <QuickData 
+              title="Total Revenue" 
+              data={`$${consolidatedTotal?.toFixed(2)}`} 
+              icon={<MoneyIcon />} 
+            />
           </div>
           <div className="col-span-1">
-          <QuickData 
-            title="Total Sales" 
-            data={revenueData?.length} 
-            icon={<Dollars />} 
-          />
+            <QuickData 
+              title="Total Sales" 
+              data={revenueData?.length} 
+              icon={<Dollars />} 
+            />
           </div>
           <div className="col-span-1">
-          <QuickData 
-            title="Products Sold" 
-            data={sumOfProducts} 
-            icon={<StoreIcon />} 
-          />
+            <QuickData 
+              title="Products Sold" 
+              data={sumOfProducts} 
+              icon={<StoreIcon />} 
+            />
           </div>
           <div className="col-span-2 md:col-span-4">
             <Graph data={orders} />
+          </div>
+          <div className="col-span-2 md:col-span-4">
+            <Table 
+              title="Recent Orders"
+              headers={['completed', 'customer_name', 'order_date', 'total_price']} 
+              data={currentOrders} 
+            />
           </div>
         </div>
       </PageCard>

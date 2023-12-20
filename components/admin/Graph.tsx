@@ -41,30 +41,36 @@ export default function Graph({ data }: { data?: any }) {
       }, {});
       
     const consolidatedArray = Object.values(consolidatedMap);
-    console.log(consolidatedArray)
     return (
         <div className='border border-gray-400 rounded-lg px-4 py-4 space-y-4 w-full'>
             <div className='flex gap-2 items-center'>
                 <StackIcon />
                 <h2 className='text-xl font-bold'>Sales Revenue</h2>
             </div>
-            <Line
-                data={{
-                    labels: labels,
-                    datasets: [
-                        {
-                            data: consolidatedArray,
-                            backgroundColor: "#3b82f6",
-                            borderColor: '#3b82f6',
-                            fill: false,
-                            tension: 0.4,
-                            parsing: {
-                                yAxisKey: 'total_price'
+            {/* <div className='h-96 w-full'> */}
+                <Line
+                    data={{
+                        labels: labels,
+                        datasets: [
+                            {
+                                data: consolidatedArray,
+                                backgroundColor: "#3b82f6",
+                                borderColor: '#3b82f6',
+                                fill: false,
+                                tension: 0.4,
+                                parsing: {
+                                    yAxisKey: 'total_price'
+                                },  
                             },
-                        },
-                    ],
-                }}
-            />
+                        ],
+                    }}
+                    // options={{
+                    //     responsive: true,
+                    //     maintainAspectRatio: false,
+                    // }}
+                />
+            {/* </div> */}
+            
         </div>
     )
 }
