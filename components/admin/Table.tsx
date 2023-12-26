@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React from 'react'
 
-export default function Table({ title, headers, data }: { title?: string; headers: string[]; data: any[] }) {
+export default function Table({ title, headers, data, button, onClick }: { title?: string; headers: string[]; data: any[]; button?: any; onClick?: any; }) {
     const router = useRouter();
 
     const formatHeader = (header: string) => {
@@ -14,9 +14,19 @@ export default function Table({ title, headers, data }: { title?: string; header
 
     return (
         <div className='border border-gray-400 rounded-xl px-4 py-3 space-y-4'>
-            {title && (
-                <h2 className='text-xl font-bold'>{title}</h2>
-            )}
+            <div className='flex justify-between items-center'>
+                {title && (
+                    <h2 className='text-xl font-bold'>{title}</h2>
+                )}
+                {button && (
+                    <button 
+                        className='bg-blue-500 px-4 py-2 rounded-lg text-white'
+                        onClick={onClick}
+                    >
+                        {button}
+                    </button>
+                )}
+            </div>
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded-xl overflow-hidden">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-200">
                     <tr>

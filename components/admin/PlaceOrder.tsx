@@ -68,9 +68,9 @@ export default function PlaceOrder() {
     }
 
     return (
-        <div className='bg-gray-200 p-4 rounded-xl'>
-            <h2 className='text-xl font-medium'>Place Order</h2>
-            <form className='space-y-2'>
+        <div className='bg-white p-4 rounded-xl'>
+            <h2 className='text-xl font-bold'>Place Order</h2>
+            <form className='space-y-2 border border-gray-300 rounded-xl p-4'>
                 <fieldset>
                     <div className='relative'>
                         <input
@@ -90,7 +90,7 @@ export default function PlaceOrder() {
                     </div>    
                 </fieldset>
                 <fieldset className='flex gap-2'>
-                    <div className='flex justify-between w-full'>
+                    <div className='space-y-4'>
                         <div className='flex gap-2'>
                             <div className='flex gap-2 items-center'>
                                 <label htmlFor='product'>Product:</label>
@@ -127,7 +127,7 @@ export default function PlaceOrder() {
                                 </label>
                             </div>
                         </div>
-                        <div>
+                        <div className='flex justify-between'>
                             <div className='relative'>
                                 <input
                                     type='number'
@@ -145,15 +145,15 @@ export default function PlaceOrder() {
                                     Total Cost
                                 </label>
                             </div>
+                            <button 
+                                onClick={handleSubmit}
+                                className='bg-blue-500 text-white px-4 py-2 rounded-lg'
+                            >
+                                Submit Order
+                            </button>
                         </div>
                     </div>
                 </fieldset>
-                <button 
-                    onClick={handleSubmit}
-                    className='bg-blue-500 text-white px-6 py-2 rounded-xl'
-                >
-                    Submit Order
-                </button>
             </form>
         </div>
     )
