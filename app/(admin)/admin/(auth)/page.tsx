@@ -86,6 +86,7 @@ export default function AdminPage() {
       .select('order_date, total_price')
       .eq('paid', true)
       .eq('completed', true)
+      .order('order_date', { ascending: false })
       .then(result => {
         if (!result.error) {
           setOrders(result?.data)
