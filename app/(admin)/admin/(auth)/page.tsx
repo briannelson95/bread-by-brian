@@ -166,9 +166,10 @@ export default function AdminPage() {
             />
           </div>
         </div>
+        <QuickAdd />
       </PageCard>
       {/* <PageCard title="More">
-        <QuickAdd />
+        
         <PlaceOrder />
         <AlertBanner />
       </PageCard> */}

@@ -8,7 +8,6 @@ export default async function Home() {
   const { data: products } = await supabase
     .from('products')
     .select()
-    .order('created_at', { ascending: true })
     .order('order', { ascending: true })
     
 
