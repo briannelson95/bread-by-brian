@@ -2,7 +2,8 @@
 
 import { supabase } from '@/supabase/lib/supabaseClient';
 import Image from 'next/image';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import Plus from '../icons/Plus';
 
 type Product = {
     id: number;
@@ -23,7 +24,21 @@ export default function ProductPageInfo(props: Product ) {
     const [price, setPrice] = useState(props.price);
     const [limit, setLimit] = useState(props.limit);
     const [image, setImage]: any = useState(props.image);
+    const [inventory, setInventory] = useState(props.inventory);
+    const [options, setOptions]: any = useState(null)
     const [isUploading, setIsUploading] = useState(false);
+
+    useEffect(() => {
+        supabase.from('product_options')
+            .select('name, option_price')
+            .eq('product_id', props.id)
+            .then(result => {
+                if (!result.error) {
+                    if (result.data.length < 1) return
+                    setOptions(result.data)
+                }
+            })
+    }, [])
 
     const updateInfo = () => {
         supabase.from('products')
@@ -34,6 +49,7 @@ export default function ProductPageInfo(props: Product ) {
                 price,
                 limit,
                 image,
+                inventory,
             })
             .eq('id', props.id)
             .then(result => {
@@ -60,8 +76,10 @@ export default function ProductPageInfo(props: Product ) {
         }
     }
 
+    console.log(options)
+
     return (
-        <div className='w-full shadow-lg p-4 rounded-xl bg-gray-100 space-y-1 md:grid md:grid-cols-7 md:gap-6'>
+        <div className='w-full shadow-lg p-4 rounded-xl bg-white space-y-1 md:grid md:grid-cols-7 md:gap-6'>
             <section className='md:col-span-5 space-y-4'>
                 <div>
                     <h2 className='text-2xl font-semibold'>
@@ -91,6 +109,53 @@ export default function ProductPageInfo(props: Product ) {
                     id='desc'
                     onChange={(e: any) => setDesc(e.target.value)}
                 />
+                <div className='border border-gray-300 rounded-xl p-3 space-y-2'>
+                    <h3 className='text-xl font-bold'>Product Options</h3>
+                    {options && (
+                        <div className='space-y-2'>
+                            {options.map((item: any, index: number) => (
+                                <div key={index} className='flex gap-2 w-full'>
+                                    <div className='relative w-full'>
+                                        <input
+                                            type='text'
+                                            className='border rounded-md px-2.5 pb-2.5 pt-5 w-full text-sm appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                                            placeholder=' '
+                                            id='name'
+                                            // onChange={(e: any) => setPrice(e.target.value)}
+                                            value={item.name}
+                                        />
+                                        <label
+                                            htmlFor='price'
+                                            className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                                        >
+                                            Name
+                                        </label>
+                                    </div>
+                                    <div className='relative w-full'>
+                                        <input
+                                            type='number'
+                                            className='border rounded-md px-2.5 pb-2.5 pt-5 w-full text-sm appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer'
+                                            placeholder=' '
+                                            id='price'
+                                            // onChange={(e: any) => setPrice(e.target.value)}
+                                            value={item.option_price ? item.option_price : 0}
+                                        />
+                                        <label
+                                            htmlFor='price'
+                                            className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+                                        >
+                                            Price
+                                        </label>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <button className='bg-blue-500 text-white rounded-xl px-4 py-2 flex justify-center items-center'>
+                        <Plus />
+                        Add option
+                    </button>
+                </div>
             </section>
             <section className='col-span-2 space-y-4'>
                 <div>
@@ -110,28 +175,38 @@ export default function ProductPageInfo(props: Product ) {
                         </label>
                     </div>
                 </div>
-                <div className='bg-white w-full rounded-xl p-2'>
-                    <p className='text-lg font-medium'>Pricing Info</p>
-                    <div className='grid grid-cols-6 gap-2'>
-                        <p>Price:</p>
+                <div className='bg-white w-full rounded-xl p-2 space-y-2 border border-gray-300'>
+                    <p className='text-lg font-medium'>More Info</p>
+                    <div className='grid grid-cols-7 gap-2'>
+                        <p className='col-span-2'>Inventory:</p>
                         <span className='col-span-5'>
-                            $
                             <input
                                 type='number'
-                                value={price}
-                                className='border'
-                                onChange={(e: any) => setPrice(e.target.value)}
+                                value={inventory}
+                                className='border w-full text-right'
+                                onChange={(e: any) => setInventory(e.target.value)}
                             />
                         </span>
                     </div>
-                    <div className='grid grid-cols-6 gap-2'>
-                        <p>Limit:</p>
+                    <div className='grid grid-cols-7 gap-6'>
+                        <p className='col-span-2'>Price:</p>
+                        <span className='col-span-5'>
+                            <input
+                                type='number'
+                                value={price.toFixed(2)}
+                                className='border w-full text-right'
+                                onChange={(e: any) => setPrice(e.target.value.toFixed(2))}
+                            />
+                        </span>
+                    </div>
+                    <div className='grid grid-cols-7 gap-2'>
+                        <p className='col-span-2'>Limit:</p>
                         <span className='col-span-5'>
                             {props.limit !== null ? (
                                 <input
                                     type='number'
                                     value={limit}
-                                    className='border'
+                                    className='border w-full text-right'
                                     onChange={(e: any) => setLimit(e.target.value)}
                                 />
                             ) : 'No limit'}

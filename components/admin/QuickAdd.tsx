@@ -73,9 +73,9 @@ export default function QuickAdd() {
     }
 
     return (
-        <section className='bg-gray-200 w-full rounded-lg p-4 shadow-md'>
+        <section className='bg-white w-full rounded-lg p-4 shadow-md'>
             <h2 className='text-lg font-medium'>Add Item</h2>
-            <form className='flex flex-col gap-2 relative'>
+            <form className='flex flex-col gap-2 relative border border-gray-300 rounded-xl p-4'>
                 <div className="relative">
                     <input 
                         type="text" 

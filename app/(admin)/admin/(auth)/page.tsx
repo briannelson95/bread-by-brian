@@ -24,6 +24,7 @@ export default function AdminPage() {
   const [productsSold, setProductsSold]: any = useState([]);
   const [orders, setOrders]: any = useState([]);
   const [currentOrders, setCurrentOrders]: any = useState([]);
+  const [open, setOpen] = useState(false);
   
 
   useEffect(() => {
@@ -85,6 +86,7 @@ export default function AdminPage() {
       .select('order_date, total_price')
       .eq('paid', true)
       .eq('completed', true)
+      .order('order_date', { ascending: false })
       .then(result => {
         if (!result.error) {
           setOrders(result?.data)
@@ -117,8 +119,18 @@ export default function AdminPage() {
 
   const sumOfProducts = productsSold.reduce((partialSum: any, a: any) => partialSum + a, 0)
 
+  const handleOpenOrder = () => {
+    setOpen(!open)
+  }
+
   return (
-    <div className="py-4 space-y-4 overflow-auto">
+    <div className="py-4 space-y-4 overflow-auto relative">
+      {open && (
+        <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-black/50 p-10 z-50">
+          {/* <div className="" */}
+          <PlaceOrder />
+        </div>
+      )}
       <PageCard title="Dashboard">
         <div className="grid grid-cols-2 grid-flow-row md:grid-cols-4 gap-2 md:gap-4">
           <div className="col-span-1">
@@ -150,15 +162,18 @@ export default function AdminPage() {
               title="Recent Orders"
               headers={['completed', 'customer_name', 'order_date', 'total_price']} 
               data={currentOrders} 
+              button={'Add Order'}
+              onClick={handleOpenOrder}
             />
           </div>
         </div>
-      </PageCard>
-      <PageCard title="More">
         <QuickAdd />
+      </PageCard>
+      {/* <PageCard title="More">
+        
         <PlaceOrder />
         <AlertBanner />
-      </PageCard>
+      </PageCard> */}
 
       
     </div>
