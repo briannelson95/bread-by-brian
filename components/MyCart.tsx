@@ -24,6 +24,12 @@ export default function MyCart() {
     const [data, setData]: any = useState({
         name:  '',
         email: '',
+        phone: '',
+        street: '',
+        postal: '',
+        city: '',
+        state: '',
+        total: '',
     })
 
     let deliveryFee = 2.5;
