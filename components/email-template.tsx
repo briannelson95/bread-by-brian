@@ -13,7 +13,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
 }) => (
     <div>
         <h1>Thanks for your order, {firstName}!</h1>
-        <p>Here's a summary of what you ordered:</p>
+        <p>Here&apos;s a summary of what you ordered:</p>
         <div>
             <div style={{ border: '1px solid black', borderRadius: '12px' }}>
                 {products.length && products.map((item: any, index: number) => (
