@@ -36,8 +36,9 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
     const handleAddToCart = () => {
         if (productOptions !== null) {
             setOpenPopup(true)
+        } else {
+            addToCart(menuItem, 1, selectedOption);
         }
-        // addToCart(menuItem, 1, selectedOption);
     }
 
     const handleChangeSelection = (e: any) => {
