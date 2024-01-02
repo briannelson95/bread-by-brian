@@ -49,7 +49,7 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
                     <td width="50%" valign="top" style={{padding: '10px'}}>
                         <p>Payment can be made in person or on <a href='https://venmo.com/u/Brian-Nelson-80/' target='_blank'>Venmo</a></p>
                         <a href='https://venmo.com/u/Brian-Nelson-80/' target='_blank'>
-                            <img src='breadbybrian.com/Venmo.png' />
+                            <img src='https://www.breadbybrian.com/Venmo.png' />
                         </a>
                     </td>
                 </tr>
