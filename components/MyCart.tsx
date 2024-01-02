@@ -19,7 +19,7 @@ export default function MyCart() {
     const [state, setState] = useState('')
     // const [country, setCountry]= useState('')
     const [isChecked, setIsChecked] = useState(false);
-    const [thisOrder, setThisOrder] = useState(null)
+    const [thisOrder, setThisOrder] = useState(null);
 
     let deliveryFee = 2.5;
     let totalPrice: number
@@ -41,6 +41,18 @@ export default function MyCart() {
         totalPrice = subTotal + deliveryFee;
     }
 
+    const [data, setData]: any = useState({
+        name:  '',
+        email: '',
+        phone: '',
+        street: '',
+        postal: '',
+        city: '',
+        state: '',
+        total,
+        cartProducts
+    })
+
     const handleCheckboxChange = () => {
         // Toggle the value of isChecked when the checkbox is changed
         setIsChecked(!isChecked);
@@ -48,14 +60,29 @@ export default function MyCart() {
 
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
+        
+        // SEND EMAIL
+        const response = await fetch('api/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.status === 200) {
+            setData({});
+            toast.success('Email Sent')
+        }
+
 
         const { data: orderData, error: orderError }: any = await supabase
             .from('orders')
             .insert(
                 {
                     total_price: totalPrice,
-                    customer_name: name,
-                    customer_email: email,
+                    customer_name: data.name,
+                    customer_email: data.email,
                     customer_phone: phone,
                     customer_street: street,
                     customer_postal: postal,
@@ -116,6 +143,14 @@ export default function MyCart() {
         }
 
     }
+
+    const handleInputChange = (e: any) => {
+        const { name, value } = e.target;
+        setData((prevData: any) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
     
     return (
         <div className='w-full space-y-2'>
@@ -172,7 +207,9 @@ export default function MyCart() {
                                             type='text'
                                             placeholder='John Smith'
                                             id='name'
-                                            onChange={(e: any) => setName(e.target.value)}
+                                            name='name'
+                                            value={data.name}
+                                            onChange={handleInputChange}
                                             required
                                         />
                                         <label>Email:</label>
@@ -180,7 +217,9 @@ export default function MyCart() {
                                             type='email'
                                             placeholder='example@example.com'
                                             id='email'
-                                            onChange={(e: any) =>  setEmail(e.target.value)}
+                                            name='email'
+                                            value={data.email}
+                                            onChange={handleInputChange}
                                             required
                                         />
                                     </fieldset>
