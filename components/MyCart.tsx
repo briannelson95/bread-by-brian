@@ -21,17 +21,6 @@ export default function MyCart() {
     const [isChecked, setIsChecked] = useState(false);
     const [thisOrder, setThisOrder] = useState(null);
 
-    const [data, setData]: any = useState({
-        name:  '',
-        email: '',
-        phone: '',
-        street: '',
-        postal: '',
-        city: '',
-        state: '',
-        total: '',
-    })
-
     let deliveryFee = 2.5;
     let totalPrice: number
 
@@ -51,6 +40,18 @@ export default function MyCart() {
     } else {
         totalPrice = subTotal + deliveryFee;
     }
+
+    const [data, setData]: any = useState({
+        name:  '',
+        email: '',
+        phone: '',
+        street: '',
+        postal: '',
+        city: '',
+        state: '',
+        total,
+        cartProducts
+    })
 
     const handleCheckboxChange = () => {
         // Toggle the value of isChecked when the checkbox is changed
