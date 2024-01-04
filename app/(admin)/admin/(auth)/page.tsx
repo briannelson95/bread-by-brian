@@ -15,6 +15,9 @@ import StoreIcon from "@/components/icons/StoreIcon";
 import Graph from "@/components/admin/Graph";
 import Table from "@/components/admin/Table";
 
+const thirtyDaysAgo = new Date();
+thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
 export default function AdminPage() {
   const session = useSession();
 
@@ -86,6 +89,7 @@ export default function AdminPage() {
       .select('order_date, total_price')
       .eq('paid', true)
       .eq('completed', true)
+      .gte('created_at', thirtyDaysAgo.toISOString())
       .order('order_date', { ascending: false })
       .then(result => {
         if (!result.error) {
