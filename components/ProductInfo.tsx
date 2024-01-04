@@ -6,7 +6,7 @@ import MainButton from './MainButton';
 import { CartContext } from '@/context/AppContext';
 import { supabase } from '@/supabase/lib/supabaseClient';
 
-export default function ProductInfo({menuItem}: {menuItem: {image: string; link: string; title: string; id: number; price: number; limit: number; description: string; inventory: number;}}) {
+export default function ProductInfo({menuItem}: {menuItem: MenuItem}) {
     const {
         image, link, title, id, price, limit, description, inventory
     } = menuItem;

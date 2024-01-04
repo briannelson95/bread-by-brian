@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import Navbar from '@/components/Navbar'
 import PublicAlertBanner from '@/components/PublicAlertBanner'
 import { supabase } from '@/supabase/lib/supabaseClient'
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,7 +24,7 @@ export default async function PublicLayout({
     .eq('id', 1)
 
   return (
-    <div className='relative'>
+    <div className='relative mb-12 md:mb-0'>
       {alert && alert[0].alert !== null && (
         <PublicAlertBanner text={alert[0].alert} visible={alert[0].alert.length > 0} />
       )}
@@ -33,6 +34,7 @@ export default async function PublicLayout({
           {children}
         </main>
       </div>
+      <Footer />
     </div>
   )
 }
