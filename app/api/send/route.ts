@@ -13,6 +13,7 @@ export async function POST(request: any) {
             to: email,
             subject: "Order Info",
             bcc: "breadbybrian95@gmail.com",
+            reply_to: "breadbybrian95@gmail.com",
             react: EmailTemplate({ 
                 firstName: name,
                 totalPrice: total,

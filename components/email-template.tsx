@@ -11,54 +11,153 @@ export const EmailTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
     totalPrice,
     products,
 }) => (
-    <div>
-        <h1>Thanks for your order, {firstName}!</h1>
-        <p>Here&apos;s a summary of what you ordered:</p>
-        <div>
-            <div style={{ border: '1px solid black', borderRadius: '12px' }}>
-                {products.length && products.map((item: any, index: number) => (
-                    <table key={index} width="100%" cellSpacing="0" cellPadding="0">
-                        <tr>
-                            {/* <!-- Left Column --> */}
-                            <td width="50%" valign="top" style={{padding: '10px'}}>
-                                <div style={{backgroundColor: '#f0f0f0', padding: '10px', borderRadius: '8px'}}>
-                                    <p>{item.title} (x{item.quantity})</p>
-                                </div>
-                        
-                            </td>
-                        
-                            {/* <!-- Right Column --> */}
-                            <td width="50%" valign="top" style={{padding: '10px'}}>
-                        
-                                <div style={{backgroundColor: '#e0e0e0', padding: '10px', borderRadius: '8px'}}>
-                                    <p>${item.price.toFixed(2)} each</p>
-                                </div>
-                        
-                            </td>
-                        </tr>
-                    </table>
-                ))}
-            </div>
-            <table cellPadding={'0'} cellSpacing={'0'}>
-                <tr>
-                    <td width="50%" valign="top" style={{padding: '10px'}}>
-                        <h2>Total: ${totalPrice.toFixed(2)}</h2>
-                    </td>
-                </tr>
-                <tr>
-                    <td width="50%" valign="top" style={{padding: '10px'}}>
-                        <p>Payment can be made in person or on <a href='https://venmo.com/u/Brian-Nelson-80/' target='_blank'>Venmo</a></p>
-                        <a href='https://venmo.com/u/Brian-Nelson-80/' target='_blank'>
-                            <img src='https://www.breadbybrian.com/Venmo.png' />
+    <html lang="en">
+        <head>
+            <meta charSet="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Order Confirmation</title>
+        </head>
+        <body 
+            style={{
+                fontFamily: 'Arial, sans-serif', 
+                backgroundColor: '#f4f4f4',
+                margin: 0,
+                padding: 0,
+            }}
+        >
+            <div 
+                style={{
+                    maxWidth: '600px',
+                    margin: '20px auto',
+                    backgroundColor: '#ffffff',
+                    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+                }}
+            >
+                <div 
+                    style={{
+                        backgroundColor: '#fbb042',
+                        color: '#392217',
+                        textAlign: 'center',
+                        padding: '20px',
+                    }}
+                >
+                    <h1>Order Confirmation</h1>
+                </div>
+
+                <div 
+                    style={{ padding: '20px', }}
+                >
+                    <p>Hello <strong>{firstName}</strong>,</p>
+
+                    <div 
+                        style={{ marginBottom: '20px' }}
+                    >
+                        <p>Your order details:</p>
+                        <table
+                            style={{
+                                width: '100%',
+                                borderCollapse: 'collapse',
+                                marginBottom: '20px'
+                            }}
+                        >
+                            <thead>
+                                <tr>
+                                    <th 
+                                        style={{
+                                            border: '1px solid #ddd',
+                                            padding: '8px',
+                                            textAlign: 'left'
+                                        }}
+                                    >
+                                        Product
+                                    </th>
+                                    <th 
+                                        style={{
+                                            border: '1px solid #ddd',
+                                            padding: '8px',
+                                            textAlign: 'left'
+                                        }}
+                                    >
+                                        Quantity
+                                    </th>
+                                    <th
+                                        style={{
+                                            border: '1px solid #ddd',
+                                            padding: '8px',
+                                            textAlign: 'left'
+                                        }}
+                                    >
+                                        Price
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products.length && products.map((item: any, index: number) => (
+                                    <tr key={index}>
+                                        <td
+                                            style={{
+                                                border: '1px solid #ddd',
+                                                padding: '8px',
+                                                textAlign: 'left'
+                                            }}
+                                        >
+                                            <img 
+                                                src={item.image} 
+                                                alt={item.title}
+                                                style={{
+                                                    maxWidth: '60px',
+                                                    maxHeight: '60px',
+                                                    marginRight: '10px'
+                                                }}
+                                            />
+                                            {item.title}
+                                        </td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #ddd',
+                                                padding: '8px',
+                                                textAlign: 'left'
+                                            }}
+                                        >
+                                            {item.quantity}x
+                                        </td>
+                                        <td
+                                            style={{
+                                                border: '1px solid #ddd',
+                                                padding: '8px',
+                                                textAlign: 'left'
+                                            }}
+                                        >
+                                            ${item.price.toFixed(2)} each
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <p>Total: ${totalPrice.toFixed(2)}</p>
+                    </div>
+
+                    <div 
+                        style={{
+                            textAlign: 'center',
+                            marginTop: '20px',
+                        }}
+                    >
+                        <p>Payment can be made in person or via Venmo:</p>
+                        <a href="https://venmo.com/u/Brian-Nelson-80/">
+                            <img src="https://www.breadbybrian.com/Venmo.png" alt="Venmo" width="200" />
+                            <br />
+                            Click here to pay with Venmo
                         </a>
-                    </td>
-                </tr>
-            </table>
-            <div>
-                <p style={{ fontSize: '14px', lineHeight: '20px', color: '#71717a' }}>
-                    If you have questions or need to cancel your order please contact me: <a href='mailto:breadbybrian95@gmail.com' target='_blank'>breadbybrian95@gmail.com</a>
-                </p>
+                    </div>
+
+                    <p>Thank you for your purchase!</p>
+
+                    <p style={{ fontSize: '14px', lineHeight: '20px', color: '#71717a' }}>
+                        If you have questions or need to cancel your order please contact me: <a href='mailto:breadbybrian95@gmail.com' target='_blank'>breadbybrian95@gmail.com</a>
+                    </p>
+                </div>
             </div>
-        </div>
-    </div>
+        </body>
+    </html>
 );
