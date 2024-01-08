@@ -49,7 +49,7 @@ export default function MyCart() {
         postal: '',
         city: '',
         state: '',
-        total,
+        total: totalPrice,
         cartProducts
     })
 
@@ -60,7 +60,7 @@ export default function MyCart() {
 
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
-        
+        console.log(totalPrice)
         // SEND EMAIL
         const response = await fetch('api/send', {
             method: 'POST',
