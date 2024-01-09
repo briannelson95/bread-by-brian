@@ -1,4 +1,5 @@
 import GridItem from '@/components/GridItem'
+import Hero from '@/components/Hero';
 import { supabase } from '@/supabase/lib/supabaseClient'
 import Image from 'next/image'
 
