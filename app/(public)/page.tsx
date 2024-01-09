@@ -12,7 +12,8 @@ export default async function Home() {
     
 
   return (
-    <div className='w-full p-2 mb-16 mx-auto'>
+    <div className='w-full p-2 mb-16 mx-auto space-y-4'>
+      {/* <Hero /> */}
       <section className='grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6'>
         {products?.map((item) => (
           <GridItem

@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    @apply text-brand-secondary;
+}
+
 #checkout select,
 #checkout input[type="email"],
 #checkout input[type="password"],

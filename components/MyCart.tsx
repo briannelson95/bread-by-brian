@@ -50,7 +50,8 @@ export default function MyCart() {
         city: '',
         state: '',
         total: totalPrice,
-        cartProducts
+        cartProducts,
+        id: thisOrder
     })
 
     const handleCheckboxChange = () => {
@@ -60,21 +61,6 @@ export default function MyCart() {
 
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
-        console.log(totalPrice)
-        // SEND EMAIL
-        const response = await fetch('api/send', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-
-        if (response.status === 200) {
-            setData({});
-            toast.success('Email Sent')
-        }
-
 
         const { data: orderData, error: orderError }: any = await supabase
             .from('orders')
@@ -100,6 +86,20 @@ export default function MyCart() {
 
         const orderId = orderData[0].id;
         setThisOrder(orderId);
+
+        // SEND EMAIL
+        const response = await fetch('api/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...data, orderId })
+        });
+
+        if (response.status === 200) {
+            setData({});
+            // toast.success('Email Sent')
+        }
 
         const orderDetails = cartProducts.map((product: any) =>({
             order_id: orderId,
