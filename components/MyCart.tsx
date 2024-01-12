@@ -26,14 +26,22 @@ export default function MyCart() {
 
     let total = 0;
 
+    console.log(cartProducts)
+
     cartProducts?.map((p: any) => {
-        return total += p.price
+        total += p.total
+        console.log(total)
+
+        return total;
     })
 
-    const subTotal = cartProducts.reduce((acc: any, product: any) => {
-        const productTotal = product.price * product.quantity;
-        return acc + productTotal;
-    }, 0);
+    const subTotal = total
+    console.log(subTotal)
+
+    // const subTotal = cartProducts.reduce((acc: any, product: any) => {
+    //     const productTotal = product.price * product.quantity;
+    //     return acc + productTotal;
+    // }, 0);
 
     if (!isChecked) {
         totalPrice = subTotal;

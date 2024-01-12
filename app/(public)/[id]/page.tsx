@@ -38,6 +38,13 @@ export async function generateMetadata(
 export default async function ItemPage({ params: { id } }: { params: { id: string } }) {
     const { data: product }: any = await supabase.from('products').select().eq('slug', id);
     const productData = product[0];
+
+    const { data: discountData }: any = await supabase
+        .from('discounts')
+        .select('discount_quantity, discount_price')
+        .eq('product_id', productData.id)
+
+    console.log(discountData)
     
     return (
         <div className='w-full p-2 relative mb-16'>
@@ -51,6 +58,7 @@ export default async function ItemPage({ params: { id } }: { params: { id: strin
                     limit: productData.limit,
                     description: productData.desc,
                     inventory: productData.inventory,
+                    discount: discountData
                 }}                
             />
         </div>
