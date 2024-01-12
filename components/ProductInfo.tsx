@@ -5,6 +5,7 @@ import Image from 'next/image';
 import MainButton from './MainButton';
 import { CartContext } from '@/context/AppContext';
 import { supabase } from '@/supabase/lib/supabaseClient';
+import { calculateTotalPriceWithDiscount } from '@/utils/pricing';
 
 export default function ProductInfo({menuItem}: {menuItem: MenuItem}) {
     const {
@@ -44,7 +45,8 @@ export default function ProductInfo({menuItem}: {menuItem: MenuItem}) {
     }
 
     const handleAddToCart = () => {
-        addToCart(menuItem, quantity, selectedOption);
+        const total = calculateTotalPriceWithDiscount(price, quantity, title);
+        addToCart(menuItem, quantity, selectedOption, total);
     }
 
     return (

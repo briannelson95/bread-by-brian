@@ -5,6 +5,7 @@ type MenuItem = {
     id: number; 
     price: number; 
     limit: number; 
-    description: 
-    string; inventory: number;
+    description: string; 
+    inventory: number;
+    discount?: any
 }

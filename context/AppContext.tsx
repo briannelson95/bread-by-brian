@@ -22,7 +22,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
     }
 
     //@ts-ignore
-    function addToCart(product, quantity, options?: any) {
+    function addToCart(product, quantity, options?: any, total: number) {
         setCartProducts((prevProducts: any) => {
             const existingProductIndex = prevProducts.findIndex(
                 (p: any) => p.id === product.id
@@ -32,28 +32,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
             if (existingProductIndex !== -1) {
                 newQuantity = prevProducts[existingProductIndex].quantity + quantity;
             }
-      
-            // if (newQuantity <= product.limit && newQuantity <= product.inventory) {
-            //     const updatedProducts = [...prevProducts];
-        
-            //     if (existingProductIndex !== -1) {
-            //         updatedProducts[existingProductIndex] = {
-            //             ...prevProducts[existingProductIndex],
-            //             quantity: newQuantity,
-            //         };
-            //     } else {
-            //         updatedProducts.push({ ...product, quantity: newQuantity });
-            //     }
-      
-            //     saveCartProductsToLocalStorage(updatedProducts);
-            //     toast('Added to cart', {
-            //         icon: '🍞👍',
-            //     });
-            //     return updatedProducts;
-            // } else {
-            //     toast.error('Exceeds limit per customer or inventory.')
-            //     return prevProducts;
-            // }
+
             if (
                 newQuantity <= product.limit &&
                 newQuantity <= product.inventory
@@ -64,6 +43,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                     updatedProducts[existingProductIndex] = {
                         ...prevProducts[existingProductIndex],
                         quantity: newQuantity,
+                        total
                     };
                 } else {
                     // Validate options and include them in the cart
@@ -72,6 +52,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                             ...product,
                             quantity: newQuantity,
                             options: options,
+                            total
                         });
                     } else {
                         // Show error message for invalid options
@@ -79,6 +60,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                             ...product,
                             quantity: newQuantity,
                             options: null,
+                            total
                         });
                     }
                 }
