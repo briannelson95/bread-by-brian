@@ -86,7 +86,7 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
                         <div className='bg-zinc-500 rounded-full aspect-square w-full h-auto' />
                     )}
                 </Link>
-                {inventory && inventory > 0 ? (
+                {/* {inventory && inventory > 0 ? (
                     <button 
                         className='absolute bottom-0 right-0 bg-yellow-500 text-white font-bold rounded-full z-10 w-8 h-8 flex justify-center items-center'
                         onClick={handleAddToCart}
@@ -95,7 +95,7 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
                     </button>
-                ) : ""}
+                ) : ""} */}
             </div>
             <div>
                 <Link href={link}>
