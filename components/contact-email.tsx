@@ -50,7 +50,7 @@ export const ContactEmailTemplate: React.FC<Readonly<ContactTemplateProps>> = ({
                     <div 
                         style={{ marginBottom: '20px' }}
                     >
-                        <p>Here's what you requested:</p>
+                        <p>Your request:</p>
                         <p>{message}</p>
                     </div>
                     <div>
