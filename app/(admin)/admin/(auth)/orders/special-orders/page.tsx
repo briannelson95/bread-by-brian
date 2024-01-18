@@ -5,6 +5,7 @@ import React from 'react'
 export default async function SpecialOrderAdmin() {
     const { data: orderData } = await supabase.from('special_orders')
         .select('id, customer_name, customer_email')
+        .eq('completed', false)
         .order('created_at', { ascending: true })
     
     return (
