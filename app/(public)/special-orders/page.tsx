@@ -7,26 +7,57 @@ import toast from 'react-hot-toast';
 
 export default function SpecialOrderPage() {
     const [submitted, setSubmitted] = useState(false);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
+    // const [name, setName] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [message, setMessage] = useState('');
+    const [data, setData]: any = useState({
+        name:  '',
+        email: '',
+        message: '',
+    })
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         
-        supabase.from('special_orders')
+        const { data: orderData, error: orderError }: any = await supabase
+            .from('special_orders')
             .insert({
-                customer_name: name,
-                customer_email: email,
-                request: message,
+                customer_name: data.name,
+                customer_email: data.email,
+                request: data.message,
             })
-            .then(result => {
-                if (!result.error) {
-                    toast.success('Order Requested')
-                    setSubmitted(true)
-                }
-            })
+            .select('id')
+
+        if (orderError) {
+            throw new Error(`Error creating order: ${orderError.message}`);
+        }
+
+        const orderId = orderData[0].id;
+
+        // SEND EMAIL
+        const response = await fetch('api/request', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...data, orderId })
+        });
+
+        if (response.status === 200) {
+            setData({});
+            toast.success('Order Requested')
+            setSubmitted(true)
+        }
     }
+
+    const handleInputChange = (e: any) => {
+        const { name, value } = e.target;
+        console.log(value)
+        setData((prevData: any) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
 
     return (
         <section className='w-full p-2 space-y-2 md:grid md:grid-cols-2 md:gap-6 mb-20 md:mb-0'>
@@ -84,7 +115,9 @@ export default function SpecialOrderPage() {
                                     type='text'
                                     placeholder='John Smith'
                                     id='name'
-                                    onChange={(e: any) => setName(e.target.value)}
+                                    name='name'
+                                    value={data.name}
+                                    onChange={handleInputChange}
                                     required
                                 />
                                 <label>Email:</label>
@@ -92,7 +125,9 @@ export default function SpecialOrderPage() {
                                     type='email'
                                     placeholder='example@example.com'
                                     id='email'
-                                    onChange={(e: any) =>  setEmail(e.target.value)}
+                                    name='email'
+                                    value={data.email}
+                                    onChange={handleInputChange}
                                     required
                                 />
                             </fieldset>
@@ -101,22 +136,24 @@ export default function SpecialOrderPage() {
                                 <textarea
                                     rows={4}
                                     placeholder="Tell me about what you're looking for"
-                                    id='details'
-                                    onChange={(e: any) => setMessage(e.target.value)}
+                                    id='message'
+                                    name='message'
+                                    value={data.message}
+                                    onChange={handleInputChange}
                                     required
                                 />
                             </fieldset>
                             <MainButton
                                 title='Submit'
                                 type='submit'
-                                disabled={name == '' || email == '' || message == ''}
+                                disabled={data.name == '' || data.email == '' || data.message == ''}
                                 onClick={handleSubmit}
                             />
                         </form>
                     ) : (
                         <>
                             <h3 className='text-xl font-medium'>Thank you!</h3>
-                            <p>I&#39ll be in touch shortly about your order.</p>
+                            <p>I will be in touch shortly about your order.</p>
                         </>
                     )}
                     

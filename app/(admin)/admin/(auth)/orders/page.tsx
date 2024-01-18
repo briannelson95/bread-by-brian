@@ -21,14 +21,14 @@ export default async function OrdersPage() {
         // .lte('order_date', lastday.toISOString()); 
 
     const { data: specialOrders }: any = await supabase.from('special_orders')
-        .select()
-        .order('created_at', { ascending: true })
+        .select('id')
+        .order('created_at', { ascending: true });
         
 
     return (
         <div className="p-4 w-full space-y-2">
             <h1 className="text-2xl font-bold">Orders</h1>
-            {specialOrders.data && (
+            {specialOrders.length && (
                 <div className='w-full rounded-xl bg-red-400 p-4 text-white font-medium'>
                     <Link href={'/admin/orders/special-orders'}>New Special Order</Link>
                 </div>

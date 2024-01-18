@@ -19,7 +19,7 @@ export default async function SingleSpecialOrderPage({ params: { id } }: any ) {
     return (
         <div className="p-4 w-full space-y-2">
             <BackButton text='Back to all orders' />
-            <div className='w-full shadow-lg p-4 rounded-xl bg-gray-100 space-y-1'>
+            <div className='w-full shadow-lg p-4 rounded-xl space-y-1 bg-white'>
                 <div className='flex justify-between items-center'>
                     <h2 className='text-2xl font-bold'>Special Order Details</h2>
                 </div>
