@@ -5,8 +5,9 @@ import React from 'react'
 export default async function SpecialOrderAdmin() {
     const { data: orderData } = await supabase.from('special_orders')
         .select('id, customer_name, customer_email')
-        .eq('completed', false)
+        .eq('complete', false)
         .order('created_at', { ascending: true })
+
     
     return (
         <section className='p-4 w-full space-y-2'>
