@@ -1,4 +1,5 @@
 import BackButton from '@/components/BackButton'
+import SpecialRequest from '@/components/admin/SpecialRequest';
 import { supabase } from '@/supabase/lib/supabaseClient';
 import React from 'react'
 
@@ -19,25 +20,12 @@ export default async function SingleSpecialOrderPage({ params: { id } }: any ) {
     return (
         <div className="p-4 w-full space-y-2">
             <BackButton text='Back to all orders' />
-            <div className='w-full shadow-lg p-4 rounded-xl space-y-1 bg-white'>
-                <div className='flex justify-between items-center'>
-                    <h2 className='text-2xl font-bold'>Special Order Details</h2>
-                </div>
-                <div>
-                    <div>
-                        <p>Customer Name: {order[0].customer_name}</p>
-                        <p className='flex gap-1'>Customer Email: 
-                            <a href={`mailto:${order[0].customer_email}`} className='text-blue-500 underline'>
-                                {order[0].customer_email}
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div className='space-y-1'>
-                    <h2 className='text-xl font-medium'>Request</h2>
-                    <p>{order[0].request}</p>
-                </div>
-            </div>
+            <SpecialRequest 
+                customerName={order[0].customer_name} 
+                customerEmail={order[0].customer_email} 
+                request={order[0].request}
+                complete={order[0].complete}
+            />
         </div>
     )
 }

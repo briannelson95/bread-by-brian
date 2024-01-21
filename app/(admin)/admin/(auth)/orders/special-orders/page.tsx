@@ -7,6 +7,7 @@ export default async function SpecialOrderAdmin() {
         .select('id, customer_name, customer_email,')
         .eq('complete', false)
         .order('created_at', { ascending: true })
+
     
     return (
         <section className='p-4 w-full space-y-2'>
