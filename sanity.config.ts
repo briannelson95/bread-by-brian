@@ -4,6 +4,8 @@ import {visionTool} from '@sanity/vision'
 import { dashboardTool } from "@sanity/dashboard";
 import {schemaTypes} from '@/schemas'
 import { customWidget } from './utils/sanity/customWidget';
+import { documentListWidget } from 'sanity-plugin-dashboard-widget-document-list';
+import { NavigationWidget } from './utils/sanity/navigationWidget';
 
 export default defineConfig({
   name: 'default',
@@ -14,9 +16,21 @@ export default defineConfig({
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
 
   plugins: [
-    dashboardTool({widgets: [
-      customWidget({ layout: { width: "small" } })
-    ]}),
+    dashboardTool(
+      {widgets: [
+        NavigationWidget(),
+        customWidget(),
+        NavigationWidget({
+          layout: { width: 'small' }
+        }),
+        NavigationWidget({
+          layout: { width: 'small' }
+        }),
+        NavigationWidget({
+          layout: { width: 'small' }
+        }),
+      ]
+    }),
     structureTool(), 
     visionTool()
   ],
