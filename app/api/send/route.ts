@@ -7,7 +7,7 @@ export async function POST(request: any) {
     try {
         const body = await request.json();
         // console.log(body);
-        const { email, name, total, cartProducts, orderId } = body;
+        const { email, name, totalPrice, cartProducts, orderId } = body;
         const { data, error } = await resend.emails.send({
             from: 'Bread by Brian <info@breadbybrian.com>',
             to: email,
@@ -16,7 +16,7 @@ export async function POST(request: any) {
             reply_to: "breadbybrian95@gmail.com",
             react: EmailTemplate({ 
                 firstName: name,
-                totalPrice: total,
+                totalPrice: totalPrice,
                 products: cartProducts,
             }) as React.ReactElement,
         });

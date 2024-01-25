@@ -22,7 +22,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
     }
 
     //@ts-ignore
-    function addToCart(product, quantity, options?: any, total: number) {
+    function addToCart(product, quantity, options?: any, /*total: number*/) {
         setCartProducts((prevProducts: any) => {
             const existingProductIndex = prevProducts.findIndex(
                 (p: any) => p.id === product.id
@@ -43,7 +43,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                     updatedProducts[existingProductIndex] = {
                         ...prevProducts[existingProductIndex],
                         quantity: newQuantity,
-                        total
+                        // total
                     };
                 } else {
                     // Validate options and include them in the cart
@@ -52,7 +52,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                             ...product,
                             quantity: newQuantity,
                             options: options,
-                            total
+                            // total
                         });
                     } else {
                         // Show error message for invalid options
@@ -60,7 +60,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                             ...product,
                             quantity: newQuantity,
                             options: null,
-                            total
+                            // total
                         });
                     }
                 }
@@ -111,6 +111,9 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
             saveCartProductsToLocalStorage(newCartProducts)
             return newCartProducts;
         });
+        console.log(cartProducts)
+        console.log(cartProducts)
+
         toast.success("Removed Product")
     }
 
