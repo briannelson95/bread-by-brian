@@ -195,7 +195,7 @@ export default function ProductPageInfo(props: Product ) {
                                     checked={enabled}
                                     onChange={handleToggle}
                                 />
-                                <div className={`toggle__background w-12 h-6 bg-${enabled ? 'green-500' : 'gray-500'}-400 rounded-full flex items-center p-1`}>
+                                <div className={`toggle__background w-12 h-6 bg-${enabled ? 'green' : 'gray'}-400 rounded-full flex items-center p-1`}>
                                     <div className={`toggle__dot w-4 h-4 bg-white rounded-full shadow transition-transform transform ${enabled ? 'translate-x-6' : 'translate-x-0'}`}></div>
                                 </div>
                                 </label>
