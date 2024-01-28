@@ -28,7 +28,7 @@ export default async function PublicLayout({
       {alert && alert[0].alert !== null && (
         <PublicAlertBanner text={alert[0].alert} visible={alert[0].alert.length > 0} />
       )}
-      <div className={`${inter.className} max-w-4xl p-2 mx-auto`}>
+      <div className={`${inter.className}`}>
         <Navbar />
         <main className='w-full'>
           {children}

@@ -59,7 +59,8 @@ export default function QuickAdd() {
                 desc,
                 price,
                 limit,
-                image
+                image,
+                enabled: false,
             })
             .then(result => {
                 if (!result.error) {

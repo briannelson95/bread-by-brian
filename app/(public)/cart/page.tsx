@@ -20,7 +20,7 @@ export default function CartPage() {
     }, [])
 
     return (
-        <div className='w-full p-2 mb-16'>
+        <div className='w-full p-2 mb-16 md:max-w-4xl mx-auto'>
             <MyCart />
         </div>
     )
