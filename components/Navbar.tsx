@@ -13,8 +13,8 @@ export default function Navbar() {
     const {cartProducts}: any = useContext(CartContext)
 
     return (
-        <nav>
-            <ul className='flex items-center justify-between md:p-2'>
+        <nav className='max-w-4xl p-2 mx-auto md:px-0'>
+            <ul className='flex items-center justify-between md:py-2'>
                 <li className='md:hidden'>
                     {pathname !== '/' ? (
                         <BackButton />

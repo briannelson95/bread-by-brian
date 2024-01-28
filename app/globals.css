@@ -31,3 +31,35 @@ body {
 .adminButton {
     @apply bg-blue-500 text-white px-4 py-2 rounded-lg
 }
+
+@keyframes float {
+    0%{
+      transform: translateX(-100%) translateY(0px);
+    }
+    50% {
+      transform: translateY(50px);
+    }
+    100% {
+      transform: translateX(100%) translateY(0px);
+    }
+  }
+  
+.animate-float-24 {
+    animation: float 24s linear infinite;
+}
+
+.animate-float-30 {
+    animation: float 30s linear infinite;
+}
+
+.animate-float-36 {
+    animation: float 36s linear infinite;
+}
+
+.animate-float-40 {
+    animation: float 40s linear infinite;
+}
+
+.animate-float-50 {
+    animation: float 50s linear infinite;
+}

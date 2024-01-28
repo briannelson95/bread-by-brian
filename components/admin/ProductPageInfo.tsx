@@ -15,6 +15,7 @@ type Product = {
     slug: string;
     order: number;
     inventory: number;
+    enabled: boolean;
 }
 
 export default function ProductPageInfo(props: Product ) {
@@ -27,6 +28,7 @@ export default function ProductPageInfo(props: Product ) {
     const [inventory, setInventory] = useState(props.inventory);
     const [options, setOptions]: any = useState(null)
     const [isUploading, setIsUploading] = useState(false);
+    const [enabled, setEnabled] = useState(props.enabled)
 
     useEffect(() => {
         supabase.from('product_options')
@@ -50,6 +52,7 @@ export default function ProductPageInfo(props: Product ) {
                 limit,
                 image,
                 inventory,
+                enabled,
             })
             .eq('id', props.id)
             .then(result => {
@@ -76,7 +79,10 @@ export default function ProductPageInfo(props: Product ) {
         }
     }
 
-    console.log(options)
+    const handleToggle = () => {
+        setEnabled(!enabled);
+        console.log(enabled)
+    }
 
     return (
         <div className='w-full shadow-lg p-4 rounded-xl bg-white space-y-1 md:grid md:grid-cols-7 md:gap-6'>
@@ -177,6 +183,25 @@ export default function ProductPageInfo(props: Product ) {
                 </div>
                 <div className='bg-white w-full rounded-xl p-2 space-y-2 border border-gray-300'>
                     <p className='text-lg font-medium'>More Info</p>
+                    <div className='grid grid-cols-7 gap-2'>
+                        <p className='col-span-2'>Enabled:</p>
+                        <span className='col-span-5'>
+                            <div className="relative">
+                                <label htmlFor="toggle" className="cursor-pointer">
+                                <input
+                                    id="toggle"
+                                    type="checkbox"
+                                    className="hidden"
+                                    checked={enabled}
+                                    onChange={handleToggle}
+                                />
+                                <div className={`toggle__background w-12 h-6 bg-${enabled ? 'green-500' : 'gray-500'}-400 rounded-full flex items-center p-1`}>
+                                    <div className={`toggle__dot w-4 h-4 bg-white rounded-full shadow transition-transform transform ${enabled ? 'translate-x-6' : 'translate-x-0'}`}></div>
+                                </div>
+                                </label>
+                            </div>
+                        </span>
+                    </div>
                     <div className='grid grid-cols-7 gap-2'>
                         <p className='col-span-2'>Inventory:</p>
                         <span className='col-span-5'>
