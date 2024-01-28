@@ -8,9 +8,9 @@ export default async function page() {
     .select()
     // .eq('enabled', true)
     return (
-        <div className='md:max-w-4xl mx-auto'>
-            <div className='bg-pink-500 text-white p-4 rounded-xl flex justify-between'>
-                <h1 className='text-4xl font-bold'>{"Valentine's Day Specials"}</h1>
+        <div className='md:max-w-4xl mx-auto px-4 md:px-0'>
+            <div className='bg-pink-500 text-white p-4 rounded-xl flex flex-col md:flex items-center gap-2 justify-between'>
+                <h1 className='text-2xl md:text-4xl font-bold'>{"Valentine's Day Specials"}</h1>
                 <CountDown data={new Date(promotion[0]?.last_day_to_order).toUTCString()} />
             </div>
             <div className='p-4 space-y-4 flex flex-col w-full'>

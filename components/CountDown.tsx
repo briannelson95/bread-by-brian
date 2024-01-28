@@ -44,8 +44,8 @@ export default function CountDown({data}: any) {
             {timeComponents.map((component) => (
                 <div key={component.label}>
                     <div className='relative h-10 w-10 md:h-16 md:w-16'>
-                        <div className='bg-pink-800 bg-count-dark-desaturated-blue/50 absolute top-0 w-full h-1/2 rounded-md shadow-md' />
-                        <div className='bg-pink-700 bg-count-dark-desaturated-blue absolute bottom-0 w-full h-1/2 rounded-md shadow-md' />
+                        <div className='bg-pink-800 bg-count-dark-desaturated-blue/50 absolute top-0 w-full h-1/2 rounded md:rounded-md shadow-md' />
+                        <div className='bg-pink-700 bg-count-dark-desaturated-blue absolute bottom-0 w-full h-1/2 rounded md:rounded-md shadow-md' />
                         <p className=' text-pink-50 text-count-soft-red text-2xl md:text-3xl text-center absolute flex justify-center items-center w-full h-full'>
                             {component.value}
                         </p>
