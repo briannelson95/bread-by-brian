@@ -15,14 +15,15 @@ export default async function page() {
             </div>
             <div className='p-4 space-y-4 flex flex-col w-full'>
                 <div className='w-2/3'>
-                    <h2 className='text-xl font-medium'>💕 Introducing Our Valentine's Day Collection 💕</h2>
-                    <p>s're excited to share our exclusive Valentine's Day collection with you! We've curated a limited-edition selection of treats to make this Valentine's Day truly special.
+                    <h2 className='text-xl font-medium'>{`💕 Introducing Our Valentine's Day Collection 💕`}</h2>
+                    <p>
+                        {`We're excited to share our exclusive Valentine's Day collection with you! We've curated a limited-edition selection of treats to make this Valentine's Day truly special.`}
                     </p>
                 </div>
                 <div className='w-2/3 self-end'>
                     <h2 className='text-xl font-medium'>🎁 Limited-Edition Gift Boxes</h2>
                     <p>
-                    Discover the joy of giving with our beautifully crafted Valentine's Gift Boxes. Available in two sizes, our small box includes a delightful selection of 4 unique treats, while our large box indulges you with a generous assortment of 6 mouthwatering delights.
+                        {`Discover the joy of giving with our beautifully crafted Valentine's Gift Boxes. Available in two sizes, our small box includes a delightful selection of 4 unique treats, while our large box indulges you with a generous assortment of 6 mouthwatering delights.`}
                     </p>
                 </div>
             </div>
