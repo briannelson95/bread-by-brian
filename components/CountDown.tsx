@@ -59,10 +59,10 @@ const CountDown = ({ data }: any) => {
   }, [data]);
 
   const timeComponents = [
-    { label: windowSize < 390 ? 'D' : 'Days', value: timeLeft.days },
-    { label: windowSize < 390 ? 'H' : 'Hours', value: timeLeft.hours },
-    { label: windowSize < 390 ? 'M' : 'Minutes', value: timeLeft.minutes },
-    { label: windowSize < 390 ? 'S' : 'Seconds', value: timeLeft.seconds },
+    { label: 'D', value: timeLeft.days },
+    { label: 'H', value: timeLeft.hours },
+    { label: 'M', value: timeLeft.minutes },
+    { label: 'S', value: timeLeft.seconds },
   ];
 
   return (
