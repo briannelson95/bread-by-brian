@@ -1,4 +1,5 @@
 import BackButton from '@/components/BackButton'
+import OrderNotes from '@/components/admin/OrderNotes';
 import { supabase } from '@/supabase/lib/supabaseClient';
 import React from 'react'
 
@@ -79,6 +80,13 @@ export default async function SingleOrderPage({ params: { id } }: any ) {
                             ))}
                         </tbody>
                     </table>
+                </div>
+                <div className='w-full'>
+                    <p>Notes:</p>
+                    <OrderNotes
+                        orderNote={order[0].notes}
+                        orderId={order[0].id}
+                    />
                 </div>
             </div>
         </div>
