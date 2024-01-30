@@ -13,6 +13,7 @@ const CountDown = ({ data }: any) => {
   const [windowSize, setWindowSize] = useState(0);
 
   useEffect(() => {
+    // Check if window is defined before using it
     if (typeof window !== 'undefined') {
       setWindowSize(window.innerWidth);
 
@@ -33,25 +34,28 @@ const CountDown = ({ data }: any) => {
       return;
     }
 
-    const targetTime = new Date(data).getTime();
+    // Check if window is defined before using it
+    if (typeof window !== 'undefined') {
+      const targetTime = new Date(data).getTime();
 
-    const interval = setInterval(() => {
-      const currentTime = new Date().getTime();
-      const timeDifference = targetTime - currentTime;
+      const interval = setInterval(() => {
+        const currentTime = new Date().getTime();
+        const timeDifference = targetTime - currentTime;
 
-      if (timeDifference > 0) {
-        const days = String(Math.floor(timeDifference / (1000 * 60 * 60 * 24))).padStart(2, '0');
-        const hours = String(Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-        const minutes = String(Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        const seconds = String(Math.floor((timeDifference % (1000 * 60)) / 1000)).padStart(2, '0');
+        if (timeDifference > 0) {
+          const days = String(Math.floor(timeDifference / (1000 * 60 * 60 * 24))).padStart(2, '0');
+          const hours = String(Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+          const minutes = String(Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+          const seconds = String(Math.floor((timeDifference % (1000 * 60)) / 1000)).padStart(2, '0');
 
-        setTimeLeft({ days, hours, minutes, seconds });
-      } else {
-        clearInterval(interval);
-      }
-    }, 1000);
+          setTimeLeft({ days, hours, minutes, seconds });
+        } else {
+          clearInterval(interval);
+        }
+      }, 1000);
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    }
   }, [data]);
 
   const timeComponents = [
