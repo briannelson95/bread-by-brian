@@ -27,6 +27,7 @@ export default async function Home() {
           title={promotionData.title}
           description={promotionData.description}
           slug={promotionData.slug}
+          date={new Date(promotion[0]?.last_day_to_order).toUTCString()}
         />
       ) : ''}
       
@@ -42,6 +43,8 @@ export default async function Home() {
               price: item.price,
               limit: item.limit,
               inventory: item.inventory,
+              tag: item.tag,
+              promotionId: item.promotion_id,
             }}            
           />
         ))}

@@ -7,5 +7,7 @@ type MenuItem = {
     limit: number; 
     description: string; 
     inventory: number;
-    discount?: any
+    discount?: any;
+    tag?: string;
+    promotionId?: number;
 }

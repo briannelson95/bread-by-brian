@@ -1,6 +1,7 @@
 import React from 'react'
 import HeartAnimation from './HeartAnimation';
 import Link from 'next/link';
+import CountDown from './CountDown';
 
 interface Props {
     bgColor: string;
@@ -8,6 +9,7 @@ interface Props {
     title: string;
     description: string;
     slug: string;
+    date?: any
 }
 
 export default function BannerAd(props: Props) {
@@ -15,7 +17,7 @@ export default function BannerAd(props: Props) {
         <Link href={props.slug} className='hover:cursor-default'>
             <section className={`w-full bg-pink-500 text-${props.textColor ? props.textColor : 'black'} relative overflow-hidden`}>
                 <div className='bg-pink-500/30 w-full relative z-[999]'>
-                    <div className='px-4 mx-auto md:max-w-4xl h-full py-6 md:grid md:grid-cols-3 md:gap-4 space-y-4'>
+                    <div className='px-2 md:px-0 mx-auto md:max-w-4xl h-full py-4 md:grid md:grid-cols-3 md:gap-2 space-y-4 md:space-y-0'>
                         <div className='col-span-2 space-y-2'>
                             <h2 className='text-2xl md:text-4xl font-bold'>
                                 {props.title}
@@ -26,13 +28,21 @@ export default function BannerAd(props: Props) {
                                 </p>
                             </div>
                         </div>
-                        <div className='md:flex justify-end items-center'>
-                            <Link 
-                                href={props.slug}
-                                className='bg-white text-brand-secondary font-medium px-4 py-2 rounded-lg shadow-md hover:cursor-pointer'
-                            >
-                                Explore Products
-                            </Link>
+                        <div className='col-span-1 w-full flex md:flex-col items-center md:justify-end md:h-full gap-2 md:gap-0'>
+                            <div className='md:w-full flex flex-col items-center space-y-2'>
+                                <p className='text-sm md:text-xl font-semibold text-center'>Order before {props.date.slice(0, -12)}</p>
+                                <CountDown
+                                    data={props.date}
+                                />
+                            </div>
+                            <div className='md:mt-3 md:flex md:justify-end mt-2'>
+                                <Link 
+                                    href={props.slug}
+                                    className='bg-white text-brand-secondary font-semibold px-4 md:px-6 py-2 rounded-lg shadow-md hover:cursor-pointer justify-self-center self-baseline'
+                                >
+                                    Order Now
+                                </Link>
+                            </div>
                         </div>
                         
                     </div>
