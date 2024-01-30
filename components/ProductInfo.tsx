@@ -8,7 +8,7 @@ import { supabase } from '@/supabase/lib/supabaseClient';
 
 export default function ProductInfo({menuItem}: {menuItem: MenuItem}) {
     const {
-        image, link, title, id, price, limit, description, inventory
+        image, link, title, id, price, limit, description, inventory, tag, promotionId,
     } = menuItem;
     const [options, setOptions]: any[] = useState();
     const [selectedOption, setSelectedOption]: any = useState(null)
@@ -48,15 +48,22 @@ export default function ProductInfo({menuItem}: {menuItem: MenuItem}) {
     return (
         <div className='w-full p-2 space-y-2 md:grid md:grid-cols-2 md:gap-6'>
             {image ? (
-                <div className='rounded-full aspect-square w-full h-auto overflow-hidden bg-center'>
-                    <Image
-                        src={image}
-                        alt={'Alt text for image'}
-                        height={3000}
-                        width={3000}
-                        priority
-                        className='bg-cover'
-                    />
+                <div className='relative'>
+                    <div className='rounded-full aspect-square w-full h-auto overflow-hidden bg-center relative'>
+                        <Image
+                            src={image}
+                            alt={'Alt text for image'}
+                            height={3000}
+                            width={3000}
+                            priority
+                            className='bg-cover'
+                        />
+                    </div>
+                    {promotionId && (
+                        <div className='absolute top-0 left-0 bg-red-500 text-white px-2 py-1 rounded-full'>
+                            Promotional Item
+                        </div>
+                    )}
                 </div>
             ) : (
                 <div className='bg-zinc-500 rounded-full aspect-square w-full h-auto' />
@@ -79,7 +86,7 @@ export default function ProductInfo({menuItem}: {menuItem: MenuItem}) {
                     </div>
                 </div>
                 <div>
-                    {inventory <= 3 && inventory > 0 && <p className='text-red-500'>Only {inventory} left this week</p>}
+                    {inventory <= 3 && inventory > 0 && <p className='text-red-500'>Only {inventory} left</p>}
                     <h2 className='text-xl font-bold'>
                         Details:
                     </h2>

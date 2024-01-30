@@ -14,9 +14,7 @@ export default async function Home() {
   const { data: promotion }: any = await supabase
     .from('promotions')
     .select()
-    // .eq('enabled', true)
-
-  // console.log(new Date(promotion[0]?.last_day_to_order).toUTCString())
+    .eq('enabled', true)
 
   const promotionData = promotion[0];
 
@@ -45,6 +43,8 @@ export default async function Home() {
               price: item.price,
               limit: item.limit,
               inventory: item.inventory,
+              tag: item.tag,
+              promotionId: item.promotion_id,
             }}            
           />
         ))}

@@ -52,9 +52,10 @@ export default async function ItemPage({ params: { id } }: { params: { id: strin
                         limit: productData.limit,
                         description: productData.desc,
                         inventory: productData.inventory,
+                        promotionId: productData.promotion_id,
                     }}                
                 />
-            ) : 'This product is no longer available.'}  
+            ) : 'This product is no longer available.'} 
         </div>
     )
 }

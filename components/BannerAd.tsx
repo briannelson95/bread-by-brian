@@ -28,8 +28,9 @@ export default function BannerAd(props: Props) {
                                 </p>
                             </div>
                         </div>
-                        <div className='col-span-1 w-full flex md:flex-col md:justify-end md:h-full gap-2 md:gap-0'>
-                            <div className='md:w-full'>
+                        <div className='col-span-1 w-full flex md:flex-col items-center md:justify-end md:h-full gap-2 md:gap-0'>
+                            <div className='md:w-full flex flex-col items-center space-y-2'>
+                                <p className='text-sm md:text-xl font-semibold text-center'>Order before {props.date.slice(0, -12)}</p>
                                 <CountDown
                                     data={props.date}
                                 />

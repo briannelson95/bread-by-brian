@@ -6,9 +6,9 @@ import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react'
 import MainButton from './MainButton';
 
-export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id?: number; price?: number; limit?: number; inventory?: number;}}) {
+export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id?: number; price?: number; limit?: number; inventory?: number; tag?: string; promotionId?: number;}}) {
     const {
-        image, link, title, id, price, limit, inventory
+        image, link, title, id, price, limit, inventory, tag, promotionId,
     } = menuItem;
     const [openPopup, setOpenPopup] = useState(false);
     const [productOptions, setProductOptions]: any = useState(null);
@@ -46,7 +46,7 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
     }
 
     return (
-        <div className='w-full space-y-2'>
+        <div className={`w-full space-y-2 ${promotionId && 'border-2 border-pink-500 rounded-xl p-2'}`}>
             <div className='relative'>
                 {productOptions !== null && (
                     <div className={`${openPopup ? 'block' : 'hidden'} absolute bottom-0 w-full z-20`}>
@@ -96,6 +96,11 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
                         </svg>
                     </button>
                 ) : ""}
+                {tag && (
+                    <div className='absolute top-0 left-0 bg-red-500 text-white font-medium text-sm rounded-full z-10 px-2 py-1 flex justify-center items-center capitalize'>
+                        {tag}
+                    </div>
+                )}
             </div>
             <div>
                 <Link href={link}>
@@ -104,7 +109,7 @@ export default function GridItem({menuItem}: {menuItem: {image: string; link: st
             </div>
             {inventory == 0 ? (
                 <p className='text-gray-400 text-center'>Sold out</p>
-            ) : inventory && inventory <= 3 && <p className='text-red-500 text-center'>Only {inventory} left this week</p>}
+            ) : inventory && inventory <= 3 && <p className='text-red-500 text-center'>Only {inventory} left</p>}
         </div>
     )
 }
