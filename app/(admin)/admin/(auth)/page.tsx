@@ -14,6 +14,7 @@ import Dollars from "@/components/icons/Dollars";
 import StoreIcon from "@/components/icons/StoreIcon";
 import Graph from "@/components/admin/Graph";
 import Table from "@/components/admin/Table";
+import CalendarIcon from "@/components/icons/CalendarIcon";
 
 const thirtyDaysAgo = new Date();
 thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -28,7 +29,20 @@ export default function AdminPage() {
   const [orders, setOrders]: any = useState([]);
   const [currentOrders, setCurrentOrders]: any = useState([]);
   const [open, setOpen] = useState(false);
-  
+  const [monthlyRev, setMonthlyRev]: any = useState() 
+
+  // Get the current date in UTC as a Date object
+  const currentDate = new Date();
+  const currentMonth = currentDate.getUTCMonth()
+
+  const monthAbbreviations = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  // Set the current date to the first day of the month
+  currentDate.setUTCDate(1);
+
+  // Get the last day of the current month
+  const lastDayOfMonth = new Date(currentDate.getUTCFullYear(), currentDate.getUTCMonth() + 1, 0);
+  lastDayOfMonth.setUTCHours(23, 59, 59, 999);
 
   useEffect(() => {
     if (profile) {
@@ -38,7 +52,7 @@ export default function AdminPage() {
           redirect('/admin/login');
       }
     }
-  })
+  });
 
   useEffect(() => {
     supabase.from('orders')
@@ -107,6 +121,20 @@ export default function AdminPage() {
           
           setCurrentOrders(result.data)
         }
+      });
+
+    supabase.from('orders')
+      .select()
+      .eq('paid', true)
+      .eq('completed', true)
+      .gte('created_at', currentDate.toISOString()) // Greater than or equal to the first day of the month
+      .lt('created_at', lastDayOfMonth.toISOString()) // Less than the last day of the month
+      .order('created_at', {ascending: true})
+      .then(result => {
+        // console.log(result)
+        if (!result.error) {
+          setMonthlyRev(result.data)
+        }
       })
     
   }, [])
@@ -126,6 +154,10 @@ export default function AdminPage() {
   const handleOpenOrder = () => {
     setOpen(!open)
   }
+
+  const monthlyTotal = monthlyRev && monthlyRev.reduce((acc: any, currVal: any) => {
+    return acc + currVal.total_price;
+  }, 0);
 
   return (
     <div className="py-4 space-y-4 overflow-auto relative">
@@ -156,6 +188,13 @@ export default function AdminPage() {
               title="Products Sold" 
               data={sumOfProducts} 
               icon={<StoreIcon />} 
+            />
+          </div>
+          <div className="col-span-1">
+            <QuickData 
+              title={`${monthAbbreviations[currentMonth]} Revenue`}
+              data={`$${monthlyTotal?.toFixed(2)}`} 
+              icon={<CalendarIcon />} 
             />
           </div>
           <div className="col-span-2 md:col-span-4">

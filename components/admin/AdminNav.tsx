@@ -18,14 +18,14 @@ export default function AdminNav() {
 
     return (
         <>
-            <div className='absolute top-2 right-2 md:hidden'>
+            <div className='absolute top-2 right-2 md:hidden z-50'>
                 <button onClick={handleNavOpen}>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                 </button>
             </div>
-            <nav className={`absolute h-full z-50 md:fixed top-0 pt-4 px-4 min-w-[192px] md:block ${openNav ? 'block' : 'hidden'}`}>
+            <nav className={`absolute h-full z-50 md:fixed top-0 pt-4 px-4 min-w-[192px] md:block ${openNav ? 'block' : 'hidden'} bg-gray-200 shadow-md md:shadow-none`}>
                 <div className='flex gap-2 items-center mb-6'>
                     <Link href={'/'}>
                         <div className={`flex gap-2 items-center`}>
