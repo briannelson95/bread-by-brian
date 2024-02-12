@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import TagIcon from '../icons/TagIcon';
 
 export default function AdminNav() {
     const pathname = usePathname();
@@ -92,6 +93,15 @@ export default function AdminNav() {
                             className={`${pathname.includes('/admin/orders') ? 'block' : 'hidden'} text-sm text-right mr-2 mt-2`}
                         >
                             Special Orders
+                        </Link>
+                    </li>
+                    <li>
+                        <Link 
+                            href={'/admin/discounts'} 
+                            className={`${pathname == "/admin/discounts" ? activeClass : hoverClass} rounded-lg p-2 w-full flex gap-2 transition-colors duration-200`}
+                        >
+                            <TagIcon />
+                            Discounts
                         </Link>
                     </li>
                 </ul>
