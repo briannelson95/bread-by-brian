@@ -15,6 +15,7 @@ import StoreIcon from "@/components/icons/StoreIcon";
 import Graph from "@/components/admin/Graph";
 import Table from "@/components/admin/Table";
 import CalendarIcon from "@/components/icons/CalendarIcon";
+import BestSeller from "@/components/admin/BestSeller";
 
 const thirtyDaysAgo = new Date();
 thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -29,7 +30,8 @@ export default function AdminPage() {
   const [orders, setOrders]: any = useState([]);
   const [currentOrders, setCurrentOrders]: any = useState([]);
   const [open, setOpen] = useState(false);
-  const [monthlyRev, setMonthlyRev]: any = useState() 
+  const [monthlyRev, setMonthlyRev]: any = useState();
+  const [topFive, setTopFive]: any = useState([]);
 
   // Get the current date in UTC as a Date object
   const currentDate = new Date();
@@ -137,9 +139,16 @@ export default function AdminPage() {
         }
       })
     
-  }, [])
+    supabase.rpc('get_top_five_products')
+      .select('*')
+      .then(result => {
+        if (!result.error) {
+          setTopFive(result.data)
+          console.log(result.data)
+        }
+      })
 
-  // console.log(currentOrders)
+  }, [])
 
   if (!session) {
     redirect('/admin/login')
@@ -168,39 +177,42 @@ export default function AdminPage() {
         </div>
       )}
       <PageCard title="Dashboard">
-        <div className="grid grid-cols-2 grid-flow-row md:grid-cols-4 gap-2 md:gap-4">
-          <div className="col-span-1">
+        <div className="grid grid-cols-2 grid-flow-row md:grid-cols-6 gap-2 md:gap-4">
+          <div className="md:col-span-2">
             <QuickData 
               title="Total Revenue" 
               data={`$${consolidatedTotal?.toFixed(2)}`} 
               icon={<MoneyIcon />} 
             />
           </div>
-          <div className="col-span-1">
-            <QuickData 
-              title="Total Sales" 
-              data={revenueData?.length} 
-              icon={<Dollars />} 
-            />
-          </div>
-          <div className="col-span-1">
+          {/* <QuickData 
+            title="Total Sales" 
+            data={revenueData?.length} 
+            icon={<Dollars />} 
+          /> */}
+          <div className="md:col-span-2">
             <QuickData 
               title="Products Sold" 
               data={sumOfProducts} 
               icon={<StoreIcon />} 
             />
           </div>
-          <div className="col-span-1">
+          <div className="md:col-span-2">
             <QuickData 
               title={`${monthAbbreviations[currentMonth]} Revenue`}
               data={`$${monthlyTotal?.toFixed(2)}`} 
               icon={<CalendarIcon />} 
             />
           </div>
-          <div className="col-span-2 md:col-span-4">
+          <div className="col-span-2 md:col-span-3">
             <Graph data={orders} />
           </div>
-          <div className="col-span-2 md:col-span-4">
+          <div className="col-span-2 md:col-span-3">
+            <BestSeller 
+              data={topFive}
+            />
+          </div>
+          <div className="col-span-2 md:col-span-6">
             <Table 
               title="Recent Orders"
               headers={['completed', 'customer_name', 'order_date', 'total_price']} 

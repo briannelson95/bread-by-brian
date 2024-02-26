@@ -4,9 +4,7 @@ import React from 'react'
 
 export default async function DiscountPage() {
     const { data: dicounts } = await supabase.from('discounts')
-        .select('name, code, amount, enabled')
-
-    // console.log(dicounts)
+        .select('name, code, amount, enabled');
 
     return (
         <div className="p-4 w-full space-y-2">

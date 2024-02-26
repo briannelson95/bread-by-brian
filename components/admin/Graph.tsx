@@ -42,12 +42,12 @@ export default function Graph({ data }: { data?: any }) {
       
     const consolidatedArray = Object.values(consolidatedMap);
     return (
-        <div className='border border-gray-400 rounded-lg px-4 py-4 space-y-4 w-full'>
+        <div className='border border-gray-400 rounded-lg px-4 py-4 space-y-4 w-full h-full'>
             <div className='flex gap-2 items-center'>
                 <StackIcon />
                 <h2 className='text-xl font-bold'>Sales Revenue</h2>
             </div>
-            {/* <div className='h-96 w-full'> */}
+            <div className='h-full'>
                 <Line
                     data={{
                         labels: labels,
@@ -64,12 +64,8 @@ export default function Graph({ data }: { data?: any }) {
                             },
                         ],
                     }}
-                    // options={{
-                    //     responsive: true,
-                    //     maintainAspectRatio: false,
-                    // }}
                 />
-            {/* </div> */}
+            </div>
             
         </div>
     )

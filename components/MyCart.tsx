@@ -9,53 +9,88 @@ import toast from 'react-hot-toast'
 import ThankYou from './ThankYou'
 
 export default function MyCart() {
-    const {cartProducts, clearCart}: any = useContext(CartContext)
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState()
-    const [street, setStreet] = useState('')
-    const [postal, setPostal] = useState()
-    const [city, setCity] = useState('')
-    const [state, setState] = useState('')
-    // const [country, setCountry]= useState('')
-    const [isChecked, setIsChecked] = useState(false);
-    const [thisOrder, setThisOrder] = useState(null);
-
-    let deliveryFee = 2.5;
-    let totalPrice: number
-
-    let total = 0;
-
-    cartProducts?.map((p: any) => {
-        return total += p.price
-    })
-
-    const subTotal = cartProducts.reduce((acc: any, product: any) => {
-        const productTotal = product.price * product.quantity;
-        return acc + productTotal;
-    }, 0);
-
-
-    if (!isChecked) {
-        totalPrice = subTotal;
-    } else {
-        totalPrice = subTotal + deliveryFee;
-    }
-
-    const [data, setData]: any = useState({
-        name:  '',
+    const { cartProducts, clearCart, updateCart }: any = useContext(CartContext);
+    const [formData, setFormData]: any = useState({
+        name: '',
         email: '',
         phone: '',
         street: '',
         postal: '',
         city: '',
         state: '',
-        id: thisOrder
-    })
+        id: null,
+    });
+    const [isChecked, setIsChecked] = useState(false);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [thisOrder, setThisOrder] = useState(null);
+    const [discountError, setDiscountError] = useState(false);
+    const [appliedDiscounts, setAppliedDiscounts]: any = useState([]);
+
+    const deliveryFee = 2.5;
+    const subTotal = cartProducts.reduce((acc: any, product: any) => {
+        const productTotal = product.price * product.quantity;
+        return acc + productTotal;
+    }, 0);
+
+    useEffect(() => {
+        setTotalPrice(isChecked ? subTotal + deliveryFee : subTotal);
+    }, [cartProducts, isChecked]);
+
+    const updateTotal = (discount: number) => {
+        const discountToDecimal = discount / 100;
+        setTotalPrice((subTotal) => subTotal * (1 - discountToDecimal));
+        setDiscountError(false);
+        toast.success('Discount Applied')
+    };
+
+    const handleCheckCode = async (code: string) => {
+        try {
+            const { data, error } = await supabase.from('discounts').select().eq('code', code);
+
+            if (!error && data.length > 0) {
+                const discountId = data[0].discount_id;
+                const discountAmount = data[0].amount;
+
+                if (!appliedDiscounts.includes(discountId)) {
+                    const result = await supabase
+                        .from('discount_relations')
+                        .select()
+                        .eq('discount_id', discountId)
+                        .in('product_id', cartProducts.map((obj: any) => obj.id));
+
+                    if (!result.error) {
+                        updateTotal(discountAmount);
+                        setAppliedDiscounts((prevDiscounts: any) => [...prevDiscounts, discountId]);
+                    } else {
+                        setDiscountError(true);
+                    }
+                } else {
+                    setDiscountError(true);
+                }
+            } else {
+                setDiscountError(true);
+            }
+        } catch (error) {
+            console.error("Error checking discount code:", error);
+            setDiscountError(true);
+        }
+
+        if (code == null) {
+            setAppliedDiscounts(false)
+        }
+    };
+    
 
     const handleCheckboxChange = () => {
-        // Toggle the value of isChecked when the checkbox is changed
-        setIsChecked(!isChecked);
+        setIsChecked((prev) => !prev);
+    };
+
+    const handleInputChange = (e: any) => {
+        const { name, value } = e.target;
+        setFormData((prevData: any) => ({
+            ...prevData,
+            [name]: value,
+        }));
     };
 
     const handleSubmitOrder = async (e: any) => {
@@ -66,13 +101,13 @@ export default function MyCart() {
             .insert(
                 {
                     total_price: totalPrice,
-                    customer_name: data.name,
-                    customer_email: data.email,
-                    customer_phone: phone,
-                    customer_street: street,
-                    customer_postal: postal,
-                    customer_city: city,
-                    customer_state: state,
+                    customer_name: formData.name,
+                    customer_email: formData.email,
+                    customer_phone: formData.phone,
+                    customer_street: formData.street,
+                    customer_postal: formData.postal,
+                    customer_city: formData.city,
+                    customer_state: formData.state,
                     order_type: 'web',
                     delivery: isChecked
                 }
@@ -92,11 +127,11 @@ export default function MyCart() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ ...data, orderId, cartProducts, totalPrice })
+            body: JSON.stringify({ ...formData, orderId, cartProducts, totalPrice })
         });
 
         if (response.status === 200) {
-            setData({});
+            setFormData({});
             // toast.success('Email Sent')
         }
 
@@ -142,14 +177,6 @@ export default function MyCart() {
         }
 
     }
-
-    const handleInputChange = (e: any) => {
-        const { name, value } = e.target;
-        setData((prevData: any) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
     
     return (
         <div className='w-full space-y-2'>
@@ -187,6 +214,20 @@ export default function MyCart() {
                                                 </div>
                                                 <p className={`${isChecked ? 'block' : 'hidden'}`}>$2.50</p>
                                             </div>
+                                            <div className='flex gap-2 items-center relative'>
+                                                Discount:
+                                                <div className=''>
+                                                    {discountError && (
+                                                        <div className='text-red-500 text-sm absolute top-0 right-0'>Invalid code</div>
+                                                    )}
+                                                    <input
+                                                        type='text'
+                                                        className='border px-2 py-1 rounded'
+                                                        placeholder='Code'
+                                                        onChange={(e: any) => handleCheckCode(e.target.value)}
+                                                    />
+                                                </div>
+                                            </div>
                                             <div className='flex gap-2'>
                                                 <p className='font-bold'>Total:</p>
                                                 <p>${totalPrice.toFixed(2)}</p>
@@ -207,7 +248,7 @@ export default function MyCart() {
                                             placeholder='John Smith'
                                             id='name'
                                             name='name'
-                                            value={data.name}
+                                            value={formData.name}
                                             onChange={handleInputChange}
                                             required
                                         />
@@ -217,11 +258,12 @@ export default function MyCart() {
                                             placeholder='example@example.com'
                                             id='email'
                                             name='email'
-                                            value={data.email}
+                                            value={formData.email}
                                             onChange={handleInputChange}
                                             required
                                         />
                                     </fieldset>
+{/* 
                                     {isChecked && (
                                         <fieldset>
                                             <h3 className='font-medium'>Address</h3>
@@ -229,7 +271,7 @@ export default function MyCart() {
                                             <input
                                                 disabled={!isChecked}
                                                 type="tel" placeholder="Phone"
-                                                onChange={(e: any) => setPhone(e.target.value)}
+                                                onChange={(e: any) => setFormData(e.target.value)}
                                             />
                                             <label>Street address</label>
                                             <input
@@ -261,9 +303,9 @@ export default function MyCart() {
                                                     type="text" placeholder="State"
                                                     onChange={(e: any) => setState(e.target.value)}
                                                 />
-                                                {/* s */}
                                         </fieldset>
                                     )}
+                                     */}
                                     <MainButton 
                                         title={`Place Order ${totalPrice !== 0 ? `$${totalPrice && totalPrice.toFixed(2)}` : ''}`} 
                                         noShadow 
