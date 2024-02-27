@@ -268,7 +268,7 @@ export default function MyCart() {
                                         title={`Place Order ${totalPrice !== 0 ? `$${totalPrice && totalPrice.toFixed(2)}` : ''}`} 
                                         noShadow 
                                         onClick={handleSubmitOrder} 
-                                        disabled={totalPrice == 0} 
+                                        disabled={totalPrice == 0 || data.name == '' || data.email == ''} 
                                         type={'submit'}
                                     />
                                 </form>
