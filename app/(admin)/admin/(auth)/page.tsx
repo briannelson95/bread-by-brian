@@ -24,6 +24,19 @@ export default function AdminPage() {
 
   const { profile }: any = useUser();
 
+  useEffect(() => {
+    if (!profile.admin) {
+      redirect('/')
+    }
+    if (profile) {
+      if (profile.admin) {
+        return
+      } else if (!profile.admin) {
+          redirect('/login');
+      }
+    }
+  });
+
   const [revenueData, setRevenueData]: any = useState();
   const [productsSold, setProductsSold]: any = useState([]);
   const [orders, setOrders]: any = useState([]);
@@ -44,15 +57,7 @@ export default function AdminPage() {
   const lastDayOfMonth = new Date(currentDate.getUTCFullYear(), currentDate.getUTCMonth() + 1, 0);
   lastDayOfMonth.setUTCHours(23, 59, 59, 999);
 
-  useEffect(() => {
-    if (profile) {
-      if (profile.admin) {
-          return
-      } else if (!profile.admin) {
-          redirect('/admin/login');
-      }
-    }
-  });
+  
 
   useEffect(() => {
     supabase.from('orders')
