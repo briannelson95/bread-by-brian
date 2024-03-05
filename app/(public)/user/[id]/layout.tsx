@@ -1,17 +1,18 @@
 "use client"
 import UserNav from '@/components/UserNav'
+import { UserContext } from '@/context/UserContext';
 import { supabase } from '@/supabase/lib/supabaseClient';
 import { useSession } from '@supabase/auth-helpers-react';
 import { usePathname, redirect, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 export default function layout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const id = pathname.slice(6);
     const session = useSession();
-    const router = useRouter();
 
-    const [userProfile, setUserProfile]: any = useState();
+    const {profile}: any = useContext(UserContext);
+
     const [punches, setPunches] = useState<number>(0);
 
     useEffect(() => {
@@ -21,16 +22,15 @@ export default function layout({ children }: { children: React.ReactNode }) {
 
         supabase.from('profiles')
             .select()
-            .eq('id', id)
+            .eq('id', profile.id)
             .then(result => {
                 if (result.data?.length) {
-                    setUserProfile(result.data[0]);
                     setPunches(result.data[0].punch)
                 }
             })
     }, [])
 
-    const isMyUser = userProfile?.id === session?.user.id;
+    const isMyUser = profile?.id === session?.user.id;
 
     if (!isMyUser) {
         return (
@@ -45,9 +45,9 @@ export default function layout({ children }: { children: React.ReactNode }) {
             <h1 className='text-2xl font-semibold'>Account</h1>
             <div className='grid grid-cols-3 gap-4'>
                 <UserNav 
-                    name={userProfile?.full_name} 
-                    email={userProfile?.email}
-                    id={userProfile?.id}
+                    name={profile?.full_name} 
+                    email={profile?.email}
+                    id={profile?.id}
                 />
                 <div className='col-span-2'>
                     {children}

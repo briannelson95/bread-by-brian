@@ -8,9 +8,11 @@ import { supabase } from '@/supabase/lib/supabaseClient'
 import toast from 'react-hot-toast'
 import ThankYou from './ThankYou'
 import { useSession } from '@supabase/auth-helpers-react'
+import { UserContext } from '@/context/UserContext'
 
 export default function MyCart() {
     const {cartProducts, clearCart}: any = useContext(CartContext)
+    const {profile}: any = useContext(UserContext);
     const [phone, setPhone] = useState()
     const [street, setStreet] = useState('')
     const [postal, setPostal] = useState()
@@ -18,8 +20,6 @@ export default function MyCart() {
     const [state, setState] = useState('')
     const [isChecked, setIsChecked] = useState(false);
     const [thisOrder, setThisOrder] = useState(null);
-
-    const session = useSession();
 
     let deliveryFee = 2.5;
     let totalPrice: number
@@ -43,8 +43,8 @@ export default function MyCart() {
     }
 
     const [data, setData]: any = useState({
-        name:  '',
-        email: '',
+        name:  profile ? profile.full_name : '',
+        email: profile ? profile.email : '',
         phone: '',
         street: '',
         postal: '',
@@ -59,38 +59,33 @@ export default function MyCart() {
 
     function logItemCountByCategory(items: any, category: string) {
         const breadItems = items.filter((item: any) => item.category === category);
-        console.log(`Number of items with category "${category}": ${breadItems.length}`);
         return breadItems.length
     };
 
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
 
-        console.log(cartProducts)
-
         const breadItemsCount = logItemCountByCategory(cartProducts, 'bread');
-        console.log('Bread Items Count:', breadItemsCount)
 
-        if (breadItemsCount > 0) {
-            await supabase.from('profiles')
-                .select('punch')
-                .eq('id', session?.user.id)
-                .then(result => {
-                    if (!result.error) {
-                        const currentPunches = result.data[0].punch
-                        supabase.from('profiles')
-                            .update({
-                                punch: currentPunches + breadItemsCount,
-                            })
-                            .eq('id', session?.user.id)
-                            .then(result => {
-                                console.log('Result', result)
-                                if (!result.error) {
-                                    console.log(result + 'Success');
-                                }
-                            });
-                    }
-                })
+        if (profile) {
+            if (breadItemsCount > 0) {
+                await supabase.from('profiles')
+                    .select('punch')
+                    .eq('id', profile.id)
+                    .then(result => {
+                        if (!result.error) {
+                            const currentPunches = result.data[0].punch
+                            supabase.from('profiles')
+                                .update({
+                                    punch: currentPunches + breadItemsCount,
+                                })
+                                .eq('id', profile.id)
+                                .then(result => {
+                                    console.log(result)
+                                }) 
+                        }
+                    })
+            }
         }
 
         const { data: orderData, error: orderError }: any = await supabase
