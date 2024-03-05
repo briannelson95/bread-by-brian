@@ -45,6 +45,7 @@ export default async function Home() {
               inventory: item.inventory,
               tag: item.tag,
               promotionId: item.promotion_id,
+              category: item.category,
             }}            
           />
         ))}

@@ -7,19 +7,19 @@ import Link from 'next/link'
 import { supabase } from '@/supabase/lib/supabaseClient'
 import toast from 'react-hot-toast'
 import ThankYou from './ThankYou'
+import { useSession } from '@supabase/auth-helpers-react'
 
 export default function MyCart() {
     const {cartProducts, clearCart}: any = useContext(CartContext)
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
     const [phone, setPhone] = useState()
     const [street, setStreet] = useState('')
     const [postal, setPostal] = useState()
     const [city, setCity] = useState('')
     const [state, setState] = useState('')
-    // const [country, setCountry]= useState('')
     const [isChecked, setIsChecked] = useState(false);
     const [thisOrder, setThisOrder] = useState(null);
+
+    const session = useSession();
 
     let deliveryFee = 2.5;
     let totalPrice: number
@@ -54,12 +54,44 @@ export default function MyCart() {
     })
 
     const handleCheckboxChange = () => {
-        // Toggle the value of isChecked when the checkbox is changed
         setIsChecked(!isChecked);
+    };
+
+    function logItemCountByCategory(items: any, category: string) {
+        const breadItems = items.filter((item: any) => item.category === category);
+        console.log(`Number of items with category "${category}": ${breadItems.length}`);
+        return breadItems.length
     };
 
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
+
+        console.log(cartProducts)
+
+        const breadItemsCount = logItemCountByCategory(cartProducts, 'bread');
+        console.log('Bread Items Count:', breadItemsCount)
+
+        if (breadItemsCount > 0) {
+            await supabase.from('profiles')
+                .select('punch')
+                .eq('id', session?.user.id)
+                .then(result => {
+                    if (!result.error) {
+                        const currentPunches = result.data[0].punch
+                        supabase.from('profiles')
+                            .update({
+                                punch: currentPunches + breadItemsCount,
+                            })
+                            .eq('id', session?.user.id)
+                            .then(result => {
+                                console.log('Result', result)
+                                if (!result.error) {
+                                    console.log(result + 'Success');
+                                }
+                            });
+                    }
+                })
+        }
 
         const { data: orderData, error: orderError }: any = await supabase
             .from('orders')
@@ -150,6 +182,9 @@ export default function MyCart() {
             [name]: value,
         }));
     };
+
+    
+
     
     return (
         <div className='w-full space-y-2'>

@@ -1,6 +1,7 @@
 "use client"
 import MainButton from '@/components/MainButton';
 import PunchCard from '@/components/PunchCard';
+import UserNav from '@/components/UserNav';
 import { supabase } from '@/supabase/lib/supabaseClient';
 import { useSession } from '@supabase/auth-helpers-react';
 import { redirect, usePathname, useRouter } from 'next/navigation';
@@ -63,17 +64,12 @@ export default  function ProfilePage() {
     };
 
     return (
-        <div className='w-full p-2 relative mb-16 md:max-w-4xl mx-auto space-y-6'>
-            <div className="flex justify-between">
-                <h1 className='text-3xl font-bold'>Welcome, {userProfile?.full_name}</h1>
-                <button className='text-gray-400 text-sm' onClick={async () => {await supabase.auth.signOut(); router.push('/')}}>Sign Out</button>
-            </div>
-            <div className=''>
-                <PunchCard
-                    name={userProfile?.full_name}
-                    punches={punches}
-                />
-            </div>
+        <div className='space-y-6'>            
+            <h1 className='text-2xl font-bold'>My Loyalty Card</h1>
+            <PunchCard
+                name={userProfile?.full_name}
+                punches={punches}
+            />
         </div>
     )
 }

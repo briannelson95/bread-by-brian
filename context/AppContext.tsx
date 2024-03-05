@@ -111,8 +111,6 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
             saveCartProductsToLocalStorage(newCartProducts)
             return newCartProducts;
         });
-        console.log(cartProducts)
-        console.log(cartProducts)
 
         toast.success("Removed Product")
     }

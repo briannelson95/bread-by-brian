@@ -28,10 +28,11 @@ export default function PunchCard({ name, punches }: PunchCardProps) {
                         </button>
                     </div>
                     <p>Every time you purchase a bread item, you will recieve 1 punch on your card. When you have 10 punches you earn 1 FREE Soughdough Loaf.</p>
+                    <p className='text-sm text-gray-400'><i>Rewards do not stack.</i></p>
                 </div>
             </div>
-            <div className='w-3/4 md:w-1/3 mx-auto bg-zinc-200 aspect-[3/4] rounded-xl px-3 py-2 pb-8 flex flex-col justify-between shadow-md shadow-brand-secondary/40'>
-                <div>
+            <div className='w-3/4 md:w-1/2 mx-auto bg-gradient-to-tr from-brand-primary to-white aspect-[3/4] rounded-xl px-3 py-2 pb-8 flex flex-col justify-between shadow-md shadow-brand-secondary/40'>
+                <div className=''>
                     <div className='w-full flex justify-between items-center'>
                         <h2 className='text-xl font-semibold flex gap-1 items-center'>
                             Loyalty Card
@@ -50,13 +51,13 @@ export default function PunchCard({ name, punches }: PunchCardProps) {
                     {name}
                     <p>Buy 10 breads <br /> Get 1 free</p>
                 </div>
-                <div className='grid gap-4 grid-cols-5 relative'>
+                <div className='w-full grid gap-4 grid-cols-5 relative'>
                     {Array.from({ length: 10 }, (_, index) => (
                         <div key={index} className='border-brand-secondary bg-brand-secondary/30 border rounded-full w-8 h-8 relative' />
                     ))}
                     <div className='w-full grid gap-4 grid-cols-5 absolute z-10 place-items-center'>
                         {Array.from({ length: punches}, (_, index) => (
-                            <div key={index} className='flex items-center justify-center text-lg'>
+                            <div key={index} className='text-lg'>
                                 👍
                             </div>
                         ))}

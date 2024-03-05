@@ -6,9 +6,9 @@ import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react'
 import MainButton from './MainButton';
 
-export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id?: number; price?: number; limit?: number; inventory?: number; tag?: string; promotionId?: number;}}) {
+export default function GridItem({menuItem}: {menuItem: {image: string; link: string; title: string; id?: number; price?: number; limit?: number; inventory?: number; tag?: string; promotionId?: number; category?: string;}}) {
     const {
-        image, link, title, id, price, limit, inventory, tag, promotionId,
+        image, link, title, id, price, limit, inventory, tag, promotionId, category,
     } = menuItem;
     const [openPopup, setOpenPopup] = useState(false);
     const [productOptions, setProductOptions]: any = useState(null);
