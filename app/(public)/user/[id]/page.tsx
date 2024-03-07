@@ -65,7 +65,7 @@ export default  function ProfilePage() {
 
     return (
         <div className='space-y-6'>            
-            <h1 className='text-2xl font-bold'>My Loyalty Card</h1>
+            {/* <h1 className='text-2xl font-bold'>My Loyalty Card</h1> */}
             <PunchCard
                 name={userProfile?.full_name}
                 punches={punches}

@@ -7,12 +7,11 @@ import Link from 'next/link'
 import { supabase } from '@/supabase/lib/supabaseClient'
 import toast from 'react-hot-toast'
 import ThankYou from './ThankYou'
-import { useSession } from '@supabase/auth-helpers-react'
 import { UserContext } from '@/context/UserContext'
 
 export default function MyCart() {
     const {cartProducts, clearCart}: any = useContext(CartContext)
-    const {profile}: any = useContext(UserContext);
+    const {profile, reward}: any = useContext(UserContext);
     const [phone, setPhone] = useState()
     const [street, setStreet] = useState('')
     const [postal, setPostal] = useState()
@@ -57,14 +56,23 @@ export default function MyCart() {
         setIsChecked(!isChecked);
     };
 
+    const handleApplyReward = () => {
+    }
+
     function logItemCountByCategory(items: any, category: string) {
         const breadItems = items.filter((item: any) => item.category === category);
+        console.log(breadItems)
         return breadItems.length
     };
+
+    logItemCountByCategory(cartProducts, 'bread');
+
+    
 
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
 
+        // check for account, update punch, and reward
         const breadItemsCount = logItemCountByCategory(cartProducts, 'bread');
 
         if (profile) {
@@ -80,8 +88,19 @@ export default function MyCart() {
                                     punch: currentPunches + breadItemsCount,
                                 })
                                 .eq('id', profile.id)
+                                .select('punch')
                                 .then(result => {
-                                    console.log(result)
+                                    if(!result.error) {
+                                        if (result.data[0].punch % 10 === 0){
+                                            supabase.from('profiles')
+                                                .update({
+                                                    reward: true
+                                                })
+                                                .then(result => {
+
+                                                })
+                                        }
+                                    }
                                 }) 
                         }
                     })
@@ -293,6 +312,22 @@ export default function MyCart() {
                                                 />
                                                 {/* s */}
                                         </fieldset>
+                                    )}
+                                    {reward == true && (
+                                        <div className='bg-brand-primary/60 rounded-lg p-2 grid grid-cols-2 gap-2 text-sm'>
+                                            <div>
+                                                <p>You have a reward:</p>
+                                                <ul className='list-disc list-inside'>
+                                                    <li>1 FREE Sourdough Loaf</li>
+                                                </ul>
+                                            </div>
+                                            <div className='flex gap-2 items-center justify-self-end'>
+                                                <label>Apply to my order</label>
+                                                <input
+                                                    type='checkbox'
+                                                />
+                                            </div>
+                                        </div>
                                     )}
                                     <MainButton 
                                         title={`Place Order ${totalPrice !== 0 ? `$${totalPrice && totalPrice.toFixed(2)}` : ''}`} 
