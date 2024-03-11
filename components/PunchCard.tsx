@@ -1,8 +1,9 @@
 "use client"
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import InfoIcon from './icons/InfoIcon';
 import XIcon from './icons/XIcon';
+import DoughnutChart from './DoughnutChart';
 
 type PunchCardProps = {
     name: string;
@@ -10,7 +11,20 @@ type PunchCardProps = {
 }
 
 export default function PunchCard({ name, punches }: PunchCardProps) {
+    const data = punches % 10 === 0 ? 10 : punches % 10;
     const [showInfo, setShowInfo] = useState<boolean>(false);
+
+    const [progress, setProgress] = useState<number>(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setProgress((prevProgress) => {
+                const nextProgress = prevProgress + 0.1;
+                return nextProgress <= data ? nextProgress : data;
+            });
+        }, 25);
+        return () => clearInterval(interval);
+    }, [data]);
 
     const handleShowInfo = () => {
         setShowInfo(!showInfo)
@@ -63,6 +77,7 @@ export default function PunchCard({ name, punches }: PunchCardProps) {
                     </div>
                     
                 </div>
+                {/* <DoughnutChart progress={progress} /> */}
             </div>
         </div>
     )

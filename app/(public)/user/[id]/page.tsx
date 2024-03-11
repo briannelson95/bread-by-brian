@@ -11,7 +11,6 @@ export default  function ProfilePage() {
     const pathname = usePathname();
     const id = pathname.slice(6);
     const session = useSession();
-    const router = useRouter();
 
     const [userProfile, setUserProfile]: any = useState();
     const [punches, setPunches] = useState<number>(0);

@@ -3,42 +3,12 @@ import UserNav from '@/components/UserNav'
 import { UserContext } from '@/context/UserContext';
 import { supabase } from '@/supabase/lib/supabaseClient';
 import { useSession } from '@supabase/auth-helpers-react';
-import { usePathname, redirect, useRouter } from 'next/navigation';
+import { usePathname, redirect } from 'next/navigation';
 import React, { useContext, useEffect, useState } from 'react'
 
-export default function layout({ children }: { children: React.ReactNode }) {
-    const pathname = usePathname();
-    const id = pathname.slice(6);
-    const session = useSession();
+export default function UserLayout({ children }: { children: React.ReactNode }) {
 
     const {profile}: any = useContext(UserContext);
-
-    const [punches, setPunches] = useState<number>(0);
-
-    useEffect(() => {
-        if(session?.user.id !== id) {
-            redirect('/')
-        }
-
-        supabase.from('profiles')
-            .select()
-            .eq('id', profile.id)
-            .then(result => {
-                if (result.data?.length) {
-                    setPunches(result.data[0].punch)
-                }
-            })
-    }, [])
-
-    const isMyUser = profile?.id === session?.user.id;
-
-    if (!isMyUser) {
-        return (
-            <div>
-                Loading...
-            </div>
-        )
-    };
 
     return (
         <div className='w-full p-2 relative mb-16 md:max-w-4xl mx-auto space-y-6'>

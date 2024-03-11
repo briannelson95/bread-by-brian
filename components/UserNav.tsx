@@ -20,7 +20,11 @@ export default function UserNav({ name, email, id }: NavBarProps) {
             <div className='bg-gradient-to-tr from-brand-secondary via-brand-primary to-white h-24 rounded-t-xl' />
             <div className='px-4 py-2'>
                 <div className='flex flex-col items-center justify-center mb-12'>
-                    <p className='text-lg font-semibold'>{name ? name : ''}</p>
+                    {name ? (
+                        <p className='text-lg font-semibold'>{name ? name : ''}</p>
+                    ) : (
+                        <div className='bg-gray-500 w-full rounded-lg' />
+                    )}
                     <p className='text-gray-400 text-sm'>{email ? email : ''}</p>
                 </div>
                 <ul className='space-y-2'>
