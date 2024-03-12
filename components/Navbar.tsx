@@ -48,6 +48,19 @@ export default function Navbar() {
                         </Link>
                     </li>
                     <div className='flex gap-6'>
+                        {/* <li>
+                            <Link href={profile ? `/user/${profile.id}` : '/login' } className='flex gap-2'>
+                                <div>
+                                    {profile ? (
+                                        <ProfileIconFilled />
+                                    ) : (
+                                        <ProfileIcon />
+                                    )}
+                                
+                                </div>
+                                <span className='hidden md:block'>{profile ? profile.full_name : 'Login'}</span>
+                            </Link>
+                        </li> */}
                         <li className='relative'>
                             <Link href={'/cart'} className='flex gap-2'>
                                 <div className='relative'>
@@ -61,19 +74,6 @@ export default function Navbar() {
                                     ) : ''}
                                 </div>
                                 <span className='hidden md:block'>My Cart</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href={profile ? `/user/${profile.id}` : '/login' } className='flex gap-2'>
-                                <div>
-                                    {profile ? (
-                                        <ProfileIconFilled />
-                                    ) : (
-                                        <ProfileIcon />
-                                    )}
-                                
-                                </div>
-                                <span className='hidden md:block'>{profile ? profile.full_name : 'Login'}</span>
                             </Link>
                         </li>
                     </div>

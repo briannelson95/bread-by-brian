@@ -85,7 +85,7 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
       
       
 
-    const updateQuantity = (productId: any, newQuantity: number, limitPerCustomer: number, inventory: number) => {
+    const updateQuantity = (productId: any, newQuantity: number, limitPerCustomer: number, inventory: number, updatedProduct?: any) => {
         
         const validLimit = !isNaN(limitPerCustomer) ? limitPerCustomer : Infinity;
         const validInventory = !isNaN(inventory) ? inventory : Infinity;
@@ -96,6 +96,14 @@ export default function AppProvider({ children }: { children: React.ReactNode}) 
                 product.id === productId ? { ...product, quantity: updatedQuantity } : product
             )
         );
+
+        if (updatedProduct) {
+            setCartProducts((prevProducts: any) =>
+                prevProducts.map((product: any) =>
+                    product.id === productId ? { ...product, quantity: newQuantity, ...(updatedProduct && { price: updatedProduct.price }) } : product
+                )
+            );
+        }
     };
 
     function clearCart() {

@@ -10,7 +10,8 @@ import ThankYou from './ThankYou'
 import { UserContext } from '@/context/UserContext'
 
 export default function MyCart() {
-    const {cartProducts, clearCart}: any = useContext(CartContext)
+    const {cartProducts, clearCart, updateQuantity, addToCart}: any = useContext(CartContext);
+    console.log(cartProducts)
     const {profile, reward}: any = useContext(UserContext);
     const [phone, setPhone] = useState()
     const [street, setStreet] = useState('')
@@ -18,6 +19,7 @@ export default function MyCart() {
     const [city, setCity] = useState('')
     const [state, setState] = useState('')
     const [isChecked, setIsChecked] = useState(false);
+    const [rewardCheck, setRewardCheck] = useState<boolean>(false);
     const [thisOrder, setThisOrder] = useState(null);
 
     let deliveryFee = 2.5;
@@ -50,14 +52,38 @@ export default function MyCart() {
         city: '',
         state: '',
         id: thisOrder
-    })
+    });
 
     const handleCheckboxChange = () => {
         setIsChecked(!isChecked);
     };
 
-    const handleApplyReward = () => {
+    const handleRewardCheckboxChange = () => {
+        // Apply reward logic when the checkbox is checked
+        setRewardCheck(!isChecked)
+        if (!rewardCheck && reward) {
+            const sourdoughLoafInCart = cartProducts.find((product: any) => product.title === 'Sourdough Loaf');
+    
+            if (sourdoughLoafInCart) {
+                const updatedSourdoughLoaf = { ...sourdoughLoafInCart, price: 0 }; // Create a copy of the product with updated price
+                updateQuantity(sourdoughLoafInCart.id, sourdoughLoafInCart.quantity, sourdoughLoafInCart.limit, sourdoughLoafInCart.inventory, updatedSourdoughLoaf);
+            } else {
+                // Add a new Sourdough Loaf with a price of $0.00
+                supabase.from('products')
+                    .select()
+                    .eq('id', 5)
+                    .single()
+                    .then(result => {
+                        if (!result.error) {
+                            const sourdoughLoaf = result.data;
+                            sourdoughLoaf.price = 0; // Set the price to $0
+                            addToCart(sourdoughLoaf, 1);
+                        }
+                    })
+            }
+        }
     }
+
 
     function logItemCountByCategory(items: any, category: string) {
         const breadItems = items.filter((item: any) => item.category === category);
@@ -68,7 +94,6 @@ export default function MyCart() {
     logItemCountByCategory(cartProducts, 'bread');
 
     
-
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
 
@@ -105,6 +130,14 @@ export default function MyCart() {
                         }
                     })
             }
+        };
+
+        if (reward && rewardCheck) {
+            await supabase.from('profiles')
+                .update({
+                    reward: false
+                })
+                .eq('id', profile.id)
         }
 
         const { data: orderData, error: orderError }: any = await supabase
@@ -325,15 +358,17 @@ export default function MyCart() {
                                                 <label>Apply to my order</label>
                                                 <input
                                                     type='checkbox'
+                                                    checked={rewardCheck}
+                                                    onChange={handleRewardCheckboxChange}
                                                 />
                                             </div>
                                         </div>
                                     )}
                                     <MainButton 
-                                        title={`Place Order ${totalPrice !== 0 ? `$${totalPrice && totalPrice.toFixed(2)}` : ''}`} 
+                                        title={`Place Order $${totalPrice.toFixed(2)}`} 
                                         noShadow 
                                         onClick={handleSubmitOrder} 
-                                        disabled={totalPrice == 0 || data.name == '' || data.email == ''} 
+                                        disabled={data.name == '' || data.email == '' || !cartProducts} 
                                         type={'submit'}
                                     />
                                 </form>

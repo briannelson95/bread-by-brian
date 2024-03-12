@@ -65,16 +65,18 @@ export default function PunchCard({ name, punches }: PunchCardProps) {
                     <p className='text-sm'>Buy 10 bread items, <br /> Get 1 FREE Sourdough</p>
                 </div>
                 <div className='w-full grid gap-4 grid-cols-2 relative place-items-center'>
-                    {Array.from({ length: 10 }, (_, index) => (
-                        <div key={index} className='border-brand-secondary bg-gradient-to-tr from-brand-secondary to-brand-primary border rounded-full w-10 h-10 relative' />
+                    {Array.from({ length: punches % 10 }, (_, index) => (
+                        <div key={index} className='border-brand-secondary bg-gradient-to-tr from-brand-secondary to-brand-primary border rounded-full w-10 h-10 relative flex justify-center items-center'>
+                            👍
+                        </div>
                     ))}
-                    <div className='w-full grid gap-4 grid-cols-2 absolute z-10 place-items-center h-full'>
-                        {Array.from({ length: punches}, (_, index) => (
+                    {/* <div className='w-full grid gap-4 grid-cols-2 z-10 place-items-center h-full'>
+                        {Array.from({ length: punches % 10}, (_, index) => (
                             <div key={index} className='text-lg'>
                                 👍
                             </div>
                         ))}
-                    </div>
+                    </div> */}
                     
                 </div>
                 {/* <DoughnutChart progress={progress} /> */}
