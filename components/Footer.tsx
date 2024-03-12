@@ -28,8 +28,8 @@ export default function Footer() {
                 </div>
             </div>
             
-            <p className='text-sm text-zinc-400'>
-                Disclaimer: Everything is made to order and will be fulfilled no later than the Monday after the order is recieved.
+            <p className='text-sm text-zinc-400 w-3/4 text-center'>
+                Disclaimer: Everything is made to order and will be fulfilled no later than the Monday after the order is recieved. Orders made after 11:59pm on Saturday roll over to the following week.
             </p>
         </footer>
     )

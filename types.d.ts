@@ -10,4 +10,5 @@ type MenuItem = {
     discount?: any;
     tag?: string;
     promotionId?: number;
+    category?: string;
 }

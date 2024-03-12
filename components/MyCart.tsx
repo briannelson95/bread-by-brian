@@ -7,18 +7,19 @@ import Link from 'next/link'
 import { supabase } from '@/supabase/lib/supabaseClient'
 import toast from 'react-hot-toast'
 import ThankYou from './ThankYou'
+import { UserContext } from '@/context/UserContext'
 
 export default function MyCart() {
-    const {cartProducts, clearCart}: any = useContext(CartContext)
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const {cartProducts, clearCart, updateQuantity, addToCart}: any = useContext(CartContext);
+    console.log(cartProducts)
+    const {profile, reward}: any = useContext(UserContext);
     const [phone, setPhone] = useState()
     const [street, setStreet] = useState('')
     const [postal, setPostal] = useState()
     const [city, setCity] = useState('')
     const [state, setState] = useState('')
-    // const [country, setCountry]= useState('')
     const [isChecked, setIsChecked] = useState(false);
+    const [rewardCheck, setRewardCheck] = useState<boolean>(false);
     const [thisOrder, setThisOrder] = useState(null);
 
     let deliveryFee = 2.5;
@@ -43,23 +44,101 @@ export default function MyCart() {
     }
 
     const [data, setData]: any = useState({
-        name:  '',
-        email: '',
+        name:  profile ? profile.full_name : '',
+        email: profile ? profile.email : '',
         phone: '',
         street: '',
         postal: '',
         city: '',
         state: '',
         id: thisOrder
-    })
+    });
 
     const handleCheckboxChange = () => {
-        // Toggle the value of isChecked when the checkbox is changed
         setIsChecked(!isChecked);
     };
 
+    const handleRewardCheckboxChange = () => {
+        // Apply reward logic when the checkbox is checked
+        setRewardCheck(!isChecked)
+        if (!rewardCheck && reward) {
+            const sourdoughLoafInCart = cartProducts.find((product: any) => product.title === 'Sourdough Loaf');
+    
+            if (sourdoughLoafInCart) {
+                const updatedSourdoughLoaf = { ...sourdoughLoafInCart, price: 0 }; // Create a copy of the product with updated price
+                updateQuantity(sourdoughLoafInCart.id, sourdoughLoafInCart.quantity, sourdoughLoafInCart.limit, sourdoughLoafInCart.inventory, updatedSourdoughLoaf);
+            } else {
+                // Add a new Sourdough Loaf with a price of $0.00
+                supabase.from('products')
+                    .select()
+                    .eq('id', 5)
+                    .single()
+                    .then(result => {
+                        if (!result.error) {
+                            const sourdoughLoaf = result.data;
+                            sourdoughLoaf.price = 0; // Set the price to $0
+                            addToCart(sourdoughLoaf, 1);
+                        }
+                    })
+            }
+        }
+    }
+
+
+    function logItemCountByCategory(items: any, category: string) {
+        const breadItems = items.filter((item: any) => item.category === category);
+        console.log(breadItems)
+        return breadItems.length
+    };
+
+    logItemCountByCategory(cartProducts, 'bread');
+
+    
     const handleSubmitOrder = async (e: any) => {
         e.preventDefault()
+
+        // check for account, update punch, and reward
+        const breadItemsCount = logItemCountByCategory(cartProducts, 'bread');
+
+        if (profile) {
+            if (breadItemsCount > 0) {
+                await supabase.from('profiles')
+                    .select('punch')
+                    .eq('id', profile.id)
+                    .then(result => {
+                        if (!result.error) {
+                            const currentPunches = result.data[0].punch
+                            supabase.from('profiles')
+                                .update({
+                                    punch: currentPunches + breadItemsCount,
+                                })
+                                .eq('id', profile.id)
+                                .select('punch')
+                                .then(result => {
+                                    if(!result.error) {
+                                        if (result.data[0].punch % 10 === 0){
+                                            supabase.from('profiles')
+                                                .update({
+                                                    reward: true
+                                                })
+                                                .then(result => {
+
+                                                })
+                                        }
+                                    }
+                                }) 
+                        }
+                    })
+            }
+        };
+
+        if (reward && rewardCheck) {
+            await supabase.from('profiles')
+                .update({
+                    reward: false
+                })
+                .eq('id', profile.id)
+        }
 
         const { data: orderData, error: orderError }: any = await supabase
             .from('orders')
@@ -150,6 +229,9 @@ export default function MyCart() {
             [name]: value,
         }));
     };
+
+    
+
     
     return (
         <div className='w-full space-y-2'>
@@ -264,11 +346,29 @@ export default function MyCart() {
                                                 {/* s */}
                                         </fieldset>
                                     )}
+                                    {reward == true && (
+                                        <div className='bg-brand-primary/60 rounded-lg p-2 grid grid-cols-2 gap-2 text-sm'>
+                                            <div>
+                                                <p>You have a reward:</p>
+                                                <ul className='list-disc list-inside'>
+                                                    <li>1 FREE Sourdough Loaf</li>
+                                                </ul>
+                                            </div>
+                                            <div className='flex gap-2 items-center justify-self-end'>
+                                                <label>Apply to my order</label>
+                                                <input
+                                                    type='checkbox'
+                                                    checked={rewardCheck}
+                                                    onChange={handleRewardCheckboxChange}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
                                     <MainButton 
-                                        title={`Place Order ${totalPrice !== 0 ? `$${totalPrice && totalPrice.toFixed(2)}` : ''}`} 
+                                        title={`Place Order $${totalPrice.toFixed(2)}`} 
                                         noShadow 
                                         onClick={handleSubmitOrder} 
-                                        disabled={totalPrice == 0 || data.name == '' || data.email == ''} 
+                                        disabled={data.name == '' || data.email == '' || !cartProducts} 
                                         type={'submit'}
                                     />
                                 </form>

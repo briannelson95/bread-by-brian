@@ -20,13 +20,17 @@ export default async function PublicLayout({
 
   const { data: alert } = await supabase
     .from('alert_banner')
-    .select('alert')
+    .select('alert, link')
     .eq('id', 1)
 
   return (
     <div className='relative mb-12 md:mb-0'>
       {alert && alert[0].alert !== null && (
-        <PublicAlertBanner text={alert[0].alert} visible={alert[0].alert.length > 0} />
+        <PublicAlertBanner 
+          text={alert[0].alert} 
+          visible={alert[0].alert.length > 0} 
+          link={alert[0].link}
+        />
       )}
       <div className={`${inter.className}`}>
         <Navbar />

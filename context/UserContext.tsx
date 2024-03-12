@@ -10,6 +10,7 @@ export const UserContextProvider = ({ children }: {children: React.ReactNode}) =
     const session = useSession();
     const supabase = useSupabaseClient();
     const [profile, setProfile]: any = useState(null);
+    const [reward, setReward] = useState<boolean>(false);
 
     useEffect(() => {
         if (!session?.user.id) {
@@ -21,13 +22,14 @@ export const UserContextProvider = ({ children }: {children: React.ReactNode}) =
             .eq('id', session?.user.id)
             .then(result => {
                 if (!result.error) {
-                    setProfile(result.data[0])
+                    setProfile(result.data[0]);
+                    setReward(result.data[0].reward)
                 }
             })
     }, [session?.user.id])
 
     return (
-        <UserContext.Provider value={{profile}}>
+        <UserContext.Provider value={{profile, reward}}>
             {children}
         </UserContext.Provider>
     )

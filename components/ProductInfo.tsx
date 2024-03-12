@@ -8,7 +8,7 @@ import { supabase } from '@/supabase/lib/supabaseClient';
 
 export default function ProductInfo({menuItem}: {menuItem: MenuItem}) {
     const {
-        image, link, title, id, price, limit, description, inventory, tag, promotionId,
+        image, link, title, id, price, limit, description, inventory, tag, promotionId, category,
     } = menuItem;
     const [options, setOptions]: any[] = useState();
     const [selectedOption, setSelectedOption]: any = useState(null)

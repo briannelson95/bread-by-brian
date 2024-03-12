@@ -3,6 +3,7 @@ import './globals.css';
 import AppProvider from '@/context/AppContext';
 import { Toaster } from 'react-hot-toast';
 import { Metadata } from 'next';
+import { UserContextProvider } from '@/context/UserContext';
 
 export const metadata: Metadata = {
   title: 'Bread by Brian',
@@ -23,15 +24,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Session>
-        <body>
-          <AppProvider>
-            {children}
-          </AppProvider>
-          <Toaster
-            position='bottom-right'
-          />
-        </body>
+        <UserContextProvider>
+          <body>
+            <AppProvider>
+              {children}
+            </AppProvider>
+            <Toaster
+              position='bottom-right'
+            />
+          </body>
+        </UserContextProvider>       
       </Session>
+
     </html>
   )
 }
