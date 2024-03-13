@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function PolicyPage() {
     return (
-        <div className='w-full p-2 relative mb-16 md:max-w-4xl mx-auto space-y-6'>
+        <div className='w-full px-6 md:p-2 relative mb-16 md:max-w-4xl mx-auto space-y-6'>
             <h1 className='text-3xl font-semibold'>Privacy Policy for Bread by Brian</h1>
             <p>Last Updated: March 11, 2024</p>
             <section>

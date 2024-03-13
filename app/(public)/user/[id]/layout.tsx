@@ -11,9 +11,9 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
     const {profile}: any = useContext(UserContext);
 
     return (
-        <div className='w-full p-2 relative mb-16 md:max-w-4xl mx-auto space-y-6'>
-            <h1 className='text-2xl font-semibold'>Account</h1>
-            <div className='grid grid-cols-3 gap-4'>
+        <div className='w-full relative mb-16 md:max-w-4xl mx-auto space-y-6'>
+            {/* <h1 className='text-2xl font-semibold'>Account</h1> */}
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-4 px-4 md:p-0'>
                 <UserNav 
                     name={profile?.full_name} 
                     email={profile?.email}

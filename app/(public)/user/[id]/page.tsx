@@ -41,27 +41,6 @@ export default  function ProfilePage() {
         )
     };
 
-    const handlePunch = () => {
-        supabase.from('profiles')
-            .select('punch')
-            .eq('id', userProfile.id)
-            .then(result => {
-                if (!result.error) {
-                    setPunches(result.data[0].punch)
-
-                    supabase.from('profiles')
-                        .update({
-                            punch: result.data[0].punch + 1
-                        })
-                        .eq('id', userProfile.id)
-                        .select()
-                        .then(result => {
-                            console.log(result)
-                        })
-                }
-            })
-    };
-
     return (
         <div className='space-y-6'>            
             {/* <h1 className='text-2xl font-bold'>My Loyalty Card</h1> */}

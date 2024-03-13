@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function AccountInfoPage() {
     return (
-        <div className='max-w-3xl mx-auto space-y-2 mb-10'>
+        <div className='max-w-3xl mx-auto space-y-2 mb-10 px-6 md:p-2'>
             <h1 className='text-lg font-semibold'>Account Info</h1>
             <section>
                 <p>I&apos;m shipping a lot of new features to Bread by Brian including a loyalty rewards program and user accounts. In order to be eligible for the rewards program you&apos;ll need to be logged into an account. I want to reward customers for ordering bread and the best way to do that is by giving away our most popular bread item.</p>

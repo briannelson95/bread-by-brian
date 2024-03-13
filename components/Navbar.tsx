@@ -33,7 +33,7 @@ export default function Navbar() {
                     <li className='md:hidden'>
                         {pathname !== '/' ? (
                             <BackButton />
-                        ) : <div className='w-6' />}
+                        ) : <div className='w-[72px]' />}
                         
                     </li>
                     <li>
@@ -47,7 +47,7 @@ export default function Navbar() {
                             />
                         </Link>
                     </li>
-                    <div className='flex gap-6'>
+                    <div className='flex gap-6 w-[72px]'>
                         {/* <li>
                             <Link href={profile ? `/user/${profile.id}` : '/login' } className='flex gap-2'>
                                 <div>
