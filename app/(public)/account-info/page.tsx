@@ -15,7 +15,7 @@ export default function AccountInfoPage() {
             </section>
             <section className='space-y-1'>
                 <h2 className='text-xl font-bold'>What is the Loyalty Program?</h2>
-                <p>For customers who order bread items, (Sourdough, Bagel Loaf, Focaccia, and Challah, etc.) they&apos;ll recieve 1 (one) &quot;punch&quot; per item. When you get to 10 punches, you can redeem a FREE Sourdough Loaf. Punches are not applied to orders that contain pastery items.</p>
+                <p>For customers who order bread items, (Sourdough, Bagel Loaf, Focaccia, and Challah, etc.) they&apos;ll recieve 1 (one) &quot;punch&quot; per item. When you get to 10 punches, you can redeem a FREE Sourdough Loaf. Punches are not applied to pastery items.</p>
             </section>
             <section className='space-y-1'>
                 <h2 className='text-xl font-bold'>How do I redeem my reward?</h2>
