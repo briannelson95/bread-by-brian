@@ -48,7 +48,7 @@ export default function Navbar() {
                         </Link>
                     </li>
                     <div className='flex gap-6 w-[72px] justify-end'>
-                        {/* <li>
+                        <li>
                             <Link href={profile ? `/user/${profile.id}` : '/login' } className='flex gap-2'>
                                 <div>
                                     {profile ? (
@@ -60,7 +60,7 @@ export default function Navbar() {
                                 </div>
                                 <span className='hidden md:block'>{profile ? profile.full_name : 'Login'}</span>
                             </Link>
-                        </li> */}
+                        </li>
                         <li className='relative'>
                             <Link href={'/cart'} className='flex gap-2'>
                                 <div className='relative'>
