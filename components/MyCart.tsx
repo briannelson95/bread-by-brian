@@ -121,6 +121,7 @@ export default function MyCart() {
                                                 .update({
                                                     reward: true
                                                 })
+                                                .eq('id', profile.id)
                                                 .then(result => {
 
                                                 })
