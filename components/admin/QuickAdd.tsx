@@ -1,6 +1,7 @@
 "use client"
 import { supabase } from '@/supabase/lib/supabaseClient';
 import React, { useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function QuickAdd() {
     const [isLimit, setIsLimit]: any = useState(false);
@@ -52,7 +53,8 @@ export default function QuickAdd() {
         }
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (e: any) => {
+        e.preventDefault();
         supabase.from('products')
             .insert({
                 title,
@@ -69,6 +71,10 @@ export default function QuickAdd() {
                     setPrice(null);
                     setLimit(null);
                     setImage(null);
+                    toast.success('Uploaded')
+                }
+                if (result.error) {
+                    toast.error('Error')
                 }
             })
     }
