@@ -66,17 +66,18 @@ export default function QuickAdd() {
             })
             .then(result => {
                 if (!result.error) {
-                    setTitle('');
-                    setDesc('');
-                    setPrice(null);
-                    setLimit(null);
-                    setImage(null);
                     toast.success('Uploaded')
                 }
                 if (result.error) {
                     toast.error('Error')
                 }
-            })
+            });
+
+        setTitle('');
+        setDesc('');
+        setPrice(null);
+        setLimit(null);
+        setImage(null);
     }
 
     return (

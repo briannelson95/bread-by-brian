@@ -22,7 +22,8 @@ export default async function ProductsPage() {
                     Add Product
                 </button>
             </div>
-            <ProductsTable products={products} />
+            {products && <ProductsTable products={products} />}
+            
         </div>
     )
 }

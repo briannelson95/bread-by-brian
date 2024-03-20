@@ -26,11 +26,11 @@ export default function ProductsTable({ products }: { products: any}) {
                     </tr>
                 </thead>
                 <tbody>
-                    {products && products.map((item: any, index: any) => (
+                    {products && products.map((item: any) => (
                         <tr key={item.id} className="bg-white border-b">
                             <Link href={`/admin/products/${item.id}`}>
                             <th scope="row" className="px-6 py-4 flex gap-2 items-center font-medium text-gray-900 whitespace-nowrap">
-                                
+                                {item.image && (
                                     <Image
                                         src={item.image}
                                         height={1000}
@@ -38,7 +38,8 @@ export default function ProductsTable({ products }: { products: any}) {
                                         alt={`Image of ${item.title}`}
                                         className='h-8 w-8 rounded'
                                     />
-                                    {item.title}
+                                )}
+                                {item.title}
                                 
                             </th>
                             </Link>
