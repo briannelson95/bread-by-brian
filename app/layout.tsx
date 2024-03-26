@@ -4,7 +4,7 @@ import AppProvider from '@/context/AppContext';
 import { Toaster } from 'react-hot-toast';
 import { Metadata } from 'next';
 import { UserContextProvider } from '@/context/UserContext';
-import { GoogleAnalytics } from '@next/third-parties/google';
+import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 
 export const metadata: Metadata = {
   title: 'Bread by Brian',
@@ -24,6 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <GoogleTagManager gtmId='GTM-PCWC29VD' />
       <Session>
         <UserContextProvider>
           <body>
