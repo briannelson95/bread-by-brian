@@ -4,6 +4,7 @@ import AppProvider from '@/context/AppContext';
 import { Toaster } from 'react-hot-toast';
 import { Metadata } from 'next';
 import { UserContextProvider } from '@/context/UserContext';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata: Metadata = {
   title: 'Bread by Brian',
@@ -26,6 +27,7 @@ export default function RootLayout({
       <Session>
         <UserContextProvider>
           <body>
+            <GoogleAnalytics gaId='G-XGYRK3W6B1' />
             <AppProvider>
               {children}
             </AppProvider>
